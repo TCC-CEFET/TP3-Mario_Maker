@@ -20,7 +20,7 @@ public class Enemy extends GameObject {
 	}
 	
 	@Override
-	public void hits(Rectangle rectangle) {
+	public void hits(GameObject object) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -52,12 +52,11 @@ public class Enemy extends GameObject {
 	}
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprite.draw(batch) ;
+		sprite.draw(batch);
 	}
 	@Override
 	public void jump() {
 		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public Rectangle getHitBox() {
@@ -66,7 +65,9 @@ public class Enemy extends GameObject {
 	
 	@Override
 	public int hitAction(int side) {
-		// TODO Auto-generated method stub
+		if(side == 1) {
+			return 2;
+		}
 		return 1 ;
 	}
 }

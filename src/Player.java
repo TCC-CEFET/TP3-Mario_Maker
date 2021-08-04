@@ -31,23 +31,31 @@ public class Player extends GameObject {
 	}
 	
 	@Override
-	public void hits(Rectangle rectangle) {
-		if (top.overlaps(rectangle)) {
-			action(null, rectangle.y - full.height) ;
+	public void hits(GameObject object) {
+		if(object.getClass() == Enemy.class) {
+			if(full.overlaps(object.getHitBox())) {
+				action(0f, 33f);
+			}
+			
+		} else {
+			if (top.overlaps(object.getHitBox())) {
+				action(null, object.getHitBox().y - full.height) ;
+			}
+			
+			if (bottom.overlaps(object.getHitBox())) {
+				action(null, object.getHitBox().y + object.getHitBox().height) ;
+				pulando = false ;
+			}
+			
+			if (right.overlaps(object.getHitBox())) {
+				action(object.getHitBox().x - full.width - 1, null) ;
+			}
+			
+			if (left.overlaps(object.getHitBox())) {
+				action(object.getHitBox().x + object.getHitBox().width + 1, null) ;
+			}
 		}
 		
-		if (bottom.overlaps(rectangle)) {
-			action(null, rectangle.y + rectangle.height) ;
-			pulando = false ;
-		}
-		
-		if (right.overlaps(rectangle)) {
-			action(rectangle.x - full.width - 1, null) ;
-		}
-		
-		if (left.overlaps(rectangle)) {
-			action(rectangle.x + rectangle.width + 1, null) ;
-		}
 	}
 	
 	@Override
@@ -139,7 +147,7 @@ public class Player extends GameObject {
 
 	@Override
 	public int hitAction(int side) {
-		// TODO Auto-generated method stub
+		
 		return 0 ;
 	}
 }

@@ -61,8 +61,8 @@ public class MarioForeverGame implements ApplicationListener {
 		// Updates
 		player.update() ;
 		for (GameObject object: objectsList) {
-			player.hits(object.getHitBox()) ;
-			object.hits(player.getTopHitBox()) ;
+			player.hits(object) ;
+			object.hits(player) ;
 		}
 			
 		// Controls
