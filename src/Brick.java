@@ -24,7 +24,7 @@ public class Brick extends GameObject {
 	}
 
 	@Override
-	public void action(int type, float x, float y) {
+	public void action(Float x, Float y) {
 		// TODO Auto-generated method stub
 		
 	}

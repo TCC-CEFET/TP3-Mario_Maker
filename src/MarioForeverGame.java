@@ -59,8 +59,6 @@ public class MarioForeverGame implements ApplicationListener {
 		
 		// Updates
 		player.update() ;
-		Rectangle temp = new Rectangle(0, 0, 800, 5);
-		player.hits(temp) ;
 		for (GameObject object: objectsList) player.hits(object.getHitBox()) ;
 			
 		// Controls

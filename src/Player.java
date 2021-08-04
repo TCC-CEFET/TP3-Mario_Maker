@@ -33,33 +33,32 @@ public class Player extends GameObject {
 	@Override
 	public void hits(Rectangle rectangle) {
 		if (top.overlaps(rectangle)) {
-			action(4, 0, rectangle.y - full.height);
+			action(null, rectangle.y - full.height);
 		}
 		
 		if (bottom.overlaps(rectangle)) {
-			action(1, 0, rectangle.y + rectangle.height);
+			action(null, rectangle.y + rectangle.height);
 			pulando = false ;
 		}
 		
 		if (right.overlaps(rectangle)) {
-			action(3, rectangle.x - full.width - 1, 0);
+			action(rectangle.x - full.width - 1, null);
 		}
 		
 		if (left.overlaps(rectangle)) {
-			action(2, rectangle.x + rectangle.width + 1, 0);
+			action(rectangle.x + rectangle.width + 1, null);
 		}
 	}
 	
 	@Override
-	public void action(int type, float x, float y) {
-		if(type == 1 || type == 4) {
-			velocityY = 0 ;
+	public void action(Float x, Float y) {
+		velocityY = 0 ;
+		if(x == null) {
 			setPosition(full.x, y) ;
-		}
-		
-		if (type == 2 || type == 3) {
-			velocityY = 0 ;
+		} else if (y == null) {
 			setPosition(x, full.y) ;
+		} else {
+			setPosition(x, y) ;
 		}
 	}
 	
