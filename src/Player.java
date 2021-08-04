@@ -33,27 +33,29 @@ public class Player extends GameObject {
 	@Override
 	public void hits(Rectangle rectangle) {
 		if (top.overlaps(rectangle)) {
-			action(null, rectangle.y - full.height);
+			action(null, rectangle.y - full.height) ;
 		}
 		
 		if (bottom.overlaps(rectangle)) {
-			action(null, rectangle.y + rectangle.height);
+			action(null, rectangle.y + rectangle.height) ;
 			pulando = false ;
 		}
 		
 		if (right.overlaps(rectangle)) {
-			action(rectangle.x - full.width - 1, null);
+			action(rectangle.x - full.width - 1, null) ;
 		}
 		
 		if (left.overlaps(rectangle)) {
-			action(rectangle.x + rectangle.width + 1, null);
+			action(rectangle.x + rectangle.width + 1, null) ;
 		}
 	}
 	
 	@Override
 	public void action(Float x, Float y) {
-		velocityY = 0 ;
-		if(x == null) {
+		if (x == null && y == null) {
+			
+		} else if (x == null) {
+			velocityY = 0 ;
 			setPosition(full.x, y) ;
 		} else if (y == null) {
 			setPosition(x, full.y) ;
@@ -129,6 +131,16 @@ public class Player extends GameObject {
 	@Override
 	public Rectangle getHitBox() {
 		return full ;
+	}
+	
+	public Rectangle getTopHitBox() {
+		return top ;
+	}
+
+	@Override
+	public int hitAction(int side) {
+		// TODO Auto-generated method stub
+		return 0 ;
 	}
 }
 	

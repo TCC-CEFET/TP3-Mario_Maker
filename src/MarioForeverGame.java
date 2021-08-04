@@ -36,6 +36,7 @@ public class MarioForeverGame implements ApplicationListener {
 		objectsList.add(new Brick(288, 107)) ;
 		objectsList.add(new Brick(320, 107)) ;
 		objectsList.add(new Brick(352, 107)) ;
+		objectsList.add(new Enemy(128, 32)) ;
 	}
 
 	@Override
@@ -59,7 +60,10 @@ public class MarioForeverGame implements ApplicationListener {
 		
 		// Updates
 		player.update() ;
-		for (GameObject object: objectsList) player.hits(object.getHitBox()) ;
+		for (GameObject object: objectsList) {
+			player.hits(object.getHitBox()) ;
+			object.hits(player.getTopHitBox()) ;
+		}
 			
 		// Controls
 		player.control() ;
