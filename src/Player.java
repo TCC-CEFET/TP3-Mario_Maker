@@ -1,82 +1,135 @@
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Player extends GameObject {
-	private Rectangle bottom, left, right, top;
-	private Sprite sprite;
-	private Texture texture;
-	private int action;
-	private float velocityY;
+	private int width=44, height=44 ;
+	private Rectangle bottom, left, right, top, full ;
+	private Sprite sprite ;
+	private Texture texture ;
+	private int action ;
+	private float velocityY ;
+	private boolean pulando ;
 	
-	public Player() {
-		bottom = new Rectangle(0, 0, 128, 128);
+	public Player(float x, float y) {
+		full = new Rectangle(x, y, width, height);
+		bottom = new Rectangle(x+(width/20), y, width-(width/10), height/8) ;
+		left = new Rectangle(x, y+height/8, width/2, height-(bottom.height*2)) ;
+		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
+		top = new Rectangle(x+(width/20), y+(height-(height/8)), width-(width/10), height/8) ;
 		
+		int imageWidth=2048, imageHeight=2048 ;
 		texture = new Texture(Gdx.files.internal("assets/sprites/mario.png"));
 		
-		sprite = new Sprite(texture, 0, 0, 2048, 2048);
-		this.setPosition(0, 0);
-		velocityY = 0;
-		
+		sprite = new Sprite(texture, 0, 0, imageWidth, imageHeight);
+		this.setPosition(x, y);
+		velocityY = 0 ;
+		pulando = false ;
 	}
 	
 	@Override
-	public int hits(Rectangle rectangle) {
-		if(bottom.overlaps(rectangle)) {
-			return 1;
+	public void hits(Rectangle rectangle) {
+		if (top.overlaps(rectangle)) {
+			action(4, 0, rectangle.y - full.height);
 		}
-		return -1;
+		
+		if (bottom.overlaps(rectangle)) {
+			action(1, 0, rectangle.y + rectangle.height);
+			pulando = false ;
+		}
+		
+		if (right.overlaps(rectangle)) {
+			action(3, rectangle.x - full.width - 1, 0);
+		}
+		
+		if (left.overlaps(rectangle)) {
+			action(2, rectangle.x + rectangle.width + 1, 0);
+		}
 	}
 	
 	@Override
 	public void action(int type, float x, float y) {
-		if(type == 1) {
+		if(type == 1 || type == 4) {
 			velocityY = 0 ;
-			setPosition(bottom.x, y);
+			setPosition(full.x, y) ;
+		}
+		
+		if (type == 2 || type == 3) {
+			velocityY = 0 ;
+			setPosition(x, full.y) ;
 		}
 	}
 	
 	@Override
 	public void update() {
-		velocityY -= 30 * Gdx.graphics.getDeltaTime() ;
-		bottom.y += velocityY;
-		sprite.setPosition(bottom.x, bottom.y);
+		velocityY -= 10 * Gdx.graphics.getDeltaTime() ;
+		full.y += velocityY ;
+		this.setPosition(full.x, full.y) ;
 	}
 	
 	@Override
 	public void setPosition(float x, float y) {
-		bottom.x = x;
-		bottom.y = y;
+		full.x = x ;
+		full.y = y ;
+		
+		bottom.x = x+(width/20) ;
+		bottom.y = y ;
+		
+		left.x = x ;
+		left.y = y + bottom.height ;
+		
+		right.x = x + (width/2) ;
+		right.y = y + bottom.height ;
+
+		top.x = x+(width/20) ;
+		top.y = y + (height-(height/8)) ;
+		
 		sprite.setPosition(x, y);
+	}
+	
+	public void control() {
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			moveLeft();
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			moveRight();
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			jump();
+		}
 	}
 	
 	@Override
 	public void moveLeft() {
-		bottom.x -= 100 * Gdx.graphics.getDeltaTime();
-		sprite.setPosition(bottom.x, bottom.y);
+		full.x -= 100 * Gdx.graphics.getDeltaTime();
+		this.setPosition(full.x, full.y) ;
 	}
 	
 	@Override
 	public void moveRight() {
-		bottom.x += 100 * Gdx.graphics.getDeltaTime() ;
-		sprite.setPosition(bottom.x, bottom.y);
+		full.x += 100 * Gdx.graphics.getDeltaTime() ;
+		this.setPosition(full.x, full.y) ;
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		batch.draw(sprite.getTexture(), sprite.getX(), sprite.getY(), 44, 44);
+		batch.draw(sprite.getTexture(), sprite.getX(), sprite.getY(), width, height);
 	}
 	
 	@Override
 	public void jump() {
-		velocityY = 20;
+		if (pulando) return ;
+		
+		velocityY = 7 ;
+		pulando = true ;
 	}
 
 	@Override
 	public Rectangle getHitBox() {
-		return bottom ;
+		return full ;
 	}
 }
 	

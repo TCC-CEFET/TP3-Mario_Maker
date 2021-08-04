@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +14,7 @@ public class MarioForeverGame implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Player player ;
+	private ArrayList<GameObject> objectsList = new ArrayList<GameObject>() ;
 
 	@Override
 	public void create() {
@@ -19,8 +22,20 @@ public class MarioForeverGame implements ApplicationListener {
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
 		
-		player = new Player();
-		player.setPosition(200, 100);
+		player = new Player(0, 33);
+		
+		for (int i=0; i < 800/32; i++) {
+			objectsList.add(new Brick(32*i, 0)) ;
+		}
+		objectsList.add(new Brick(256, 107)) ;
+		objectsList.add(new Brick(256, 128)) ;
+		objectsList.add(new Brick(256, 160)) ;
+		objectsList.add(new Brick(256, 192)) ;
+		objectsList.add(new Brick(256, 224)) ;
+		objectsList.add(new Brick(256, 256)) ;
+		objectsList.add(new Brick(288, 107)) ;
+		objectsList.add(new Brick(320, 107)) ;
+		objectsList.add(new Brick(352, 107)) ;
 	}
 
 	@Override
@@ -37,25 +52,19 @@ public class MarioForeverGame implements ApplicationListener {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		player.draw(batch);
+		for (GameObject object: objectsList) {
+			object.draw(batch) ;
+		}
 		batch.end();
 		
 		// Updates
-		player.update();
-		Rectangle temp = new Rectangle(0, 0, 800, 10);
-		if (player.hits(temp) != -1) {
-			player.action(1, 0, 10);
-		}
+		player.update() ;
+		Rectangle temp = new Rectangle(0, 0, 800, 5);
+		player.hits(temp) ;
+		for (GameObject object: objectsList) player.hits(object.getHitBox()) ;
 			
 		// Controls
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			player.moveLeft();
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			player.moveRight();
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			player.jump();
-		}
+		player.control() ;
 	}
 
 	@Override
