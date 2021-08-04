@@ -47,18 +47,6 @@ public class Brick extends GameObject {
 	}
 
 	@Override
-	public void moveLeft() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void moveRight() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void draw(SpriteBatch batch) {
 		sprite.draw(batch) ;
 	}

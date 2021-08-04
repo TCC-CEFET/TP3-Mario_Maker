@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Movel {
 	private int width=44, height=44 ;
 	private Rectangle bottom, left, right, top, full ;
 	private Sprite sprite ;
@@ -99,6 +99,7 @@ public class Player extends GameObject {
 		sprite.setPosition(x, y);
 	}
 	
+	@Override
 	public void control() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			moveLeft();

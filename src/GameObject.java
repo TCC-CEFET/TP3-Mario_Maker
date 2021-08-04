@@ -6,8 +6,6 @@ public abstract class GameObject {
 	public abstract void action(Float x, Float y) ;
 	public abstract void update() ;
 	public abstract void setPosition(float x, float y) ;
-	public abstract void moveLeft() ;
-	public abstract void moveRight() ;
 	public abstract void draw(SpriteBatch batch) ;
 	public abstract void jump() ;
 	public abstract Rectangle getHitBox() ;

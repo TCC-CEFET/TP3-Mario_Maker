@@ -24,7 +24,7 @@ public class MarioForeverGame implements ApplicationListener {
 		
 		player = new Player(0, 33);
 		
-		for (int i=0; i < 800/32; i++) {
+		for (int i=0; i < 1600/32; i++) {
 			objectsList.add(new Brick(32*i, 0)) ;
 		}
 		objectsList.add(new Brick(256, 107)) ;
@@ -36,7 +36,9 @@ public class MarioForeverGame implements ApplicationListener {
 		objectsList.add(new Brick(288, 107)) ;
 		objectsList.add(new Brick(320, 107)) ;
 		objectsList.add(new Brick(352, 107)) ;
-		objectsList.add(new Enemy(128, 32)) ;
+		objectsList.add(new Enemy(400, 32)) ;
+		objectsList.add(new Enemy(800, 32)) ;
+		objectsList.add(new Enemy(1600, 32)) ;
 	}
 
 	@Override
@@ -64,9 +66,13 @@ public class MarioForeverGame implements ApplicationListener {
 			player.hits(object) ;
 			object.hits(player) ;
 		}
+		updateCamera() ;
 			
 		// Controls
 		player.control() ;
+		for (GameObject object: objectsList) {
+			if (object.getClass() == Enemy.class) ((Movel) object).control() ;
+		}
 	}
 
 	@Override
@@ -86,5 +92,9 @@ public class MarioForeverGame implements ApplicationListener {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	public void updateCamera() {
+		camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
+		camera.update() ;
+	}
 }

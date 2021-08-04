@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Enemy extends GameObject {
+public class Enemy extends GameObject implements Movel {
 	private int width=32, height=32 ;
 	private Rectangle hitBox;
 	private Sprite sprite;
@@ -40,16 +40,24 @@ public class Enemy extends GameObject {
 		hitBox.y = y ;
 		sprite.setPosition(x, y) ;
 	}
+	
+	@Override
+	public void control() {
+		moveLeft() ;
+	}
+	
 	@Override
 	public void moveLeft() {
-		// TODO Auto-generated method stub
-		
+		hitBox.x -= 100 * Gdx.graphics.getDeltaTime();
+		this.setPosition(hitBox.x, hitBox.y) ;
 	}
+	
 	@Override
 	public void moveRight() {
-		// TODO Auto-generated method stub
-		
+		hitBox.x += 100 * Gdx.graphics.getDeltaTime() ;
+		this.setPosition(hitBox.x, hitBox.y) ;
 	}
+	
 	@Override
 	public void draw(SpriteBatch batch) {
 		sprite.draw(batch);
