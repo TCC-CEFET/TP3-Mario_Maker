@@ -1,9 +1,4 @@
-package personagens.caracteristicas ;
-
 import java.util.Random;
-
-import ambiente.*;
-import personagens.aliados.*;
 
 public enum Direcao {
 	ESQUERDA, DIREITA ;
@@ -12,8 +7,8 @@ public enum Direcao {
 		return new Random().nextFloat() <= 0.5 ? Direcao.DIREITA : Direcao.ESQUERDA ;
 	}
 	
-	public int getXInicial(int largura, Background fundo) {
-		if (largura == Mergulhador.getLargura()) return this == Direcao.DIREITA ? 0-largura : fundo.getLargura() ;
-		else return this == Direcao.DIREITA ? 0-largura-200 : fundo.getLargura()+200 ;
-	}
+//	public int getXInicial(int largura, Background fundo) {
+//		if (largura == Mergulhador.getLargura()) return this == Direcao.DIREITA ? 0-largura : fundo.getLargura() ;
+//		else return this == Direcao.DIREITA ? 0-largura-200 : fundo.getLargura()+200 ;
+//	}
 } ;

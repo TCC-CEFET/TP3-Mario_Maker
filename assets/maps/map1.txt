@@ -1,2 +1,4 @@
-Floor 0 400 0
-Floor 450 600 0
+Floor Ground 0 350 0
+Floor Ground 400 800 0
+Floor Brick 200 1600 128
+Brick 0 256

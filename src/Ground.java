@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Floor extends GameObject {
-	private int width=32, height=32 ;
-	private Rectangle hitBox;
-	private Sprite sprite;
-	private Texture texture;
+import singletons.GroundSingleton;
+
+public class Ground extends GameObject {
+	private Rectangle hitBox ;
+	private Sprite sprite ;
+	private Texture texture ;
 	
-	public Floor(int x, int y) {
+	public Ground(int x, int y) {
+		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
 		texture = new Texture(Gdx.files.internal("assets/sprites/floor.png")) ;
 		
@@ -43,7 +45,8 @@ public class Floor extends GameObject {
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprite.draw(batch) ;
+		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeight() ;
+		batch.draw(sprite, hitBox.x, hitBox.y, width, height);
 	}
 
 	@Override

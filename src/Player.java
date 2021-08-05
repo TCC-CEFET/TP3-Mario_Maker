@@ -1,21 +1,30 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JPanel;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Player extends GameObject implements Movel {
-	private int width=44, height=44 ;
+import singletons.PlayerSingleton;
+
+public class Player extends GameObject implements Movel, InputProcessor {
 	private Rectangle bottom, left, right, top, full ;
 	private Sprite sprite ;
 	private Texture texture ;
 	private int action ;
 	private float velocityY ;
 	private boolean pulando ;
+	private boolean pressingJump ;
 	
 	public Player(float x, float y) {
-		full = new Rectangle(x, y, width, height);
+		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
+		full = new Rectangle(x, y, width, height) ;
 		bottom = new Rectangle(x+(width/20), y, width-(width/10), height/8) ;
 		left = new Rectangle(x, y+height/8, width/2, height-(bottom.height*2)) ;
 		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
@@ -25,9 +34,13 @@ public class Player extends GameObject implements Movel {
 		texture = new Texture(Gdx.files.internal("assets/sprites/mario.png"));
 		
 		sprite = new Sprite(texture, 0, 0, imageWidth, imageHeight);
-		this.setPosition(x, y);
+		this.setPosition(x, y) ;
 		velocityY = 0 ;
+		
 		pulando = false ;
+		pressingJump = false ;
+		
+		Gdx.input.setInputProcessor(this);
 	}
 	
 	@Override
@@ -81,6 +94,8 @@ public class Player extends GameObject implements Movel {
 	
 	@Override
 	public void setPosition(float x, float y) {
+		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
+		
 		full.x = x ;
 		full.y = y ;
 		
@@ -126,14 +141,22 @@ public class Player extends GameObject implements Movel {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		batch.draw(sprite.getTexture(), sprite.getX(), sprite.getY(), width, height);
+		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
+		batch.draw(sprite.getTexture(), sprite.getX(), sprite.getY(), width, height) ;
 	}
 	
 	@Override
 	public void jump() {
+		if (pressingJump) {
+			if (velocityY < 6) {
+				velocityY += 2 ;
+			} else {
+				pressingJump = false ;
+			}
+		}
 		if (pulando) return ;
 		
-		velocityY = 7 ;
+		pressingJump = true ;
 		pulando = true ;
 	}
 
@@ -150,6 +173,54 @@ public class Player extends GameObject implements Movel {
 	public int hitAction(int side) {
 		
 		return 0 ;
+	}
+
+	@Override
+	public boolean keyDown(int arg0) {
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char arg0) {
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int arg0) {
+		if (arg0 == Input.Keys.UP) {
+			pressingJump = false ;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int arg0, int arg1, int arg2, int arg3) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
 	

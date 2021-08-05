@@ -10,5 +10,7 @@ public class Main {
 		cfg.height = 480;
 		
 		new LwjglApplication(new MarioForeverGame(), cfg);
+		
+		System.out.println() ;
 	}
 }

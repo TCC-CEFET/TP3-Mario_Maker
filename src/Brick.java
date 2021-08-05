@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import singletons.BrickSingleton;
+import singletons.GroundSingleton;
+
 public class Brick extends GameObject {
-	private int width=32, height=32 ;
 	private Rectangle hitBox;
 	private Sprite sprite;
 	private Texture texture;
 	
 	public Brick(int x, int y) {
+		int width=BrickSingleton.getInstance().getWidth(), height=BrickSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
 		texture = new Texture(Gdx.files.internal("assets/sprites/brick.png")) ;
 		
