@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.logging.FileHandler;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +18,8 @@ public class MarioForeverGame implements ApplicationListener {
 	private SpriteBatch batch;
 	private Player player ;
 	private ArrayList<GameObject> objectsList = new ArrayList<GameObject>() ;
-
+	private MapManager mapManager;
+	
 	@Override
 	public void create() {
 		camera = new OrthographicCamera();
@@ -23,22 +27,9 @@ public class MarioForeverGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		
 		player = new Player(0, 33);
+		mapManager = new MapManager();
+		mapManager.loadMap(objectsList);
 		
-		for (int i=0; i < 1600/32; i++) {
-			objectsList.add(new Brick(32*i, 0)) ;
-		}
-		objectsList.add(new Brick(256, 107)) ;
-		objectsList.add(new Brick(256, 128)) ;
-		objectsList.add(new Brick(256, 160)) ;
-		objectsList.add(new Brick(256, 192)) ;
-		objectsList.add(new Brick(256, 224)) ;
-		objectsList.add(new Brick(256, 256)) ;
-		objectsList.add(new Brick(288, 107)) ;
-		objectsList.add(new Brick(320, 107)) ;
-		objectsList.add(new Brick(352, 107)) ;
-		objectsList.add(new Enemy(800, 32)) ;
-		objectsList.add(new Enemy(1600, 32)) ;
-		objectsList.add(new Enemy(3200, 32)) ;
 	}
 
 	@Override
