@@ -5,18 +5,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import singletons.GroundSingleton;
+import singletons.PlayerSingleton;
 
 public class Ground extends GameObject {
 	private Rectangle hitBox ;
-	private Sprite sprite ;
-	private Texture texture ;
 	
 	public Ground(int x, int y) {
 		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
-		texture = new Texture(Gdx.files.internal("assets/sprites/floor.png")) ;
-		
-		sprite = new Sprite(texture, 0, 0, width, height) ;
 		setPosition(x, y) ;
 	}
 	
@@ -38,6 +34,7 @@ public class Ground extends GameObject {
 
 	@Override
 	public void setPosition(float x, float y) {
+		Sprite sprite = GroundSingleton.getInstance().getSprite();
 		hitBox.x = x ;
 		hitBox.y = y ;
 		sprite.setPosition(x, y) ;
@@ -45,6 +42,7 @@ public class Ground extends GameObject {
 
 	@Override
 	public void draw(SpriteBatch batch) {
+		Sprite sprite = GroundSingleton.getInstance().getSprite();
 		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeight() ;
 		batch.draw(sprite, hitBox.x, hitBox.y, width, height);
 	}

@@ -4,21 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class GroundSingleton {
-	private static GroundSingleton instance;
+public class EnemySingleton {
+	private static EnemySingleton instance;
 	private final int Width=32, Height=32;
-	private Sprite sprite ;
-	private Texture texture ;
+	private Sprite sprite;
+	private Texture texture;
 	
-	private GroundSingleton() {
-		texture = new Texture(Gdx.files.internal("assets/sprites/floor.png")) ;
+	private EnemySingleton() {
+		texture = new Texture(Gdx.files.internal("assets/sprites/enemyBlock.png"));
 		
-		sprite = new Sprite(texture, 0, 0, Width, Height) ;
+		sprite = new Sprite(texture, 0, 0, Width, Height);
 	}
-	
-	public static synchronized GroundSingleton getInstance() {
+
+	public static synchronized EnemySingleton getInstance() {
 		if(instance == null) {
-			instance = new GroundSingleton();
+			instance = new EnemySingleton();
 		}
 		return instance;
 	}

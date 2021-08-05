@@ -15,8 +15,6 @@ import singletons.PlayerSingleton;
 
 public class Player extends GameObject implements Movel, InputProcessor {
 	private Rectangle bottom, left, right, top, full ;
-	private Sprite sprite ;
-	private Texture texture ;
 	private int action ;
 	private float velocityY ;
 	private boolean pulando ;
@@ -30,10 +28,6 @@ public class Player extends GameObject implements Movel, InputProcessor {
 		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
 		top = new Rectangle(x+(width/20), y+(height-(height/8)), width-(width/10), height/8) ;
 		
-		int imageWidth=2048, imageHeight=2048 ;
-		texture = new Texture(Gdx.files.internal("assets/sprites/mario.png"));
-		
-		sprite = new Sprite(texture, 0, 0, imageWidth, imageHeight);
 		this.setPosition(x, y) ;
 		velocityY = 0 ;
 		
@@ -94,6 +88,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	@Override
 	public void setPosition(float x, float y) {
+		Sprite sprite = PlayerSingleton.getInstance().getSprite();
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		
 		full.x = x ;
@@ -141,6 +136,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
+		Sprite sprite = PlayerSingleton.getInstance().getSprite();
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		batch.draw(sprite.getTexture(), sprite.getX(), sprite.getY(), width, height) ;
 	}

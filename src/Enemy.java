@@ -4,18 +4,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import singletons.EnemySingleton;
+import singletons.PlayerSingleton;
+
 public class Enemy extends GameObject implements Movel {
 	private int width=32, height=32 ;
 	private Rectangle hitBox;
-	private Sprite sprite;
-	private Texture texture;
+	
 	
 	public Enemy(int x, int y) {
 		hitBox = new Rectangle(x, y, width, height) ;
 		
-		texture = new Texture(Gdx.files.internal("assets/sprites/enemyBlock.png"));
-		
-		sprite = new Sprite(texture, 0, 0, width, height);
 		this.setPosition(x, y);
 	}
 	
@@ -38,7 +37,7 @@ public class Enemy extends GameObject implements Movel {
 	public void setPosition(float x, float y) {
 		hitBox.x = x ;
 		hitBox.y = y ;
-		sprite.setPosition(x, y) ;
+		EnemySingleton.getInstance().getSprite().setPosition(x, y);
 	}
 	
 	@Override
@@ -60,6 +59,7 @@ public class Enemy extends GameObject implements Movel {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
+		Sprite sprite = EnemySingleton.getInstance().getSprite();
 		sprite.draw(batch);
 	}
 	@Override

@@ -25,11 +25,10 @@ public class Brick extends GameObject {
 	public void hits(GameObject object) {
 		if(object.getClass() == Player.class) {
 			if(hitBox.overlaps(((Player) object).getTopHitBox())) {
-				setPosition(300, 300) ;
+				setPosition(300, -32) ;
 			}
 		}
 	}
-
 	@Override
 	public void action(Float x, Float y) {
 		// TODO Auto-generated method stub
