@@ -36,9 +36,9 @@ public class MarioForeverGame implements ApplicationListener {
 		objectsList.add(new Brick(288, 107)) ;
 		objectsList.add(new Brick(320, 107)) ;
 		objectsList.add(new Brick(352, 107)) ;
-		objectsList.add(new Enemy(400, 32)) ;
 		objectsList.add(new Enemy(800, 32)) ;
 		objectsList.add(new Enemy(1600, 32)) ;
+		objectsList.add(new Enemy(3200, 32)) ;
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class Enemy extends GameObject implements Movel {
 	
 	@Override
 	public void moveLeft() {
-		hitBox.x -= 100 * Gdx.graphics.getDeltaTime();
+		hitBox.x -= 50 * Gdx.graphics.getDeltaTime();
 		this.setPosition(hitBox.x, hitBox.y) ;
 	}
 	
