@@ -25,7 +25,7 @@ public class Brick extends GameObject {
 	public void hits(GameObject object) {
 		if(object.getClass() == Player.class) {
 			if(hitBox.overlaps(((Player) object).getTopHitBox())) {
-				setPosition(300, -32) ;
+				setPosition(35, 350) ;
 			}
 		}
 	}

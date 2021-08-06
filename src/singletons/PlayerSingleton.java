@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSingleton {
 	private static PlayerSingleton instance;
-	private final int Width=32, Height=32;
+	private final int Width=32, Height=56; // 32 e 56
 	private Sprite sprite ;
 	private Texture texture ;
+	
 	private PlayerSingleton() {
 		texture = new Texture(Gdx.files.internal("assets/sprites/mario.png"));
 		int imageWidth=2048, imageHeight=2048 ;
