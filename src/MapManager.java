@@ -55,20 +55,20 @@ public class MapManager {
 					String comment = scan.nextLine() ;
 				} else if (type.equals("Floor")) {
 					String subType = scan.next() ;
-					int x0=Integer.parseInt(scan.next()), x1=Integer.parseInt(scan.next()), y=Integer.parseInt(scan.next());
+					int x0=scan.nextInt(), x1=scan.nextInt(), y=scan.nextInt() ;
 					floorGenerator(subType, objectsList, x0, x1, y) ;
 				} else if (type.equals("Wall")) {
 					String subType = scan.next() ;
-					int x=Integer.parseInt(scan.next()), y0=Integer.parseInt(scan.next()), y1=Integer.parseInt(scan.next());
+					int x=scan.nextInt(), y0=scan.nextInt(), y1=scan.nextInt();
 					wallGenerator(subType, objectsList, x, y0, y1) ;
 				} else if (type.equals("Stairs")) {
 					
 				} else if (type.equals("Brick")) {
-				 	objectsList.add(new Brick(Integer.parseInt(scan.next()),Integer.parseInt(scan.nextLine())));
+				 	objectsList.add(new Brick(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Enemy")) {
-					objectsList.add(new Enemy(Integer.parseInt(scan.next()),Integer.parseInt(scan.nextLine())));
+					objectsList.add(new Enemy(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Ground")) {
-					objectsList.add(new Ground(Integer.parseInt(scan.nextLine()),Integer.parseInt(scan.nextLine())));	
+					objectsList.add(new Ground(scan.nextInt(), scan.nextInt()));
 				}
 			}
 			
