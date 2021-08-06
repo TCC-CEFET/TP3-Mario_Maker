@@ -70,9 +70,9 @@ public class MapManager {
 				} else if (type.equals("Ground")) {
 					objectsList.add(new Ground(Integer.parseInt(scan.nextLine()),Integer.parseInt(scan.nextLine())));	
 				}
-				
-				scan.close() ;
 			}
+			
+			scan.close() ;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
