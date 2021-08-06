@@ -1,11 +1,16 @@
 package singletons ;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 public class BrickSingleton {
 	private static BrickSingleton instance;
 	private final int Width=32, Height=32;
+	private Texture texture;
 	
 	private BrickSingleton() {
-		
+		texture = new Texture(Gdx.files.internal("assets/sprites/brick.png")) ;
 	}
 	
 	public static synchronized BrickSingleton getInstance() {
@@ -21,5 +26,9 @@ public class BrickSingleton {
 
 	public int getHeight() {
 		return Height;
+	}
+
+	public Texture getTexture() {
+		return texture;
 	}
 }

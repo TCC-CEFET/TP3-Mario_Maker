@@ -6,14 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class GroundSingleton {
 	private static GroundSingleton instance;
-	private final int Width=32, Height=32;
-	private Sprite sprite ;
+	private final int Width=32, HeightFull=32, HeightTop=HeightFull/10;
 	private Texture texture ;
 	
 	private GroundSingleton() {
 		texture = new Texture(Gdx.files.internal("assets/sprites/floor.png")) ;
-		
-		sprite = new Sprite(texture, 0, 0, Width, Height) ;
 	}
 	
 	public static synchronized GroundSingleton getInstance() {
@@ -27,12 +24,12 @@ public class GroundSingleton {
 		return Width;
 	}
 
-	public int getHeight() {
-		return Height;
+	public int getHeightFull() {
+		return HeightFull ;
 	}
-	
-	public Sprite getSprite() {
-		return sprite;
+
+	public int getHeightTop() {
+		return HeightTop;
 	}
 
 	public Texture getTexture() {

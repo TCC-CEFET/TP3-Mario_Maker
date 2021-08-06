@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import singletons.DisplaySingleton;
+
 public class MarioForeverGame implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -22,14 +24,14 @@ public class MarioForeverGame implements ApplicationListener {
 	
 	@Override
 	public void create() {
+		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, width, height);
 		batch = new SpriteBatch();
 		
-		player = new Player(0, 33);
+		player = new Player(33, 65);
 		mapManager = new MapManager();
 		mapManager.loadMap(objectsList);
-		
 	}
 
 	@Override
@@ -45,10 +47,10 @@ public class MarioForeverGame implements ApplicationListener {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		player.draw(batch);
 		for (GameObject object: objectsList) {
 			object.draw(batch) ;
 		}
+		player.draw(batch);
 		batch.end();
 		
 		// Updates
@@ -85,7 +87,17 @@ public class MarioForeverGame implements ApplicationListener {
 	}
 	
 	public void updateCamera() {
-		camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
+		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
+		if (player.getHitBox().x < (width/2) - player.getHitBox().width/2)
+			camera.position.x = player.getHitBox().x + ((width/2)-player.getHitBox().x) ;
+		else
+			camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
+		
+		if (player.getHitBox().y < (height/2) - player.getHitBox().height/2)
+			camera.position.y = player.getHitBox().y + ((height/2)-player.getHitBox().y) ;
+		else 
+			camera.position.y = player.getHitBox().y + player.getHitBox().height/2 ;
+		
 		camera.update() ;
 	}
 }

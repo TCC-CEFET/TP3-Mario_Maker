@@ -4,16 +4,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import singletons.BrickSingleton;
 import singletons.GroundSingleton;
 import singletons.PlayerSingleton;
 
 public class Ground extends GameObject {
-	private Rectangle hitBox ;
+	private Rectangle full, top ;
 	
 	public Ground(int x, int y) {
-		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
-		setPosition(x, y) ;
+		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeightFull(), heightTop=GroundSingleton.getInstance().getHeightTop() ;
+		full = new Rectangle(x, y, width, height) ;
+		top = new Rectangle(x, y+(height - heightTop), width, heightTop) ;
 	}
 	
 	@Override
@@ -34,17 +35,17 @@ public class Ground extends GameObject {
 
 	@Override
 	public void setPosition(float x, float y) {
-		Sprite sprite = GroundSingleton.getInstance().getSprite();
-		hitBox.x = x ;
-		hitBox.y = y ;
-		sprite.setPosition(x, y) ;
+		full.x = x ;
+		full.y = y ;
+		
+		top.x = x ;
+		top.y = y+(full.height - top.height) ;
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		Sprite sprite = GroundSingleton.getInstance().getSprite();
-		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeight() ;
-		batch.draw(sprite, hitBox.x, hitBox.y, width, height);
+		Texture texture = GroundSingleton.getInstance().getTexture();
+		batch.draw(texture, full.x, full.y, full.width, full.height) ;
 	}
 
 	@Override
@@ -55,7 +56,11 @@ public class Ground extends GameObject {
 
 	@Override
 	public Rectangle getHitBox() {
-		return hitBox ;
+		return full ;
+	}
+	
+	public Rectangle getTopHitBox() {
+		return top ;
 	}
 
 	@Override

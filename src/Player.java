@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import singletons.GroundSingleton;
 import singletons.PlayerSingleton;
 
 public class Player extends GameObject implements Movel, InputProcessor {
@@ -44,7 +45,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 				action(0f, 33f);
 			}
 			
-		} else {
+		} else if (object.getClass() == Brick.class) {
 			if (top.overlaps(object.getHitBox())) {
 				action(null, object.getHitBox().y - full.height) ;
 			}
@@ -60,6 +61,25 @@ public class Player extends GameObject implements Movel, InputProcessor {
 			
 			if (left.overlaps(object.getHitBox())) {
 				action(object.getHitBox().x + object.getHitBox().width + 1, null) ;
+			}
+		} else if (object.getClass() == Ground.class) {
+			if (right.overlaps(object.getHitBox()) && left.overlaps(object.getHitBox())) {
+				if (bottom.overlaps(((Ground)object).getTopHitBox())) {
+					action(null, object.getHitBox().y + object.getHitBox().height) ;
+				}
+			} else {
+				if (bottom.overlaps(object.getHitBox())) {
+					action(null, object.getHitBox().y + object.getHitBox().height) ;
+					pulando = false ;
+				}
+				
+				if (right.overlaps(object.getHitBox())) {
+					action(object.getHitBox().x - full.width - 1, null) ;
+				}
+				
+				if (left.overlaps(object.getHitBox())) {
+					action(object.getHitBox().x + object.getHitBox().width + 1, null) ;
+				}
 			}
 		}
 		
@@ -88,25 +108,20 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	@Override
 	public void setPosition(float x, float y) {
-		Sprite sprite = PlayerSingleton.getInstance().getSprite();
-		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
-		
 		full.x = x ;
 		full.y = y ;
 		
-		bottom.x = x+(width/20) ;
+		bottom.x = x+(full.width/20) ;
 		bottom.y = y ;
 		
 		left.x = x ;
 		left.y = y + bottom.height ;
 		
-		right.x = x + (width/2) ;
+		right.x = x + (full.width/2) ;
 		right.y = y + bottom.height ;
 
-		top.x = x+(width/20) ;
-		top.y = y + (height-(height/8)) ;
-		
-		sprite.setPosition(x, y);
+		top.x = x + (full.width/20) ;
+		top.y = y + (full.height-(full.height/8)) ;
 	}
 	
 	@Override
@@ -136,9 +151,8 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		Sprite sprite = PlayerSingleton.getInstance().getSprite();
-		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
-		batch.draw(sprite.getTexture(), sprite.getX(), sprite.getY(), width, height) ;
+		Texture texture = PlayerSingleton.getInstance().getTexture();
+		batch.draw(texture, full.x, full.y, full.width, full.height) ;
 	}
 	
 	@Override

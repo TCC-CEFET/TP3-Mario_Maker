@@ -6,19 +6,14 @@ import com.badlogic.gdx.math.Rectangle;
 
 import singletons.BrickSingleton;
 import singletons.GroundSingleton;
+import singletons.PlayerSingleton;
 
 public class Brick extends GameObject {
 	private Rectangle hitBox;
-	private Sprite sprite;
-	private Texture texture;
 	
 	public Brick(int x, int y) {
 		int width=BrickSingleton.getInstance().getWidth(), height=BrickSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
-		texture = new Texture(Gdx.files.internal("assets/sprites/brick.png")) ;
-		
-		sprite = new Sprite(texture, 0, 0, width, height) ;
-		setPosition(x, y) ;
 	}
 	
 	@Override
@@ -45,12 +40,12 @@ public class Brick extends GameObject {
 	public void setPosition(float x, float y) {
 		hitBox.x = x ;
 		hitBox.y = y ;
-		sprite.setPosition(x, y) ;
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprite.draw(batch) ;
+		Texture texture = BrickSingleton.getInstance().getTexture();
+		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 	}
 
 	@Override

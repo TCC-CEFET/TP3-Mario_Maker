@@ -1,4 +1,7 @@
 Floor Ground 0 350 0
 Floor Ground 400 800 0
-Floor Brick 200 1600 168
+Floor Ground 0 350 32
+Floor Ground 400 800 32
+Floor Ground 200 1600 128
+Wall Brick 370 200 300
 Brick 0 256

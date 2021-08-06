@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public enum Direcao {
-	ESQUERDA, DIREITA ;
+	ESQUERDA, DIREITA, PARADO ;
 	
 	static public Direcao getDirecaoAleatoria() {
 		return new Random().nextFloat() <= 0.5 ? Direcao.DIREITA : Direcao.ESQUERDA ;
