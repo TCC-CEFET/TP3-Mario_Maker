@@ -8,6 +8,8 @@ public class EnemySingleton {
 	private static EnemySingleton instance;
 	private final int Width=32, Height=32;
 	private int points=100 ;
+	private int velocityX=50 ;
+	private int velocityY=100 ;
 	private Texture texture;
 	
 	private EnemySingleton() {
@@ -35,5 +37,13 @@ public class EnemySingleton {
 
 	public int getPoints() {
 		return points ;
+	}
+	
+	public int getVelocityX() {
+		return velocityX ;
+	}
+	
+	public int getVelocityY() {
+		return velocityY ;
 	}
 }

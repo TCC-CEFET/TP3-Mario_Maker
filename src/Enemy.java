@@ -8,20 +8,22 @@ import singletons.EnemySingleton;
 import singletons.GroundSingleton;
 import singletons.PlayerSingleton;
 
-public class Enemy extends GameObject implements Movel {
-	public Enemy(int x, int y) {
+public class Enemy extends MovableObject {
+	public Enemy(int x, int y, Direction direction) {
+		super(direction) ;
+		
 		int width=EnemySingleton.getInstance().getWidth(), height=EnemySingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
-		
-		this.setPosition((float) x, (float) y) ;
 	}
 	
 	@Override
 	public boolean verifyCollision(GameObject object) {
 		if (object.getClass() == Player.class) {
-			if (hitBox.overlaps(((Player) object).getBottomHitBox())) {
+			if (hitBox.overlaps(((Player) object).getBottomHitBox()) && !hitBox.overlaps(((Player) object).getLeftHitBox()) && !hitBox.overlaps(((Player) object).getRightHitBox())) {
 				remove() ;
 				return true ;
+			} else if (hitBox.overlaps(object.getHitBox())) {
+				direction = direction == Direction.LEFT ? Direction.RIGHT : Direction.LEFT ;
 			}
 		} else {
 			if (hitBox.overlaps(object.getHitBox())) {
@@ -34,7 +36,8 @@ public class Enemy extends GameObject implements Movel {
 	
 	@Override
 	public void update() {
-		hitBox.y -= 100 * Gdx.graphics.getDeltaTime() ;
+		int velocityY = EnemySingleton.getInstance().getVelocityY() ;
+		hitBox.y -= velocityY * Gdx.graphics.getDeltaTime() ;
 		this.setPosition(hitBox.x, hitBox.y) ;
 	}
 	
@@ -48,30 +51,18 @@ public class Enemy extends GameObject implements Movel {
 	
 	@Override
 	public void control() {
-		moveLeft() ;
-	}
-	
-	@Override
-	public void moveLeft() {
-		hitBox.x -= 50 * Gdx.graphics.getDeltaTime();
-		this.setPosition(hitBox.x, hitBox.y) ;
-	}
-	
-	@Override
-	public void moveRight() {
-		hitBox.x += 100 * Gdx.graphics.getDeltaTime() ;
-		this.setPosition(hitBox.x, hitBox.y) ;
+		int velocityX = EnemySingleton.getInstance().getVelocityX() ;
+		if (direction == Direction.LEFT) {
+			hitBox.x -= velocityX * Gdx.graphics.getDeltaTime();
+		} else {
+			hitBox.x += velocityX * Gdx.graphics.getDeltaTime() ;
+		}
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch) {
 		Texture texture = EnemySingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
-	}
-	
-	@Override
-	public void jump() {
-		// TODO Auto-generated method stub
 	}
 	
 	@Override

@@ -12,27 +12,32 @@ import singletons.DisplaySingleton;
 import singletons.EnemySingleton;
 import singletons.PlayerSingleton ;
 import singletons.BrickSingleton ;
+import singletons.MushroomSingleton ;
 
-public class Player extends GameObject implements Movel, InputProcessor {
+public class Player extends MovableObject implements InputProcessor {
 	private Rectangle bottom, left, right, top ;
 	private int action ;
 	private float velocityY ;
 	
 	private int points ;
 	private int coins ;
+	private boolean isBig ;
 	
 	private boolean pulando ;
 	private boolean pressingJump ;
 	
-	public Player(float x, float y) {
+	public Player(float x, float y, Direction direction) {
+		super(direction) ;
+		
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
-		bottom = new Rectangle(x+(width/20), y, width-(width/10), height/8) ;
-		left = new Rectangle(x, y+height/8, width/2, height-(bottom.height*2)) ;
+		bottom = new Rectangle(x+(width/20), y, width-(width/10), height/10) ;
+		left = new Rectangle(x, y+bottom.height, width/2, height-(bottom.height*2)) ;
 		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
-		top = new Rectangle(x+(width/20), y+(height-(height/8)), width-(width/10), height/8) ;
+		top = new Rectangle(x+(width/20), y+(height-bottom.height), width-(width/10), bottom.height) ;
 		
 		this.setPosition(x, y) ;
+		this.setHeight(false) ;
 		velocityY = 0 ;
 		points = 0 ;
 		coins = 0 ;
@@ -47,7 +52,8 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	public boolean verifyCollision(GameObject object) {
 		if(object.getClass() == Enemy.class) { // Verifica colisao caso seja inimigo
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox())) {
-				setPosition(0f, 33f);
+				if (isBig) setHeight(false) ;
+				else remove() ;
 			} else if (bottom.overlaps(object.getHitBox())) {
 				points += EnemySingleton.getInstance().getPoints() ;
 			}
@@ -55,7 +61,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 			if (top.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y - hitBox.height) ;
 				velocityY = 0 ;
-				points += BrickSingleton.getInstance().getPoints() ;
+				if (isBig) points += BrickSingleton.getInstance().getPoints() ;
 			}
 			
 			if (bottom.overlaps(object.getHitBox())) {
@@ -97,6 +103,11 @@ public class Player extends GameObject implements Movel, InputProcessor {
 				points += CoinSingleton.getInstance().getPoints() ;
 				coins++ ;
 			}
+		} else if (object.getClass() == Mushroom.class) {
+			if (hitBox.overlaps(object.getHitBox())) {
+				setHeight(true) ;
+				points += MushroomSingleton.getInstance().getPoints() ;
+			}
 		}
 		
 		return false ;
@@ -132,26 +143,24 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	@Override
 	public void control() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			moveLeft();
+			hitBox.x -= 100 * Gdx.graphics.getDeltaTime();
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			moveRight();
+			hitBox.x += 100 * Gdx.graphics.getDeltaTime() ;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			jump();
+			if (pressingJump) {
+				if (velocityY < 6) {
+					velocityY += 2 ;
+				} else {
+					pressingJump = false ;
+				}
+			}
+			if (pulando) return ;
+			
+			pressingJump = true ;
+			pulando = true ;
 		}
-	}
-	
-	@Override
-	public void moveLeft() {
-		hitBox.x -= 100 * Gdx.graphics.getDeltaTime();
-		this.setPosition(hitBox.x, hitBox.y) ;
-	}
-	
-	@Override
-	public void moveRight() {
-		hitBox.x += 100 * Gdx.graphics.getDeltaTime() ;
-		this.setPosition(hitBox.x, hitBox.y) ;
 	}
 	
 	@Override
@@ -175,21 +184,6 @@ public class Player extends GameObject implements Movel, InputProcessor {
 		else
 			font.draw(batch, "C x " + String.valueOf(coins), (hitBox.x + hitBox.width/2) - xCoinDist, yCoin) ;
 	}
-	
-	@Override
-	public void jump() {
-		if (pressingJump) {
-			if (velocityY < 6) {
-				velocityY += 2 ;
-			} else {
-				pressingJump = false ;
-			}
-		}
-		if (pulando) return ;
-		
-		pressingJump = true ;
-		pulando = true ;
-	}
 
 	@Override
 	public Rectangle getHitBox() {
@@ -202,6 +196,40 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	public Rectangle getBottomHitBox() {
 		return bottom ;
+	}
+	
+	public Rectangle getLeftHitBox() {
+		return left ;
+	}
+	
+	public Rectangle getRightHitBox() {
+		return right ;
+	}
+	
+	public boolean getIsBig() {
+		return isBig ;
+	}
+	
+	public void setHeight(boolean isBig) {
+		this.isBig = isBig ;
+		PlayerSingleton.getInstance().setHeight(this.isBig) ;
+		
+		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
+		
+		hitBox.width = width ;
+		hitBox.height = height ;
+		
+		bottom.width = width-(width/10) ;
+		bottom.height = height/10 ;
+		
+		left.width = width/2 ;
+		left.height = height-(bottom.height*2) ;
+		
+		right.width = width/2 ;
+		right.height = height-(bottom.height*2) ;
+		
+		top.width = width-(width/10) ;
+		top.height = bottom.height ;
 	}
 
 	@Override
@@ -230,7 +258,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	@Override
 	public void remove() {
-		
+		setPosition(0f, 33f) ;
 	}
 
 	@Override

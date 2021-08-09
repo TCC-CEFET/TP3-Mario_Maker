@@ -5,4 +5,5 @@ Floor Brick 200 360 128
 Floor Brick 232 328 256
 Wall Brick 125 200 300
 Coin 256 35
-Enemy 800 500
+Enemy 800 500 L
+Mushroom 250 160

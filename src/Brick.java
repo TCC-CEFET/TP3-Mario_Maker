@@ -17,7 +17,7 @@ public class Brick extends GameObject {
 	@Override
 	public boolean verifyCollision(GameObject object) {
 		if(object.getClass() == Player.class) {
-			if(hitBox.overlaps(((Player) object).getTopHitBox())) {
+			if(hitBox.overlaps(((Player) object).getTopHitBox()) && ((Player) object).getIsBig()) {
 				remove() ;
 				return true ;
 			}
@@ -44,12 +44,6 @@ public class Brick extends GameObject {
 	public void draw(SpriteBatch batch) {
 		Texture texture = BrickSingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
-	}
-
-	@Override
-	public void jump() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

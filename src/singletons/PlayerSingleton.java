@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSingleton {
 	private static PlayerSingleton instance;
-	private final int Width=32, Height=32; // 32 e 56
+	private int width=32, height=32; // 32 e 56
 	private Texture texture ;
 	
 	private PlayerSingleton() {
@@ -21,14 +21,19 @@ public class PlayerSingleton {
 	}
 	
 	public int getWidth() {
-		return Width;
+		return width;
 	}
 
 	public int getHeight() {
-		return Height;
+		return height;
 	}
 
 	public Texture getTexture() {
 		return texture;
+	}
+	
+	public void setHeight(boolean isBig) {
+		if (isBig) height = 56 ;
+		else height = 32 ;
 	}
 }

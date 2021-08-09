@@ -46,12 +46,6 @@ public class Ground extends GameObject {
 	}
 
 	@Override
-	public void jump() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Rectangle getHitBox() {
 		return hitBox ;
 	}

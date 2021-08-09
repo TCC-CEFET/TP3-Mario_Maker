@@ -18,7 +18,7 @@ public class MapManager {
 		
 	}
 	
-	public void loadMap(ArrayList<GameObject> objectsList, ArrayList<Enemy> enemiesList) {
+	public void loadMap(ArrayList<GameObject> objectsList, ArrayList<MovableObject> movableList) {
 		try {
 			File map = new File("assets\\maps\\map.txt") ;
 			InputStream in = new FileInputStream(map);
@@ -42,11 +42,13 @@ public class MapManager {
 				} else if (type.equals("Brick")) {
 				 	objectsList.add(new Brick(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Enemy")) {
-					enemiesList.add(new Enemy(scan.nextInt(), scan.nextInt()));
+					movableList.add(new Enemy(scan.nextInt(), scan.nextInt(), Direction.fromChar(scan.next().charAt(0))));
 				} else if (type.equals("Ground")) {
 					objectsList.add(new Ground(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Coin")) {
 					objectsList.add(new Coin(scan.nextInt(), scan.nextInt()));
+				} else if (type.equals("Mushroom")) {
+					movableList.add(new Mushroom(scan.nextInt(), scan.nextInt()));
 				}
 			}
 			

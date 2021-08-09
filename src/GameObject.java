@@ -20,7 +20,6 @@ public abstract class GameObject {
 		hitBox.y = y ;
 	}
 	public abstract void draw(SpriteBatch batch) ;
-	public abstract void jump() ;
 	public abstract Rectangle getHitBox() ;
 	public abstract int hitAction(int side) ;
 	public abstract void remove() ;

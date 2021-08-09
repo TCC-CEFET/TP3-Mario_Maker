@@ -21,7 +21,7 @@ public class MarioForeverGame implements ApplicationListener {
 	private SpriteBatch batch;
 	private Player player ;
 	private ArrayList<GameObject> objectsList = new ArrayList<GameObject>() ;
-	private ArrayList<Enemy> enemiesList = new ArrayList<Enemy>() ;
+	private ArrayList<MovableObject> movableList = new ArrayList<MovableObject>() ;
 	private MapManager mapManager;
 	
 	@Override
@@ -31,9 +31,9 @@ public class MarioForeverGame implements ApplicationListener {
 		camera.setToOrtho(false, width, height);
 		batch = new SpriteBatch();
 		
-		player = new Player(33, 65);
+		player = new Player(33, 65, Direction.RIGHT);
 		mapManager = new MapManager();
-		mapManager.loadMap(objectsList, enemiesList);
+		mapManager.loadMap(objectsList, movableList);
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class MarioForeverGame implements ApplicationListener {
 		for (GameObject object: objectsList) {
 			object.draw(batch) ;
 		}
-		for (Enemy enemy: enemiesList) {
-			enemy.draw(batch) ;
+		for (MovableObject movable: movableList) {
+			movable.draw(batch) ;
 		}
 		player.draw(batch);
 		batch.end();
@@ -64,32 +64,31 @@ public class MarioForeverGame implements ApplicationListener {
 			GameObject object = iterObjects.next() ;
 			
 			object.update() ;
+			boolean toRemove = object.verifyCollision(player) ;
 			player.verifyCollision(object) ;
-			if (object.verifyCollision(player)) {
-				iterObjects.remove() ;
-			}
+			if (toRemove) iterObjects.remove() ;
 		}
-		Iterator<Enemy> iterEnemies = enemiesList.iterator() ;
-		while (iterEnemies.hasNext()) {
-			Enemy enemy = iterEnemies.next() ;
+		Iterator<MovableObject> iterMovables = movableList.iterator() ;
+		while (iterMovables.hasNext()) {
+			MovableObject movable = iterMovables.next() ;
 			
-			enemy.update() ;
-			player.verifyCollision(enemy) ;
+			movable.update() ;
+			player.verifyCollision(movable) ;
 			for (GameObject object: objectsList) {
-				if (enemy.verifyCollision(object)) {
-					iterEnemies.remove() ;
+				if (movable.verifyCollision(object)) {
+					iterMovables.remove() ;
 				}
 			}
-			if (enemy.verifyCollision(player)) {
-				iterEnemies.remove() ;
+			if (movable.verifyCollision(player)) {
+				iterMovables.remove() ;
 			}
 		}
 		updateCamera() ;
 			
 		// Controls
 		player.control() ;
-		for (Enemy enemy: enemiesList) {
-			enemy.control() ;
+		for (MovableObject movable: movableList) {
+			movable.control() ;
 		}
 	}
 
