@@ -9,22 +9,17 @@ import singletons.GroundSingleton;
 import singletons.PlayerSingleton;
 
 public class Ground extends GameObject {
-	private Rectangle full, top ;
+	private Rectangle top ;
 	
 	public Ground(int x, int y) {
 		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeightFull(), heightTop=GroundSingleton.getInstance().getHeightTop() ;
-		full = new Rectangle(x, y, width, height) ;
+		hitBox = new Rectangle(x, y, width, height) ;
 		top = new Rectangle(x, y+(height - heightTop), width, heightTop) ;
 	}
 	
 	@Override
-	public void hits(GameObject object) {
-	}
-
-	@Override
-	public void action(Float x, Float y) {
-		// TODO Auto-generated method stub
-		
+	public boolean verifyCollision(GameObject object) {
+		return false ;
 	}
 
 	@Override
@@ -34,18 +29,20 @@ public class Ground extends GameObject {
 	}
 
 	@Override
-	public void setPosition(float x, float y) {
-		full.x = x ;
-		full.y = y ;
+	public void setPosition(Float x, Float y) {
+		super.setPosition(x, y);
+		
+		x = hitBox.x  ;
+		y = hitBox.y ;
 		
 		top.x = x ;
-		top.y = y+(full.height - top.height) ;
+		top.y = y+(hitBox.height - top.height) ;
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
 		Texture texture = GroundSingleton.getInstance().getTexture();
-		batch.draw(texture, full.x, full.y, full.width, full.height) ;
+		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 	}
 
 	@Override
@@ -56,7 +53,7 @@ public class Ground extends GameObject {
 
 	@Override
 	public Rectangle getHitBox() {
-		return full ;
+		return hitBox ;
 	}
 	
 	public Rectangle getTopHitBox() {
@@ -69,4 +66,8 @@ public class Ground extends GameObject {
 		return 1 ;
 	}
 
+	@Override
+	public void remove() {
+		
+	}
 }

@@ -9,38 +9,41 @@ import singletons.GroundSingleton;
 import singletons.PlayerSingleton;
 
 public class Enemy extends GameObject implements Movel {
-	private Rectangle hitBox;
-	
-	
 	public Enemy(int x, int y) {
 		int width=EnemySingleton.getInstance().getWidth(), height=EnemySingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
 		
-		this.setPosition(x, y);
+		this.setPosition((float) x, (float) y) ;
 	}
 	
 	@Override
-	public void hits(GameObject object) {
-		// TODO Auto-generated method stub
+	public boolean verifyCollision(GameObject object) {
+		if (object.getClass() == Player.class) {
+			if (hitBox.overlaps(((Player) object).getBottomHitBox())) {
+				remove() ;
+				return true ;
+			}
+		} else {
+			if (hitBox.overlaps(object.getHitBox())) {
+				setPosition(null, object.getHitBox().y + hitBox.height) ;
+			}
+		}
 		
-	}
-	
-	@Override
-	public void action(Float x, Float y) {
-		// TODO Auto-generated method stub
-		
+		return false ;
 	}
 	
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		hitBox.y -= 100 * Gdx.graphics.getDeltaTime() ;
+		this.setPosition(hitBox.x, hitBox.y) ;
 	}
 	
 	@Override
-	public void setPosition(float x, float y) {
-		hitBox.x = x ;
-		hitBox.y = y ;
+	public void setPosition(Float x, Float y) {
+		super.setPosition(x, y) ;
+		
+		x = hitBox.x  ;
+		y = hitBox.y ;
 	}
 	
 	@Override
@@ -82,5 +85,10 @@ public class Enemy extends GameObject implements Movel {
 			return 2;
 		}
 		return 1 ;
+	}
+	
+	@Override
+	public void remove() {
+		
 	}
 }

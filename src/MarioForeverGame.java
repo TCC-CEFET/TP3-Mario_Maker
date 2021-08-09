@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.logging.FileHandler;
 
@@ -20,6 +21,7 @@ public class MarioForeverGame implements ApplicationListener {
 	private SpriteBatch batch;
 	private Player player ;
 	private ArrayList<GameObject> objectsList = new ArrayList<GameObject>() ;
+	private ArrayList<Enemy> enemiesList = new ArrayList<Enemy>() ;
 	private MapManager mapManager;
 	
 	@Override
@@ -31,13 +33,12 @@ public class MarioForeverGame implements ApplicationListener {
 		
 		player = new Player(33, 65);
 		mapManager = new MapManager();
-		mapManager.loadMap(objectsList);
+		mapManager.loadMap(objectsList, enemiesList);
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		
 	}
 
 	@Override
@@ -50,21 +51,45 @@ public class MarioForeverGame implements ApplicationListener {
 		for (GameObject object: objectsList) {
 			object.draw(batch) ;
 		}
+		for (Enemy enemy: enemiesList) {
+			enemy.draw(batch) ;
+		}
 		player.draw(batch);
 		batch.end();
 		
 		// Updates
 		player.update() ;
-		for (GameObject object: objectsList) {
-			player.hits(object) ;
-			object.hits(player) ;
+		Iterator<GameObject> iterObjects = objectsList.iterator() ;
+		while (iterObjects.hasNext()) {
+			GameObject object = iterObjects.next() ;
+			
+			object.update() ;
+			player.verifyCollision(object) ;
+			if (object.verifyCollision(player)) {
+				iterObjects.remove() ;
+			}
+		}
+		Iterator<Enemy> iterEnemies = enemiesList.iterator() ;
+		while (iterEnemies.hasNext()) {
+			Enemy enemy = iterEnemies.next() ;
+			
+			enemy.update() ;
+			player.verifyCollision(enemy) ;
+			for (GameObject object: objectsList) {
+				if (enemy.verifyCollision(object)) {
+					iterEnemies.remove() ;
+				}
+			}
+			if (enemy.verifyCollision(player)) {
+				iterEnemies.remove() ;
+			}
 		}
 		updateCamera() ;
 			
 		// Controls
 		player.control() ;
-		for (GameObject object: objectsList) {
-			if (object.getClass() == Enemy.class) ((Movel) object).control() ;
+		for (Enemy enemy: enemiesList) {
+			enemy.control() ;
 		}
 	}
 
@@ -93,10 +118,10 @@ public class MarioForeverGame implements ApplicationListener {
 		else
 			camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
 		
-		if (player.getHitBox().y < (height/2) - player.getHitBox().height/2)
-			camera.position.y = player.getHitBox().y + ((height/2)-player.getHitBox().y) ;
-		else 
-			camera.position.y = player.getHitBox().y + player.getHitBox().height/2 ;
+//		if (player.getHitBox().y < (height/2) - player.getHitBox().height/2)
+//			camera.position.y = player.getHitBox().y + ((height/2)-player.getHitBox().y) ;
+//		else 
+//			camera.position.y = player.getHitBox().y + player.getHitBox().height/2 ;
 		
 		camera.update() ;
 	}

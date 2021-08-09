@@ -9,25 +9,21 @@ import singletons.GroundSingleton;
 import singletons.PlayerSingleton;
 
 public class Brick extends GameObject {
-	private Rectangle hitBox;
-	
 	public Brick(int x, int y) {
 		int width=BrickSingleton.getInstance().getWidth(), height=BrickSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
 	}
 	
 	@Override
-	public void hits(GameObject object) {
+	public boolean verifyCollision(GameObject object) {
 		if(object.getClass() == Player.class) {
 			if(hitBox.overlaps(((Player) object).getTopHitBox())) {
-				setPosition(35, 350) ;
+				remove() ;
+				return true ;
 			}
 		}
-	}
-	@Override
-	public void action(Float x, Float y) {
-		// TODO Auto-generated method stub
 		
+		return false ;
 	}
 
 	@Override
@@ -37,9 +33,11 @@ public class Brick extends GameObject {
 	}
 
 	@Override
-	public void setPosition(float x, float y) {
-		hitBox.x = x ;
-		hitBox.y = y ;
+	public void setPosition(Float x, Float y) {
+		super.setPosition(x, y) ;
+		
+		x = hitBox.x  ;
+		y = hitBox.y ;
 	}
 
 	@Override
@@ -64,5 +62,9 @@ public class Brick extends GameObject {
 		// TODO Auto-generated method stub
 		return 1 ;
 	}
-
+	
+	@Override
+	public void remove() {
+		
+	}
 }

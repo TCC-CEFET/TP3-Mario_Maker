@@ -18,31 +18,7 @@ public class MapManager {
 		
 	}
 	
-	public void loadMap(ArrayList<GameObject> objectsList) {
-//		FileHandle file = Gdx.files.internal("assets/maps/map.txt");
-//		StringTokenizer tokens = new StringTokenizer(file.readString());
-//		while(tokens.hasMoreTokens()) {
-//			String type = tokens.nextToken();
-//			if (type.equals("//")) {
-//			} else if (type.equals("Floor")) {
-//				String subType = tokens.nextToken() ;
-//				int x0=Integer.parseInt(tokens.nextToken()), x1=Integer.parseInt(tokens.nextToken()), y=Integer.parseInt(tokens.nextToken());
-//				floorGenerator(subType, objectsList, x0, x1, y) ;
-//			} else if (type.equals("Wall")) {
-//				String subType = tokens.nextToken() ;
-//				int x=Integer.parseInt(tokens.nextToken()), y0=Integer.parseInt(tokens.nextToken()), y1=Integer.parseInt(tokens.nextToken());
-//				wallGenerator(subType, objectsList, x, y0, y1) ;
-//			} else if (type.equals("Stairs")) {
-//				
-//			} else if (type.equals("Brick")) {
-//			 	objectsList.add(new Brick(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken())));
-//			} else if (type.equals("Enemy")) {
-//				objectsList.add(new Enemy(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken())));
-//			} else if (type.equals("Ground")) {
-//				objectsList.add(new Ground(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken())));	
-//			}
-//		}
-		
+	public void loadMap(ArrayList<GameObject> objectsList, ArrayList<Enemy> enemiesList) {
 		try {
 			File map = new File("assets\\maps\\map.txt") ;
 			InputStream in = new FileInputStream(map);
@@ -66,9 +42,11 @@ public class MapManager {
 				} else if (type.equals("Brick")) {
 				 	objectsList.add(new Brick(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Enemy")) {
-					objectsList.add(new Enemy(scan.nextInt(), scan.nextInt()));
+					enemiesList.add(new Enemy(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Ground")) {
 					objectsList.add(new Ground(scan.nextInt(), scan.nextInt()));
+				} else if (type.equals("Coin")) {
+					objectsList.add(new Coin(scan.nextInt(), scan.nextInt()));
 				}
 			}
 			
