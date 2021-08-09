@@ -7,16 +7,22 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch ;
 import com.badlogic.gdx.math.Rectangle ;
 
+import singletons.CoinSingleton;
 import singletons.DisplaySingleton;
+import singletons.EnemySingleton;
 import singletons.PlayerSingleton ;
+import singletons.BrickSingleton ;
 
 public class Player extends GameObject implements Movel, InputProcessor {
 	private Rectangle bottom, left, right, top ;
 	private int action ;
 	private float velocityY ;
+	
+	private int points ;
+	private int coins ;
+	
 	private boolean pulando ;
 	private boolean pressingJump ;
-	private int points ;
 	
 	public Player(float x, float y) {
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
@@ -29,6 +35,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 		this.setPosition(x, y) ;
 		velocityY = 0 ;
 		points = 0 ;
+		coins = 0 ;
 		
 		pulando = false ;
 		pressingJump = false ;
@@ -38,16 +45,17 @@ public class Player extends GameObject implements Movel, InputProcessor {
 	
 	@Override
 	public boolean verifyCollision(GameObject object) {
-		if(object.getClass() == Enemy.class) {
+		if(object.getClass() == Enemy.class) { // Verifica colisao caso seja inimigo
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox())) {
 				setPosition(0f, 33f);
 			} else if (bottom.overlaps(object.getHitBox())) {
-				points += 50 ;
+				points += EnemySingleton.getInstance().getPoints() ;
 			}
-		} else if (object.getClass() == Brick.class) {
+		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja tijolo
 			if (top.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y - hitBox.height) ;
 				velocityY = 0 ;
+				points += BrickSingleton.getInstance().getPoints() ;
 			}
 			
 			if (bottom.overlaps(object.getHitBox())) {
@@ -63,7 +71,7 @@ public class Player extends GameObject implements Movel, InputProcessor {
 			if (left.overlaps(object.getHitBox())) {
 				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 			}
-		} else if (object.getClass() == Ground.class) {
+		} else if (object.getClass() == Ground.class) { // Verifica colisao caso seja chao
 			if (right.overlaps(object.getHitBox()) && left.overlaps(object.getHitBox())) {
 				if (bottom.overlaps(((Ground)object).getTopHitBox())) {
 					setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
@@ -84,9 +92,10 @@ public class Player extends GameObject implements Movel, InputProcessor {
 					setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 				}
 			}
-		} else if (object.getClass() == Coin.class) {
+		} else if (object.getClass() == Coin.class) { // Verifica colisao caso seja moeda
 			if (hitBox.overlaps(object.getHitBox())) {
-				getCoin() ;
+				points += CoinSingleton.getInstance().getPoints() ;
+				coins++ ;
 			}
 		}
 		
@@ -150,10 +159,21 @@ public class Player extends GameObject implements Movel, InputProcessor {
 		Texture texture = PlayerSingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 		
+		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
 		BitmapFont font = new BitmapFont() ;
-		font.setColor(0, 0, 0, 1) ;
-		font.setScale(2) ;
-		font.draw(batch, String.valueOf(points), 420, DisplaySingleton.getInstance().getHeight()-15) ;
+		font.setColor(1, 1, 1, 1) ;
+		font.setScale(1.7f) ;
+		float xPontDist=(width/2)-50, yPont=DisplaySingleton.getInstance().getHeight()-30 ;
+		if (hitBox.x < (width/2) - hitBox.width/2)
+			font.draw(batch, String.valueOf(points), (width/2)-xPontDist, yPont) ;
+		else
+			font.draw(batch, String.valueOf(points), (hitBox.x + hitBox.width/2) - xPontDist, yPont) ;
+		
+		float xCoinDist=150, yCoin=DisplaySingleton.getInstance().getHeight()-30 ;
+		if (hitBox.x < (width/2) - hitBox.width/2)
+			font.draw(batch, "C x " + String.valueOf(coins), (width/2)-xCoinDist, yCoin) ;
+		else
+			font.draw(batch, "C x " + String.valueOf(coins), (hitBox.x + hitBox.width/2) - xCoinDist, yCoin) ;
 	}
 	
 	@Override
@@ -206,10 +226,6 @@ public class Player extends GameObject implements Movel, InputProcessor {
 			pressingJump = false ;
 		}
 		return false;
-	}
-	
-	public void getCoin() {
-		points += 20 ;
 	}
 	
 	@Override

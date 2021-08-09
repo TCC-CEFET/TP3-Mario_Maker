@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class BrickSingleton {
 	private static BrickSingleton instance;
 	private final int Width=32, Height=32;
+	private int points=50 ;
 	private Texture texture;
 	
 	private BrickSingleton() {
@@ -30,5 +31,9 @@ public class BrickSingleton {
 
 	public Texture getTexture() {
 		return texture;
+	}
+	
+	public int getPoints() {
+		return points ;
 	}
 }

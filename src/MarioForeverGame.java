@@ -114,7 +114,7 @@ public class MarioForeverGame implements ApplicationListener {
 	public void updateCamera() {
 		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
 		if (player.getHitBox().x < (width/2) - player.getHitBox().width/2)
-			camera.position.x = player.getHitBox().x + ((width/2)-player.getHitBox().x) ;
+			camera.position.x = width/2 ;
 		else
 			camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
 		
