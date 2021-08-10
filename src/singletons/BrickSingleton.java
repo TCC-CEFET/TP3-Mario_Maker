@@ -4,6 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import objects.* ;
+import objects.characteristics.* ;
+import objects.collectables.* ;
+import objects.movables.* ;
+import objects.statics.* ;
+import singletons.* ;
+
 public class BrickSingleton {
 	private static BrickSingleton instance;
 	private final int Width=32, Height=32;

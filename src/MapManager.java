@@ -9,8 +9,12 @@ import java.util.StringTokenizer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-import singletons.GroundSingleton;
-import singletons.BrickSingleton;
+import objects.* ;
+import objects.characteristics.* ;
+import objects.collectables.* ;
+import objects.movables.* ;
+import objects.statics.* ;
+import singletons.* ;
 
 public class MapManager {
 	

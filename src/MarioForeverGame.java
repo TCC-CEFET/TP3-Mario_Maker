@@ -14,7 +14,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-import singletons.DisplaySingleton;
+import objects.* ;
+import objects.characteristics.* ;
+import objects.collectables.* ;
+import objects.movables.* ;
+import objects.statics.* ;
+import singletons.* ;
 
 public class MarioForeverGame implements ApplicationListener {
 	private OrthographicCamera camera;
@@ -43,6 +48,8 @@ public class MarioForeverGame implements ApplicationListener {
 
 	@Override
 	public void render() {
+		DisplaySingleton.getInstance().increaseStateTime() ;
+		
 		Gdx.gl.glClearColor(0.35f, 0.7f, 0.9f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		

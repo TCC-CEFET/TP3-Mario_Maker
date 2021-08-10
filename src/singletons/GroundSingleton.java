@@ -4,6 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import objects.* ;
+import objects.characteristics.* ;
+import objects.collectables.* ;
+import objects.movables.* ;
+import objects.statics.* ;
+import singletons.* ;
+
 public class GroundSingleton {
 	private static GroundSingleton instance;
 	private final int Width=32, HeightFull=32, HeightTop=HeightFull/10;
