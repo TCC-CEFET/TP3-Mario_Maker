@@ -20,6 +20,7 @@ public class PlayerSingleton {
 	private int width=smallWidth, height=smallHeight;
 	private Animation smallRunningAnimation ;
 	private Animation bigRunningAnimation ;
+	private Animation stopAnimation ;
 	
 	private PlayerSingleton() {
 		buildAnimation() ;
@@ -52,7 +53,7 @@ public class PlayerSingleton {
 		TextureRegion frame = null ;
 		
 		if (state.getDirection() == Direction.STOP) {
-			
+			frame = stopAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 		} else {
 			if (state.isBig()) {
 				if (state.getDirection() == Direction.LEFT) {
@@ -67,7 +68,6 @@ public class PlayerSingleton {
 				
 				frame = bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			} else {
-				System.out.println(smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) ;
 				if (state.getDirection() == Direction.LEFT) {
 					if (smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
@@ -96,10 +96,9 @@ public class PlayerSingleton {
 	
 	public void buildAnimation() {
 		String imagePath="assets/sprites/mario_spritesheet.png";
-		int columns=3, rows=2 ;
+		int columns=4, rows=4 ;
 		int width=16, height=27 ; // Quantidade de pixels
 		int sheetWidth=width*columns, sheetHeight=height*rows ;
-		float frameTime=0.08f ;
 		
 		// Pega o sprite sheet
 		Texture texture = new Texture(Gdx.files.internal(imagePath)) ;
@@ -107,20 +106,28 @@ public class PlayerSingleton {
 		// Monta uma matriz de regiao
 		TextureRegion[][] frames2DArray = TextureRegion.split(texture, width, height) ;
 		
-		// Monta a ordem de texturas
-		TextureRegion[] frames = new TextureRegion[columns] ;
+		// Monta a ordem de texturas e animacoes
 		int runningColumns=3 ;
+		TextureRegion[] frames = new TextureRegion[runningColumns] ;
 		for (int i=0; i < runningColumns; i++) {
 			frames[i] = frames2DArray[1][i];
 		}
 		
-		smallRunningAnimation = new Animation(frameTime, frames) ;
+		smallRunningAnimation = new Animation(0.1f, frames) ;
 		
-		frames = new TextureRegion[columns] ;
+		frames = new TextureRegion[runningColumns] ;
 		for (int i=0; i < runningColumns; i++) {
 			frames[i] = frames2DArray[2][i];
 		}
 		
-		bigRunningAnimation = new Animation(frameTime, frames) ;
+		bigRunningAnimation = new Animation(0.15f, frames) ;
+		
+		int stopedColumns=2 ;
+		frames = new TextureRegion[stopedColumns] ;
+		for (int i=0; i < stopedColumns; i++) {
+			frames[i] = frames2DArray[0][i];
+		}
+		
+		stopAnimation = new Animation(1.5f, frames) ;
 	}
 }
