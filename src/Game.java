@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import objects.GameObject;
@@ -26,12 +27,18 @@ public class Game implements Screen {
 	private MapManager mapManager ;
 	private SoundManager soundManager ;
 	
+	private int finalX ;
+	private int maximumTime ;
+	
 	public Game(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
 		create() ;
 		
 		this.batch = batch ;
 		this.camera = camera ;
 		this.gameState = gameState ;
+		
+		finalX = 1500 ;
+		maximumTime = 400 ;
 	}
 	
 	public void create() {
@@ -50,7 +57,7 @@ public class Game implements Screen {
 	public void render(float arg0) {
 		DisplaySingleton.getInstance().increaseStateTime() ;
 		
-		Gdx.gl.glClearColor(0.35f, 0.7f, 0.9f, 1);
+		Gdx.gl.glClearColor(150/255f, 118/255f, 214/255f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		batch.setProjectionMatrix(camera.combined);
@@ -66,6 +73,7 @@ public class Game implements Screen {
 			}
 		}
 		player.draw(batch);
+		drawTime() ;
 		batch.end();
 		
 		// Updates
@@ -116,9 +124,12 @@ public class Game implements Screen {
 			}
 		}
 		
-		if (camera.position.x > 800) {
+		if (camera.position.x > finalX) {
 			resetGame() ;
-			gameState.setState(EnumGameState.END) ;
+		}
+		
+		if (DisplaySingleton.getInstance().getStateTime() > maximumTime) {
+			resetGame() ;
 		}
 	}
 	
@@ -162,7 +173,18 @@ public class Game implements Screen {
 		this.dispose() ;
 		this.create() ;
 		DisplaySingleton.getInstance().resetStateTime() ;
-		gameState.setState(EnumGameState.MENU) ;
+		gameState.setState(EnumGameState.END) ;
+	}
+	
+	public void drawTime() {
+		int displayWidth=DisplaySingleton.getInstance().getWidth(), displayHeight=DisplaySingleton.getInstance().getHeight() ;
+		int time = (int) (maximumTime - DisplaySingleton.getInstance().getStateTime()) ;
+		BitmapFont font = new BitmapFont() ;
+		font.setColor(1, 1, 1, 1) ;
+		font.setScale(1.7f) ;
+		float xTime=camera.position.x+(displayWidth/2)-100, yTime=displayHeight-40 ;
+		font.draw(batch, "TIME", xTime-10, yTime+30) ;
+		font.draw(batch, String.valueOf(time), xTime, yTime) ;
 	}
 	
 	@Override

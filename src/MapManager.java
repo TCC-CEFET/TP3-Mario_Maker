@@ -42,7 +42,10 @@ public class MapManager {
 					int x=scan.nextInt(), y0=scan.nextInt(), y1=scan.nextInt();
 					wallGenerator(subType, objectsList, x, y0, y1) ;
 				} else if (type.equals("Stairs")) {
-					
+					String subType = scan.next() ;
+					int x0=scan.nextInt(), x1=scan.nextInt(), y=scan.nextInt();
+					char d=scan.next().charAt(0) ;
+					stairsGenerator(subType, objectsList, x0, x1, y, d) ;
 				} else if (type.equals("Brick")) {
 				 	objectsList.add(new Brick(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Enemy")) {
@@ -84,6 +87,18 @@ public class MapManager {
 		} else if (subType.equals("Brick")) {
 			for(int i=0; i < (y1-y0)/BrickSingleton.getInstance().getHeight(); i++) {
 				objectsList.add(new Brick(x, y0+(BrickSingleton.getInstance().getHeight()*i)));
+			}
+		}
+	}
+	
+	private void stairsGenerator(String subType, ArrayList<GameObject> objectsList, int x0, int x1, int y, char d) {
+		if (subType.equals("Ground")) {
+			for(int i=0; i < (x1-x0)/(GroundSingleton.getInstance().getWidth()); i++) {
+				floorGenerator(subType, objectsList, d == 'U' ? x0+(i*GroundSingleton.getInstance().getWidth()) : x0, d == 'D' ? x1-(i*GroundSingleton.getInstance().getWidth()) : x1, y+(i*GroundSingleton.getInstance().getHeightFull())) ;
+			}
+		} else if (subType.equals("Brick")) {
+			for(int i=0; i < (x1-x0)/BrickSingleton.getInstance().getWidth(); i++) {
+				floorGenerator(subType, objectsList, d == 'U' ? x0+(i*GroundSingleton.getInstance().getWidth()) : x0, d == 'D' ? x1-(i*GroundSingleton.getInstance().getWidth()) : x1, y+(i*BrickSingleton.getInstance().getHeight())) ;
 			}
 		}
 	}

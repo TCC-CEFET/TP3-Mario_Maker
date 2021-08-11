@@ -2,10 +2,13 @@
 Wall Ground -32 0 640
 Floor Ground -640 0 0
 Floor Ground 0 350 0
-Floor Ground 400 900 0
+Floor Ground 400 1500 0
 Floor Brick 200 360 128
-Floor Brick 232 328 256
+Brick 232 256
+LuckyBlock 264 256
+Brick 296 256
 Wall Brick 125 200 300
 Coin 256 35
 Enemy 900 35 L
-LuckyBlock 425 128
+Stairs Brick 700 900 32 U
+Stairs Brick 900 1100 32 D

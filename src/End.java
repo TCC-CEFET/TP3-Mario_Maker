@@ -11,25 +11,23 @@ import objects.GameObject;
 import objects.MovableObject;
 import singletons.DisplaySingleton;
 
-public class Menu implements Screen {
+public class End implements Screen {
 	private GameState gameState ;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
 	private Texture playButtonTexture ;
-	private Texture exitButtonTexture ;
-	private Texture background ;
-	private Rectangle playButton ;
-	private Rectangle exitButton ;
+	private Texture menuButtonTexture ;
+	private Rectangle playAgainButton ;
+	private Rectangle menuButton ;
 	
-	public Menu(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
-		playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonInactive.png")) ;
-		exitButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonInactive.png")) ;
-		background = new Texture(Gdx.files.internal("assets/sprites/mainMenuScreen.png")) ;
+	public End(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
+		playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonActive.png")) ;
+		menuButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonInactive.png")) ;
 		
-		playButton = new Rectangle(320, 186, 108, 32) ;
-		exitButton = new Rectangle(320, 130, 112, 32) ;
+		playAgainButton = new Rectangle(10, 100, 128, 128) ;
+		menuButton = new Rectangle(600, 100, 128, 128) ;
 		
 		this.batch = batch ;
 		this.camera = camera ;
@@ -38,18 +36,18 @@ public class Menu implements Screen {
 
 	@Override
 	public void render(float arg0) {
+		Gdx.gl.glClearColor(0f, 0.55f, 0.9f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(background, 0, 0);
 		
 		camera.position.x = 0 + DisplaySingleton.getInstance().getWidth()/2 ;
 		camera.position.y = 0 + DisplaySingleton.getInstance().getHeight()/2 ;
 		camera.update() ;
 		
-		batch.draw(playButtonTexture, playButton.x, playButton.y, playButton.width, playButton.height) ;
-		batch.draw(exitButtonTexture, exitButton.x, exitButton.y, exitButton.width, exitButton.height) ;
+		batch.draw(playButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
+		batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
 		
 		batch.end();
 		
@@ -57,24 +55,10 @@ public class Menu implements Screen {
 			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
 			camera.unproject(touchPosition) ;
 			Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
-			Rectangle cursor = new Rectangle(Gdx.input.getX(), Gdx.input.getY(), 32, 32) ;
-			
-			if (cursor.overlaps(playButton)) {
-				playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonActive.png")) ;
-			} else {
-				playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonInactive.png")) ;
-				
-				if (cursor.overlaps(exitButton)) {
-					exitButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonActive.png")) ;
-				} else {
-					exitButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonInactive.png")) ;
-				}
-			}
-			
-			if (touch.overlaps(playButton)) {
+			if (touch.overlaps(playAgainButton)) {
 				gameState.setState(EnumGameState.GAME) ;
-			} else if (touch.overlaps(exitButton)) {
-				Gdx.app.exit() ;
+			} else if (touch.overlaps(menuButton)) {
+				gameState.setState(EnumGameState.MENU) ;
 			}
 		}
 	}

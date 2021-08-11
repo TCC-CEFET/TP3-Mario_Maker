@@ -218,18 +218,21 @@ public class Player extends MovableObject implements InputProcessor {
 		BitmapFont font = new BitmapFont() ;
 		font.setColor(1, 1, 1, 1) ;
 		font.setScale(1.7f) ;
-		float xPontDist=(displayWidth/2)-50, yPont=DisplaySingleton.getInstance().getHeight()-30 ;
-		if (hitBox.x < (displayWidth/2) - hitBox.width/2)
-			font.draw(batch, String.valueOf(points), (displayWidth/2)-xPontDist, yPont) ;
-		else
-			font.draw(batch, String.valueOf(points), (hitBox.x + hitBox.width/2) - xPontDist, yPont) ;
+		float xPointDist=(displayWidth/2)-50, yPoint=displayHeight-40 ;
+		if (hitBox.x < (displayWidth/2) - hitBox.width/2) {
+			font.draw(batch, "POINTS", (displayWidth/2)-xPointDist, yPoint+30) ;
+			font.draw(batch, String.valueOf(points), (displayWidth/2)-xPointDist, yPoint) ;
+		} else {
+			font.draw(batch, "POINTS", (hitBox.x + hitBox.width/2) - xPointDist, yPoint+30) ;
+			font.draw(batch, String.valueOf(points), (hitBox.x + hitBox.width/2) - xPointDist, yPoint) ;
+		}
 		
 		// Quantidade de moedas
 		float xCoinDist=150, yCoin=DisplaySingleton.getInstance().getHeight()-30 ;
 		if (hitBox.x < (displayWidth/2) - hitBox.width/2)
-			font.draw(batch, "C x " + String.valueOf(coins), (displayWidth/2)-xCoinDist, yCoin) ;
+			font.draw(batch, "COINS x " + String.valueOf(coins), (displayWidth/2)-xCoinDist, yCoin) ;
 		else
-			font.draw(batch, "C x " + String.valueOf(coins), (hitBox.x + hitBox.width/2) - xCoinDist, yCoin) ;
+			font.draw(batch, "COINS x " + String.valueOf(coins), (hitBox.x + hitBox.width/2) - xCoinDist, yCoin) ;
 	}
 
 	@Override
@@ -282,8 +285,10 @@ public class Player extends MovableObject implements InputProcessor {
 	public void setCrouch(boolean isCrouched) {
 		if (state.isBig()) {
 			state.setCrouched(isCrouched) ;
+		} else if (!state.isBig()) {
+			state.setCrouched(false) ;
 		}
-		PlayerSingleton.getInstance().setCrouched(state.isCrouched()) ;
+		PlayerSingleton.getInstance().setCrouched(state.isCrouched(), state) ;
 		
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		

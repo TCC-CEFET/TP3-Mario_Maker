@@ -29,6 +29,7 @@ public class MarioForever implements ApplicationListener {
 	
 	private Menu menu ;
 	private Game game ;
+	private End end ;
 	
 	@Override
 	public void create() {
@@ -42,6 +43,7 @@ public class MarioForever implements ApplicationListener {
 		
 		menu = new Menu(batch, camera, gameState) ;
 		game = new Game(batch, camera, gameState) ;
+		end = new End(batch, camera, gameState) ;
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class MarioForever implements ApplicationListener {
 				game.render(0) ;
 				break ;
 			case END:
-				menu.render(0) ;
+				end.render(0) ;
 				break ;
 		}
 	}

@@ -135,11 +135,11 @@ public class PlayerSingleton {
 		}
 	}
 	
-	public void setCrouched(boolean isCrouched) {
+	public void setCrouched(boolean isCrouched, State state) {
 		if (isCrouched) {
 			height = crouchedHeight ;
 		} else {
-			height = width == smallWidth ? smallHeight : bigHeight ;
+			height = state.isBig() ? bigHeight : smallHeight ;
 		}
 	}
 	
