@@ -1,4 +1,4 @@
 
 public enum EnumGameState {
-	MENU, GAME, END
+	MENU, GAME, GAMEOVER, WON
 }

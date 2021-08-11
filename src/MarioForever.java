@@ -51,13 +51,16 @@ public class MarioForever implements ApplicationListener {
 		switch (gameState.getState()) {
 			case MENU:
 				menu.render(0) ;
-				break ;
+				break;
 			case GAME:
 				game.render(0) ;
-				break ;
-			case END:
+				break;
+			case WON:
 				end.render(0) ;
-				break ;
+				break;
+			case GAMEOVER:
+				end.render(1);
+				break;
 		}
 	}
 

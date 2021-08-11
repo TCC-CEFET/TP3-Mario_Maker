@@ -17,17 +17,21 @@ public class End implements Screen {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
-	private Texture playButtonTexture ;
+	private Texture playAgainButtonTexture ;
 	private Texture menuButtonTexture ;
 	private Rectangle playAgainButton ;
 	private Rectangle menuButton ;
+	private Texture backgroundWin ;
+	private Texture backgroundGameOver ;
 	
 	public End(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
-		playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonActive.png")) ;
-		menuButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonInactive.png")) ;
+		playAgainButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playAgainButton.png")) ;
+		menuButtonTexture = new Texture(Gdx.files.internal("assets/sprites/mainMenuButton.png")) ;
+		backgroundWin = new Texture(Gdx.files.internal("assets/sprites/youWinScreen.png")) ;
+		backgroundGameOver = new Texture(Gdx.files.internal("assets/sprites/gameOverScreen.png")) ;
 		
-		playAgainButton = new Rectangle(10, 100, 128, 128) ;
-		menuButton = new Rectangle(600, 100, 128, 128) ;
+		playAgainButton = new Rectangle(272, 175, 256, 32) ;
+		menuButton = new Rectangle(280, 75, 240, 32) ;
 		
 		this.batch = batch ;
 		this.camera = camera ;
@@ -46,21 +50,42 @@ public class End implements Screen {
 		camera.position.y = 0 + DisplaySingleton.getInstance().getHeight()/2 ;
 		camera.update() ;
 		
-		batch.draw(playButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
-		batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
-		
-		batch.end();
-		
-		if (Gdx.input.isTouched()) {
-			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
-			camera.unproject(touchPosition) ;
-			Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
-			if (touch.overlaps(playAgainButton)) {
-				gameState.setState(EnumGameState.GAME) ;
-			} else if (touch.overlaps(menuButton)) {
-				gameState.setState(EnumGameState.MENU) ;
+		if (arg0 == 0) {
+			batch.draw(backgroundWin, 0, 0);
+			batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
+			batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
+			
+			batch.end();
+			
+			if (Gdx.input.isTouched()) {
+				Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
+				camera.unproject(touchPosition) ;
+				Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
+				if (touch.overlaps(playAgainButton)) {
+					gameState.setState(EnumGameState.GAME) ;
+				} else if (touch.overlaps(menuButton)) {
+					gameState.setState(EnumGameState.MENU) ;
+				}
+			}
+		} else if (arg0 == 1) {
+			batch.draw(backgroundGameOver, 0, 0);
+			batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
+			batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
+			
+			batch.end();
+			
+			if (Gdx.input.isTouched()) {
+				Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
+				camera.unproject(touchPosition) ;
+				Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
+				if (touch.overlaps(playAgainButton)) {
+					gameState.setState(EnumGameState.GAME) ;
+				} else if (touch.overlaps(menuButton)) {
+					gameState.setState(EnumGameState.MENU) ;
+				}
 			}
 		}
+		
 	}
 	
 	@Override

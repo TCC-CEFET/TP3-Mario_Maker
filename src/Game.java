@@ -37,7 +37,7 @@ public class Game implements Screen {
 		this.camera = camera ;
 		this.gameState = gameState ;
 		
-		finalX = 1500 ;
+		finalX = 800 ;
 		maximumTime = 400 ;
 	}
 	
@@ -86,7 +86,7 @@ public class Game implements Screen {
 				object.update() ;
 				boolean toRemove = object.verifyPosition(player, movableList) ;
 				if (player.verifyPosition(object, movableList)) {
-					resetGame() ;
+					resetGame(EnumGameState.GAMEOVER) ;
 					return ;
 				}
 				if (toRemove) iterObjects.remove() ;
@@ -100,7 +100,7 @@ public class Game implements Screen {
 				movable.update() ;
 				boolean toRemove = movable.verifyPosition(player, movableList) ;
 				if (player.verifyPosition(movable, movableList)) {
-					resetGame() ;
+					resetGame(EnumGameState.GAMEOVER) ;
 					return ;
 				}
 				for (GameObject object: objectsList) {
@@ -125,11 +125,11 @@ public class Game implements Screen {
 		}
 		
 		if (camera.position.x > finalX) {
-			resetGame() ;
+			resetGame(EnumGameState.WON) ;
 		}
 		
 		if (DisplaySingleton.getInstance().getStateTime() > maximumTime) {
-			resetGame() ;
+			resetGame(EnumGameState.GAMEOVER) ;
 		}
 	}
 	
@@ -169,11 +169,11 @@ public class Game implements Screen {
 		camera.update() ;
 	}
 	
-	public void resetGame() {
+	public void resetGame(EnumGameState state) {
 		this.dispose() ;
 		this.create() ;
 		DisplaySingleton.getInstance().resetStateTime() ;
-		gameState.setState(EnumGameState.END) ;
+		gameState.setState(state) ;
 	}
 	
 	public void drawTime() {
