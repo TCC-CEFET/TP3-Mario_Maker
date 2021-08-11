@@ -17,7 +17,7 @@ public class GroundSingleton {
 	private Texture texture ;
 	
 	private GroundSingleton() {
-		texture = new Texture(Gdx.files.internal("assets/sprites/floor.png")) ;
+		texture = new Texture(Gdx.files.internal("assets/sprites/ground.png")) ;
 	}
 	
 	public static synchronized GroundSingleton getInstance() {

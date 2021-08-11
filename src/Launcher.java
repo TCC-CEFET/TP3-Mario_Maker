@@ -1,7 +1,7 @@
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-public class Main {
+public class Launcher {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Mario Forever";
@@ -9,7 +9,7 @@ public class Main {
 		cfg.width = 800;
 		cfg.height = 480;
 		
-		new LwjglApplication(new MarioForeverGame(), cfg);
+		new LwjglApplication(new MarioForever(), cfg);
 		
 		System.out.println() ;
 	}

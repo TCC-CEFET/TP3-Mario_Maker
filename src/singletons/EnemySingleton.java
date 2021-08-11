@@ -1,8 +1,12 @@
 package singletons ;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import objects.* ;
 import objects.characteristics.* ;
@@ -17,10 +21,10 @@ public class EnemySingleton {
 	private int points=100 ;
 	private int velocityX=50 ;
 	private int velocityY=100 ;
-	private Texture texture;
+	private Animation animation ;
 	
 	private EnemySingleton() {
-		texture = new Texture(Gdx.files.internal("assets/sprites/enemyBlock.png"));
+		buildAnimation() ;
 	}
 
 	public static synchronized EnemySingleton getInstance() {
@@ -38,8 +42,12 @@ public class EnemySingleton {
 		return Height;
 	}
 
-	public Texture getTexture() {
-		return texture;
+	public TextureRegion getActualFrame(Direction direction) {
+		TextureRegion frame = null ;
+		
+		frame = animation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+		
+		return frame ;
 	}
 
 	public int getPoints() {
@@ -52,5 +60,28 @@ public class EnemySingleton {
 	
 	public int getVelocityY() {
 		return velocityY ;
+	}
+	
+	public void buildAnimation() {
+		String imagePath="assets/sprites/goomba_spritesheet.png";
+		int columns=3, rows=2 ;
+		int width=16, height=16 ; // Quantidade de pixels
+		int sheetWidth=width*columns, sheetHeight=height*rows ;
+		
+		// Pega o sprite sheet
+		Texture texture = new Texture(Gdx.files.internal(imagePath)) ;
+		
+		// Monta uma matriz de regiao
+		TextureRegion[][] frames2DArray = TextureRegion.split(texture, width, height) ;
+		
+		// Monta a ordem de texturas e animacoes
+		int runningColumns=2 ;
+		int line=new Random().nextInt(2) ;
+		TextureRegion[] frames = new TextureRegion[runningColumns] ;
+		for (int i=0; i < runningColumns; i++) {
+			frames[i] = frames2DArray[line][i];
+		}
+		
+		animation = new Animation(0.2f, frames) ;
 	}
 }

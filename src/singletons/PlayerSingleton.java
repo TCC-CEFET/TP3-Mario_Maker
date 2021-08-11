@@ -15,12 +15,17 @@ import singletons.* ;
 
 public class PlayerSingleton {
 	private static PlayerSingleton instance;
-	private final int smallWidth=28, smallHeight=38 ;
-	private final int bigWidth=32, bigHeight=54 ;
+	private final int smallWidth=32, smallHeight=32 ;
+	private final int bigWidth=32, bigHeight=60 ;
+	private final int crouchedHeight=44 ;
 	private int width=smallWidth, height=smallHeight;
 	private Animation smallRunningAnimation ;
 	private Animation bigRunningAnimation ;
-	private Animation stopAnimation ;
+	private Animation smallStopAnimation ;
+	private Animation bigStopAnimation ;
+	private Animation smallJumpingAnimation ;
+	private Animation bigJumpingAnimation ;
+	private Animation crouchedAnimation ;
 	
 	private PlayerSingleton() {
 		buildAnimation() ;
@@ -31,6 +36,10 @@ public class PlayerSingleton {
 			instance = new PlayerSingleton();
 		}
 		return instance;
+	}
+	
+	public static synchronized void dispose() {
+		instance = null ;
 	}
 	
 	public int getWidth() {
@@ -52,16 +61,48 @@ public class PlayerSingleton {
 	public TextureRegion getActualFrame(State state) {
 		TextureRegion frame = null ;
 		
-		if (state.getDirection() == Direction.STOP) {
-			frame = stopAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+		if (state.isCrouched()) {
+			frame = crouchedAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+		} else if (state.isJumping()) {
+			if (state.isBig()) {
+				if (state.getDirection() == Direction.LEFT) {
+					if (!bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+						bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
+					}
+				} else {
+					if (bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+						bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
+					}
+				}
+				
+				frame = bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+			} else {
+				if (state.getDirection() == Direction.LEFT) {
+					if (!smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+						smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
+					}
+				} else {
+					if (smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+						smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
+					}
+				}
+				
+				frame = smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+			}
+		} else if (state.getDirection() == Direction.STOP) {
+			if (state.isBig()) {
+				frame = bigStopAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+			} else {
+				frame = smallStopAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+			}
 		} else {
 			if (state.isBig()) {
 				if (state.getDirection() == Direction.LEFT) {
-					if (bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+					if (!bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
 				} else {
-					if (!bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+					if (bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
 				}
@@ -69,11 +110,11 @@ public class PlayerSingleton {
 				frame = bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			} else {
 				if (state.getDirection() == Direction.LEFT) {
-					if (smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+					if (!smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
 				} else {
-					if (!smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+					if (smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
 				}
@@ -94,10 +135,18 @@ public class PlayerSingleton {
 		}
 	}
 	
+	public void setCrouched(boolean isCrouched) {
+		if (isCrouched) {
+			height = crouchedHeight ;
+		} else {
+			height = width == smallWidth ? smallHeight : bigHeight ;
+		}
+	}
+	
 	public void buildAnimation() {
 		String imagePath="assets/sprites/mario_spritesheet.png";
-		int columns=4, rows=4 ;
-		int width=16, height=27 ; // Quantidade de pixels
+		int columns=7, rows=3 ;
+		int width=16, height=30 ; // Quantidade de pixels
 		int sheetWidth=width*columns, sheetHeight=height*rows ;
 		
 		// Pega o sprite sheet
@@ -108,26 +157,60 @@ public class PlayerSingleton {
 		
 		// Monta a ordem de texturas e animacoes
 		int runningColumns=3 ;
+		int smallLine=0, bigLine=1, fireLine=2 ;
 		TextureRegion[] frames = new TextureRegion[runningColumns] ;
 		for (int i=0; i < runningColumns; i++) {
-			frames[i] = frames2DArray[1][i];
+			frames[i] = frames2DArray[smallLine][i];
 		}
 		
-		smallRunningAnimation = new Animation(0.1f, frames) ;
+		smallRunningAnimation = new Animation(0.08f, frames) ;
 		
 		frames = new TextureRegion[runningColumns] ;
 		for (int i=0; i < runningColumns; i++) {
-			frames[i] = frames2DArray[2][i];
+			frames[i] = frames2DArray[bigLine][i];
 		}
 		
-		bigRunningAnimation = new Animation(0.15f, frames) ;
+		bigRunningAnimation = new Animation(0.1f, frames) ;
 		
 		int stopedColumns=2 ;
+		int firstStopped=4 ;
 		frames = new TextureRegion[stopedColumns] ;
-		for (int i=0; i < stopedColumns; i++) {
-			frames[i] = frames2DArray[0][i];
+		for (int i=firstStopped; i < firstStopped+stopedColumns; i++) {
+			frames[i-firstStopped] = frames2DArray[smallLine][i];
 		}
 		
-		stopAnimation = new Animation(1.5f, frames) ;
+		smallStopAnimation = new Animation(3f, frames) ;
+		
+		frames = new TextureRegion[stopedColumns] ;
+		for (int i=firstStopped; i < firstStopped+stopedColumns; i++) {
+			frames[i-firstStopped] = frames2DArray[bigLine][i];
+		}
+		
+		bigStopAnimation = new Animation(3f, frames) ;
+		
+		int jumpingColumns=1 ;
+		int firstJumpping=3 ;
+		frames = new TextureRegion[jumpingColumns] ;
+		for (int i=firstJumpping; i < firstJumpping+jumpingColumns; i++) {
+			frames[i-firstJumpping] = frames2DArray[smallLine][i];
+		}
+		
+		smallJumpingAnimation = new Animation(1f, frames) ;
+		
+		frames = new TextureRegion[jumpingColumns] ;
+		for (int i=firstJumpping; i < firstJumpping+jumpingColumns; i++) {
+			frames[i-firstJumpping] = frames2DArray[bigLine][i];
+		}
+		
+		bigJumpingAnimation = new Animation(1f, frames) ;
+		
+		int crouchedColumns=1 ;
+		int firstCrouched=6 ;
+		frames = new TextureRegion[crouchedColumns] ;
+		for (int i=firstCrouched; i < firstCrouched+crouchedColumns; i++) {
+			frames[i-firstCrouched] = frames2DArray[bigLine][i];
+		}
+		
+		crouchedAnimation = new Animation(1f, frames) ;
 	}
 }

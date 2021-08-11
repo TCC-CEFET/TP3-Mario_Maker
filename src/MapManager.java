@@ -53,6 +53,8 @@ public class MapManager {
 					objectsList.add(new Coin(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Mushroom")) {
 					movableList.add(new Mushroom(scan.nextInt(), scan.nextInt()));
+				} else if (type.equals("LuckyBlock")) {
+					objectsList.add(new LuckyBlock(scan.nextInt(), scan.nextInt()));
 				}
 			}
 			

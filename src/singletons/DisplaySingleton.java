@@ -41,4 +41,8 @@ public class DisplaySingleton {
 	public void increaseStateTime() {
 		this.stateTime += Gdx.graphics.getDeltaTime() ;
 	}
+	
+	public void resetStateTime() {
+		this.stateTime = 0 ;
+	}
 }
