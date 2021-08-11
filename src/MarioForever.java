@@ -54,6 +54,7 @@ public class MarioForever implements ApplicationListener {
 				game.render(0) ;
 				break ;
 			case END:
+				menu.render(0) ;
 				break ;
 		}
 	}

@@ -1,0 +1,49 @@
+package objects.characteristics;
+
+import java.util.Random;
+
+public class State {
+	private Direction direction ;
+	private boolean isJumping ;
+	private boolean isBig ;
+	private boolean isCrouched ;
+	
+	public State(Direction direction) {
+		this.direction = direction ;
+		isJumping = false ;
+		isBig = false ;
+		setCrouched(false) ;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+	public boolean isJumping() {
+		return isJumping;
+	}
+
+	public void setJumping(boolean isJumping) {
+		this.isJumping = isJumping;
+	}
+
+	public boolean isBig() {
+		return isBig;
+	}
+
+	public void setBig(boolean isBig) {
+		this.isBig = isBig;
+	}
+
+	public boolean isCrouched() {
+		return isCrouched;
+	}
+
+	public void setCrouched(boolean isCrouched) {
+		this.isCrouched = isCrouched;
+	}
+}
