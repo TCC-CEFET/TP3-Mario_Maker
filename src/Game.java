@@ -169,11 +169,11 @@ public class Game implements Screen {
 		camera.update() ;
 	}
 	
-	public void resetGame(EnumGameState state) {
+	public void resetGame(EnumGameState gameState) {
 		this.dispose() ;
 		this.create() ;
 		DisplaySingleton.getInstance().resetStateTime() ;
-		gameState.setState(state) ;
+		this.gameState.setState(gameState) ;
 	}
 	
 	public void drawTime() {
