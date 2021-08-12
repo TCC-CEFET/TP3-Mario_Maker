@@ -21,6 +21,7 @@ import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
 import objects.movables.* ;
+import objects.movables.enemies.* ;
 import objects.statics.* ;
 import singletons.* ;
 
@@ -86,7 +87,7 @@ public class Player extends MovableObject implements InputProcessor {
 			} else if (bottom.overlaps(object.getHitBox())) {
 				velocityY = 3 ;
 				state.setJumping(true) ;
-				points += EnemySingleton.getInstance().getPoints() ;
+				points += GoombaSingleton.getInstance().getPoints() ;
 			}
 		} else if (object.getClass() == Koopa.class && !state.isIntangible()) {
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox()) && ((Koopa) object).getDirection() != Direction.STOP) {
@@ -101,7 +102,7 @@ public class Player extends MovableObject implements InputProcessor {
 			} else if (bottom.overlaps(object.getHitBox())) {
 				velocityY = 3 ;
 				state.setJumping(true) ;
-				if (((Koopa) object).getDirection() == Direction.STOP) points += EnemySingleton.getInstance().getPoints() ;
+				if (((Koopa) object).getDirection() == Direction.STOP) points += GoombaSingleton.getInstance().getPoints() ;
 			}
 		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja tijolo
 			if (bottom.overlaps(object.getHitBox())) {

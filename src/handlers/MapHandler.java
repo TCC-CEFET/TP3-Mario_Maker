@@ -15,6 +15,7 @@ import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
 import objects.movables.* ;
+import objects.movables.enemies.* ;
 import objects.statics.* ;
 import singletons.* ;
 

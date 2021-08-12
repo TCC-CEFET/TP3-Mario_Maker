@@ -19,6 +19,8 @@ public abstract class MovableObject extends GameObject {
 	
 	public MovableObject(int x, int y, int width, int height, Direction direction) {
 		this.direction = direction ;
+		
+		hitBox = new Rectangle(x, y, width, height) ;
 		middle = new Rectangle(x-extraMiddleWidthSize/2, y+lackMiddleHeightSize/2, width+extraMiddleWidthSize, height-lackMiddleHeightSize) ;
 	}
 	

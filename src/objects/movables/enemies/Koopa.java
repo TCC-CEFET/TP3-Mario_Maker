@@ -1,6 +1,8 @@
-package objects.movables;
+package objects.movables.enemies;
+
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,12 +19,16 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
-public class Goomba extends MovableObject {
-	public Goomba(int x, int y, Direction direction) {
-		super(x, y, EnemySingleton.getInstance().getWidth(), EnemySingleton.getInstance().getHeight(), direction) ;
+public class Koopa extends Enemy {
+	private boolean isHidden ;
+	private Direction lastDirection ;
+	
+	public Koopa(int x, int y, Direction direction) {
+		super(x, y, KoopaSingleton.getInstance().getWidth(false), KoopaSingleton.getInstance().getHeight(false), direction) ;
 		
-		int width=EnemySingleton.getInstance().getWidth(), height=EnemySingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
+		isHidden = false ;
+		
+		lastDirection = Direction.LEFT ;
 	}
 	
 	@Override
@@ -30,18 +36,11 @@ public class Goomba extends MovableObject {
 		if (object.getClass() == Player.class) {
 			if (hitBox.overlaps(((Player) object).getBottomHitBox()) && !hitBox.overlaps(((Player) object).getLeftHitBox()) && !hitBox.overlaps(((Player) object).getRightHitBox())) {
 				remove() ;
-				return true ;
 			} else if (hitBox.overlaps(object.getHitBox()) && !((Player) object).getState().isIntangible()) {
 				direction = direction == Direction.LEFT ? Direction.RIGHT : Direction.LEFT ;
 			}
-		} else if (object.getClass() == Koopa.class) {
-			if (((Koopa) object).isHidden() && ((Koopa) object) .getDirection() != Direction.STOP) {
-				if (hitBox.overlaps(object.getHitBox())) {
-					remove() ;
-					return true ;
-				}
-			}
 		}
+		
 		
 		if (super.verifyPosition(object, movableList)) return true ;
 		
@@ -49,43 +48,33 @@ public class Goomba extends MovableObject {
 	}
 	
 	@Override
-	public void update() {
-		int velocityY = EnemySingleton.getInstance().getVelocityY() ;
-		hitBox.y -= velocityY * Gdx.graphics.getDeltaTime() > 3 ? 3 : velocityY * Gdx.graphics.getDeltaTime()  ;
-		this.setPosition(hitBox.x, hitBox.y) ;
-	}
-	
-	@Override
-	public void setPosition(Float x, Float y) {
-		super.setPosition(x, y) ;
-		
-		x = hitBox.x  ;
-		y = hitBox.y ;
-	}
-	
-	@Override
-	public void updateHitBox() {
-		
-	}
-	
-	@Override
 	public void control() {
-		int velocityX = EnemySingleton.getInstance().getVelocityX() ;
+		int velocityX = KoopaSingleton.getInstance().getVelocityX(isHidden) ;
 		if (direction == Direction.LEFT) {
 			hitBox.x -= velocityX * Gdx.graphics.getDeltaTime();
-		} else {
+		} else if (direction == Direction.RIGHT) {
 			hitBox.x += velocityX * Gdx.graphics.getDeltaTime() ;
 		}
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		TextureRegion frame = EnemySingleton.getInstance().getActualFrame(direction);
-		batch.draw(frame, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
+		TextureRegion frame = KoopaSingleton.getInstance().getActualFrame(direction, isHidden);
+		int width=KoopaSingleton.getInstance().getRunWidth(), height=KoopaSingleton.getInstance().getRunHeight() ;
+		batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
+	}
+	
+	public boolean isHidden() {
+		return isHidden ;
 	}
 	
 	@Override
 	public void remove() {
-		SoundHandler.getInstance().playKick() ;
+		isHidden = true ;
+		updateHitBox() ;
+		direction = direction == Direction.STOP ? (lastDirection == Direction.LEFT ? Direction.RIGHT : Direction.LEFT) : Direction.STOP ;
+		if (direction != Direction.STOP) lastDirection = direction ;
+		
+		super.remove() ;
 	}
 }
