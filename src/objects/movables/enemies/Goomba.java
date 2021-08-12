@@ -28,7 +28,7 @@ public class Goomba extends Enemy {
 			if (hitBox.overlaps(((Player) object).getBottomHitBox()) && !hitBox.overlaps(((Player) object).getLeftHitBox()) && !hitBox.overlaps(((Player) object).getRightHitBox())) {
 				remove() ;
 				return true ;
-			} else if (hitBox.overlaps(object.getHitBox()) && !((Player) object).getState().isIntangible()) {
+			} else if (hitBox.overlaps(object.getHitBox()) && !((Player) object).getPlayerState().isIntangible()) {
 				direction = direction == Direction.LEFT ? Direction.RIGHT : Direction.LEFT ;
 			}
 		}

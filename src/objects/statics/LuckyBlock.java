@@ -26,7 +26,7 @@ public class LuckyBlock extends GameObject {
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
 		if(object.getClass() == Player.class) {
-			if(hitBox.overlaps(((Player) object).getTopHitBox()) && !hitted && ((Player) object).getState().isJumping()) {
+			if(hitBox.overlaps(((Player) object).getTopHitBox()) && !hitted && ((Player) object).getPlayerState().isJumping()) {
 				movableList.add(new Mushroom((int) hitBox.x, (int) (hitBox.y+hitBox.height))) ;
 				remove() ;
 			}

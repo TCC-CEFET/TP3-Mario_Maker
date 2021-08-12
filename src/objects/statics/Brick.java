@@ -25,7 +25,7 @@ public class Brick extends GameObject {
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
 		if(object.getClass() == Player.class) {
-			if(hitBox.overlaps(((Player) object).getTopHitBox()) && ((Player) object).getState().isBig() && ((Player) object).getState().isJumping()) {
+			if(hitBox.overlaps(((Player) object).getTopHitBox()) && ((Player) object).getPlayerState().isBig() && ((Player) object).getPlayerState().isJumping()) {
 				remove() ;
 				return true ;
 			}

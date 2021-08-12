@@ -69,14 +69,14 @@ public class PlayerSingleton {
 		return BottomWidth ;
 	}
 
-	public TextureRegion getActualFrame(State state) {
+	public TextureRegion getActualFrame(PlayerState playerState) {
 		TextureRegion frame = null ;
 		
-		if (state.isCrouched()) {
+		if (playerState.isCrouched()) {
 			frame = crouchedAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
-		} else if (state.isJumping()) {
-			if (state.isBig()) {
-				if (state.getDirection() == Direction.LEFT) {
+		} else if (playerState.isJumping()) {
+			if (playerState.isBig()) {
+				if (playerState.getDirection() == Direction.LEFT) {
 					if (!bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
@@ -88,7 +88,7 @@ public class PlayerSingleton {
 				
 				frame = bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			} else {
-				if (state.getDirection() == Direction.LEFT) {
+				if (playerState.getDirection() == Direction.LEFT) {
 					if (!smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
@@ -100,15 +100,15 @@ public class PlayerSingleton {
 				
 				frame = smallJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			}
-		} else if (state.getDirection() == Direction.STOP) {
-			if (state.isBig()) {
+		} else if (playerState.getDirection() == Direction.STOP) {
+			if (playerState.isBig()) {
 				frame = bigStopAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			} else {
 				frame = smallStopAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			}
 		} else {
-			if (state.isBig()) {
-				if (state.getDirection() == Direction.LEFT) {
+			if (playerState.isBig()) {
+				if (playerState.getDirection() == Direction.LEFT) {
 					if (!bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
@@ -120,7 +120,7 @@ public class PlayerSingleton {
 				
 				frame = bigRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
 			} else {
-				if (state.getDirection() == Direction.LEFT) {
+				if (playerState.getDirection() == Direction.LEFT) {
 					if (!smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 						smallRunningAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
@@ -146,11 +146,11 @@ public class PlayerSingleton {
 		}
 	}
 	
-	public void setCrouched(boolean isCrouched, State state) {
+	public void setCrouched(boolean isCrouched, PlayerState playerState) {
 		if (isCrouched) {
 			height = crouchedHeight ;
 		} else {
-			height = state.isBig() ? bigHeight : smallHeight ;
+			height = playerState.isBig() ? bigHeight : smallHeight ;
 		}
 	}
 	

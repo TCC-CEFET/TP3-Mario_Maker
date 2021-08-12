@@ -29,7 +29,7 @@ public class Player extends MovableObject implements InputProcessor {
 	private Rectangle bottom, left, right, top ;
 	private float velocityY ;
 	
-	private State state ;
+	private PlayerState playerState ;
 	
 	private int points ;
 	private int coins ;
@@ -55,7 +55,7 @@ public class Player extends MovableObject implements InputProcessor {
 		top = new Rectangle(bottom.x, y+(height-bottom.height), bottom.width, bottom.height) ;
 		
 		this.setPosition(hitBox.x, hitBox.y) ;
-		state = new State(direction) ;
+		playerState = new PlayerState(direction) ;
 		this.setHeight(false) ;
 		velocityY = 0 ;
 		points = 0 ;
@@ -74,40 +74,40 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Goomba.class && !state.isIntangible()) { // Verifica colisao caso seja inimigo
+		if(object.getClass() == Goomba.class && !playerState.isIntangible()) { // Verifica colisao caso seja inimigo
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox())) {
-				if (state.isBig()) {
+				if (playerState.isBig()) {
 					setHeight(false) ;
-					state.setIntangible(true) ;
+					playerState.setIntangible(true) ;
 					invencibleStart = DisplaySingleton.getInstance().getStateTime() ;
-				} else if (!state.isIntangible()) {
+				} else if (!playerState.isIntangible()) {
 					remove() ;
 					return true ;
 				}
 			} else if (bottom.overlaps(object.getHitBox())) {
 				velocityY = 3 ;
-				state.setJumping(true) ;
+				playerState.setJumping(true) ;
 				points += GoombaSingleton.getInstance().getPoints() ;
 			}
-		} else if (object.getClass() == Koopa.class && !state.isIntangible()) {
+		} else if (object.getClass() == Koopa.class && !playerState.isIntangible()) {
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox()) && ((Koopa) object).getDirection() != Direction.STOP) {
-				if (state.isBig()) {
+				if (playerState.isBig()) {
 					setHeight(false) ;
-					state.setIntangible(true) ;
+					playerState.setIntangible(true) ;
 					invencibleStart = DisplaySingleton.getInstance().getStateTime() ;
-				} else if (!state.isIntangible()) {
+				} else if (!playerState.isIntangible()) {
 					remove() ;
 					return true ;
 				}
 			} else if (bottom.overlaps(object.getHitBox())) {
 				velocityY = 3 ;
-				state.setJumping(true) ;
+				playerState.setJumping(true) ;
 				if (((Koopa) object).getDirection() == Direction.STOP) points += GoombaSingleton.getInstance().getPoints() ;
 			}
 		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja tijolo
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
-				state.setJumping(false) ;
+				playerState.setJumping(false) ;
 				velocityY = 0 ;
 			}
 			
@@ -115,7 +115,7 @@ public class Player extends MovableObject implements InputProcessor {
 				setPosition(null, object.getHitBox().y - hitBox.height) ;
 				velocityY = 0 ;
 				pressingJump = false ;
-				if (state.isBig()) points += BrickSingleton.getInstance().getPoints() ;
+				if (playerState.isBig()) points += BrickSingleton.getInstance().getPoints() ;
 			}
 			
 			if (right.overlaps(object.getHitBox())) {
@@ -135,7 +135,7 @@ public class Player extends MovableObject implements InputProcessor {
 			} else {
 				if (bottom.overlaps(object.getHitBox())) {
 					setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
-					state.setJumping(false) ;
+					playerState.setJumping(false) ;
 					velocityY = 0 ;
 				}
 				
@@ -160,7 +160,7 @@ public class Player extends MovableObject implements InputProcessor {
 		} else if (object.getClass() == LuckyBlock.class) {
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
-				state.setJumping(false) ;
+				playerState.setJumping(false) ;
 				velocityY = 0 ;
 			}
 			
@@ -181,7 +181,7 @@ public class Player extends MovableObject implements InputProcessor {
 		} else if (object.getClass() == Pipe.class) {
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
-				state.setJumping(false) ;
+				playerState.setJumping(false) ;
 				velocityY = 0 ;
 			}
 			
@@ -201,7 +201,7 @@ public class Player extends MovableObject implements InputProcessor {
 			
 			if (bottom.overlaps(((Pipe) object).getHitBoxDestination())) {
 				setPosition(null, ((Pipe) object).getHitBoxDestination().y + ((Pipe) object).getHitBoxDestination().height) ;
-				state.setJumping(false) ;
+				playerState.setJumping(false) ;
 				velocityY = 0 ;
 			}
 			
@@ -227,7 +227,7 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public void update() {
-		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) state.setIntangible(false) ;
+		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) playerState.setIntangible(false) ;
 		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ;
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
@@ -255,17 +255,17 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public void control() {
-		state.setDirection(Direction.STOP) ;
+		playerState.setDirection(Direction.STOP) ;
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			setCrouch(true) ;
 		} else {
 			if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-				state.setDirection(Direction.LEFT) ;
+				playerState.setDirection(Direction.LEFT) ;
 				hitBox.x -= 100 * Gdx.graphics.getDeltaTime();
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-				state.setDirection(Direction.RIGHT) ;
+				playerState.setDirection(Direction.RIGHT) ;
 				hitBox.x += 100 * Gdx.graphics.getDeltaTime() ;
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -276,13 +276,13 @@ public class Player extends MovableObject implements InputProcessor {
 						pressingJump = false ;
 					}
 				}
-				if (state.isJumping()) return ;
+				if (playerState.isJumping()) return ;
 				
 				pressingJump = true ;
-				state.setJumping(true) ;
+				playerState.setJumping(true) ;
 				
 				if (tocaSomPulo <= 1) {
-					SoundHandler.getInstance().playJump(state.isBig()) ;
+					SoundHandler.getInstance().playJump(playerState.isBig()) ;
 					tocaSomPulo++ ;
 				} else {
 					tocaSomPulo=1 ;
@@ -294,7 +294,7 @@ public class Player extends MovableObject implements InputProcessor {
 	@Override
 	public void draw(SpriteBatch batch) {
 		// Mario
-		if (state.isIntangible()) { // Verifica a tangibilidade para piscar
+		if (playerState.isIntangible()) { // Verifica a tangibilidade para piscar
 			if (isVisible && DisplaySingleton.getInstance().getStateTime() > startVisibleTime+blinkTime) {
 				isVisible = false ;
 				startInvisibleTime = DisplaySingleton.getInstance().getStateTime() ;
@@ -304,12 +304,12 @@ public class Player extends MovableObject implements InputProcessor {
 			}
 			
 			if (isVisible) {
-				TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(state) ;
+				TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(playerState) ;
 				int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
 				batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
 			}
 		} else {
-			TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(state) ;
+			TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(playerState) ;
 			int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
 			batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
 		}
@@ -353,24 +353,24 @@ public class Player extends MovableObject implements InputProcessor {
 		return right ;
 	}
 	
-	public State getState() {
-		return state ;
+	public PlayerState getPlayerState() {
+		return playerState ;
 	}
 	
 	public void setHeight(boolean isBig) {
-		state.setBig(isBig) ;
-		PlayerSingleton.getInstance().setHeight(state.isBig()) ;
+		playerState.setBig(isBig) ;
+		PlayerSingleton.getInstance().setHeight(playerState.isBig()) ;
 		
 		updateHitBox() ;
 	}
 	
 	public void setCrouch(boolean isCrouched) {
-		if (state.isBig()) {
-			state.setCrouched(isCrouched) ;
-		} else if (!state.isBig()) {
-			state.setCrouched(false) ;
+		if (playerState.isBig()) {
+			playerState.setCrouched(isCrouched) ;
+		} else if (!playerState.isBig()) {
+			playerState.setCrouched(false) ;
 		}
-		PlayerSingleton.getInstance().setCrouched(state.isCrouched(), state) ;
+		PlayerSingleton.getInstance().setCrouched(playerState.isCrouched(), playerState) ;
 		
 		updateHitBox() ;
 	}

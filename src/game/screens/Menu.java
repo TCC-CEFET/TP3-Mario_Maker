@@ -60,8 +60,8 @@ public class Menu implements Screen {
 		if (Gdx.input.isTouched()) {
 			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
 			camera.unproject(touchPosition) ;
-			Rectangle touch = new Rectangle(touchPosition.x, touchPosition.y, 0.1f, 0.1f) ;
-			Rectangle cursor = new Rectangle(Gdx.input.getX(), Gdx.input.getY(), 0.1f, 0.1f) ;
+			Rectangle touch = new Rectangle(touchPosition.x-0.5f, touchPosition.y-0.5f, 1, 1) ;
+			Rectangle cursor = new Rectangle(Gdx.input.getX()-0.5f, Gdx.input.getY()-0.5f, 1, 1) ;
 			
 			if (cursor.overlaps(playButton)) {
 				playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonActive.png")) ;

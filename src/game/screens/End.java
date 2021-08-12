@@ -63,53 +63,36 @@ public class End implements Screen {
 		Gdx.gl.glClearColor(0f, 0.55f, 0.9f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		
 		camera.position.x = 0 + DisplaySingleton.getInstance().getWidth()/2 ;
 		camera.position.y = 0 + DisplaySingleton.getInstance().getHeight()/2 ;
 		camera.update() ;
 		
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		
 		if (arg0 == 1) {
 			batch.draw(backgroundWin, 0, 0);
-			batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
-			batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
-			
-			batch.end();
-			
-			if (Gdx.input.isTouched()) {
-				Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
-				camera.unproject(touchPosition) ;
-				Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
-				if (touch.overlaps(playAgainButton)) {
-					gameState.setState(EnumGameState.GAME) ;
-					stageClearSoundAlredyPlayed = false ;
-				} else if (touch.overlaps(menuButton)) {
-					gameState.setState(EnumGameState.MENU) ;
-					stageClearSoundAlredyPlayed = false ;
-				}
-			}
-		} else if (arg0 == 0) {
+		} else {
 			batch.draw(backgroundGameOver, 0, 0);
-			batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
-			batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
-			
-			batch.end();
-			
-			if (Gdx.input.isTouched()) {
-				Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
-				camera.unproject(touchPosition) ;
-				Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
-				if (touch.overlaps(playAgainButton)) {
-					gameState.setState(EnumGameState.GAME) ;
-					gameOverSoundAlredyPlayed = false ;
-				} else if (touch.overlaps(menuButton)) {
-					gameState.setState(EnumGameState.MENU) ;
-					gameOverSoundAlredyPlayed = false ;
-				}
-			}
 		}
 		
+		batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
+		batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
+		
+		batch.end();
+			
+		if (Gdx.input.isTouched()) {
+			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
+			camera.unproject(touchPosition) ;
+			Rectangle touch = new Rectangle(touchPosition.x-0.5f, touchPosition.y-0.5f, 1f, 1f) ;
+			if (touch.overlaps(playAgainButton)) {
+				gameState.setState(EnumGameState.GAME) ;
+				stageClearSoundAlredyPlayed = false ;
+			} else if (touch.overlaps(menuButton)) {
+				gameState.setState(EnumGameState.MENU) ;
+				stageClearSoundAlredyPlayed = false ;
+			}
+		}
 	}
 	
 	@Override

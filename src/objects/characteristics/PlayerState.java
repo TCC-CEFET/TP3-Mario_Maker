@@ -2,14 +2,14 @@ package objects.characteristics;
 
 import java.util.Random;
 
-public class State {
+public class PlayerState {
 	private Direction direction ;
 	private boolean isJumping ;
 	private boolean isBig ;
 	private boolean isCrouched ;
 	private boolean isIntangible ;
 	
-	public State(Direction direction) {
+	public PlayerState(Direction direction) {
 		this.direction = direction ;
 		isJumping = false ;
 		isBig = false ;

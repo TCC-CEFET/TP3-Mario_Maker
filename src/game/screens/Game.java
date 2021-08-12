@@ -33,7 +33,7 @@ public class Game implements Screen {
 	private MapHandler mapHandler ;
 	
 	private int finalX ;
-	private int maximumTime ;
+	private final int maximumTime ;
 	
 	private boolean themeSongIsPlaying ;
 	
@@ -55,7 +55,6 @@ public class Game implements Screen {
 		player = new Player(33, 32, Direction.RIGHT);
 		mapHandler = new MapHandler();
 		mapHandler.loadMap(objectsList, movableList);
-		
 		
 		themeSongIsPlaying = false ;
 	}
@@ -154,23 +153,6 @@ public class Game implements Screen {
 		}
 	}
 	
-	@Override
-	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-	}
-	
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-	
 	public boolean verifyDistance(GameObject object) {
 		float x = object.getHitBox().x ;
 		float renderProportion = 1.85f ;
@@ -196,13 +178,6 @@ public class Game implements Screen {
 		camera.update() ;
 	}
 	
-	public void resetGame(EnumGameState gameState) {
-		this.dispose() ;
-		this.create() ;
-		DisplaySingleton.getInstance().resetStateTime() ;
-		this.gameState.setState(gameState) ;
-	}
-	
 	public void drawTime() {
 		int displayWidth=DisplaySingleton.getInstance().getWidth(), displayHeight=DisplaySingleton.getInstance().getHeight() ;
 		int time = (int) (maximumTime - DisplaySingleton.getInstance().getStateTime()) ;
@@ -214,10 +189,34 @@ public class Game implements Screen {
 		font.draw(batch, String.valueOf(time), xTime, yTime) ;
 	}
 	
+	public void resetGame(EnumGameState gameState) {
+		this.dispose() ;
+		this.create() ;
+		DisplaySingleton.getInstance().resetStateTime() ;
+		this.gameState.setState(gameState) ;
+	}
+	
 	@Override
 	public void dispose() {
 		PlayerSingleton.dispose() ;
 		SoundHandler.dispose() ;
+	}
+	
+	@Override
+	public void resize(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
