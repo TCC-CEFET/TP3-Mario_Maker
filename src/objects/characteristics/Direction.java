@@ -7,4 +7,4 @@ public enum Direction {
 		if (charDirection == 'L' || charDirection == 'l') return LEFT ;
 		else return RIGHT ;
 	}
-} ;
+}
