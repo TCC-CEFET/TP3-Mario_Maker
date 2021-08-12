@@ -18,8 +18,7 @@ import singletons.* ;
 
 public class Brick extends GameObject {
 	public Brick(int x, int y) {
-		int width=BrickSingleton.getInstance().getWidth(), height=BrickSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
+		super(x, y, BrickSingleton.getInstance().getWidth(), BrickSingleton.getInstance().getHeight()) ;
 	}
 	
 	@Override

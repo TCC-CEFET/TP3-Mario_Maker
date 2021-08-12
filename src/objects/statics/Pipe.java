@@ -22,8 +22,9 @@ public class Pipe extends GameObject {
 	private final float TimeBetweenUses ;
 	
 	public Pipe(int x0, int y0, int x1, int y1) {
+		super(x0, y0, PipeSingleton.getInstance().getWidth(), PipeSingleton.getInstance().getHeight()) ;
+		
 		int width=PipeSingleton.getInstance().getWidth(), height=PipeSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x0, y0, width, height) ;
 		hitBoxDestination = new Rectangle(x1, y1, width, height) ;
 		lastUsedTime = 0 ;
 		TimeBetweenUses = 2 ;

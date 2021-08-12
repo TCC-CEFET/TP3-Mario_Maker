@@ -19,8 +19,9 @@ public class Ground extends GameObject {
 	private Rectangle top ;
 	
 	public Ground(int x, int y) {
+		super(x, y, GroundSingleton.getInstance().getWidth(), GroundSingleton.getInstance().getHeightFull()) ;
+		
 		int width=GroundSingleton.getInstance().getWidth(), height=GroundSingleton.getInstance().getHeightFull(), heightTop=GroundSingleton.getInstance().getHeightTop() ;
-		hitBox = new Rectangle(x, y, width, height) ;
 		top = new Rectangle(x, y+(height - heightTop), width, heightTop) ;
 	}
 	

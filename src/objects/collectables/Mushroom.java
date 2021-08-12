@@ -20,9 +20,6 @@ public class Mushroom extends MovableObject {
 	public Mushroom(int x, int y) {
 		super(x, y, PlayerSingleton.getInstance().getWidth(), PlayerSingleton.getInstance().getHeight(), Direction.RIGHT) ;
 		
-		int width=MushroomSingleton.getInstance().getWidth(), height=MushroomSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
-		
 		SoundHandler.getInstance().playPowerupAppears() ;
 	}
 

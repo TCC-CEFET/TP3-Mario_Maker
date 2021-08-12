@@ -16,8 +16,7 @@ import singletons.* ;
 
 public class Coin extends GameObject {
 	public Coin(int x, int y) {
-		int width=CoinSingleton.getInstance().getWidth(), height=CoinSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
+		super(x, y, CoinSingleton.getInstance().getWidth(), CoinSingleton.getInstance().getHeight()) ;
 	}
 
 	@Override

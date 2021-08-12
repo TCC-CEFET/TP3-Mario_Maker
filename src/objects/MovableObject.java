@@ -18,9 +18,9 @@ public abstract class MovableObject extends GameObject {
 	protected int lackMiddleHeightSize=32 ;
 	
 	public MovableObject(int x, int y, int width, int height, Direction direction) {
+		super(x, y, width, height) ;
 		this.direction = direction ;
 		
-		hitBox = new Rectangle(x, y, width, height) ;
 		middle = new Rectangle(x-extraMiddleWidthSize/2, y+lackMiddleHeightSize/2, width+extraMiddleWidthSize, height-lackMiddleHeightSize) ;
 	}
 	

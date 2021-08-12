@@ -18,8 +18,8 @@ public class LuckyBlock extends GameObject {
 	private boolean hitted ;
 	
 	public LuckyBlock(int x, int y) {
-		int width=BrickSingleton.getInstance().getWidth(), height=BrickSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
+		super(x, y, BrickSingleton.getInstance().getWidth(), BrickSingleton.getInstance().getHeight()) ;
+		
 		hitted = false ;
 	}
 	

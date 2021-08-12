@@ -15,6 +15,10 @@ import singletons.* ;
 public abstract class GameObject {
 	protected Rectangle hitBox ;
 	
+	public GameObject(int x, int y, int width, int height) {
+		hitBox = new Rectangle(x, y, width, height) ;
+	}
+	
 	public abstract boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) ;
 	public abstract void update() ;
 	public void setPosition(Float x, Float y) {
