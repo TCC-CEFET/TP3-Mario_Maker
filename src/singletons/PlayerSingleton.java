@@ -15,10 +15,10 @@ import singletons.* ;
 
 public class PlayerSingleton {
 	private static PlayerSingleton instance;
-	private final int smallWidth=32, smallHeight=32 ;
-	private final int bigWidth=32, bigHeight=60 ;
-	private final int crouchedHeight=44 ;
-	private int width=smallWidth, height=smallHeight;
+	private final int smallWidth, smallHeight ;
+	private final int bigWidth, bigHeight ;
+	private final int crouchedHeight ;
+	private int width, height ;
 	private Animation smallRunningAnimation ;
 	private Animation bigRunningAnimation ;
 	private Animation smallStopAnimation ;
@@ -28,6 +28,11 @@ public class PlayerSingleton {
 	private Animation crouchedAnimation ;
 	
 	private PlayerSingleton() {
+		smallWidth=32 ; smallHeight=32 ;
+		bigWidth=32 ; bigHeight=60 ;
+		crouchedHeight=44 ;
+		width=smallWidth ; height=smallHeight ;
+		
 		buildAnimation() ;
 	}
 	

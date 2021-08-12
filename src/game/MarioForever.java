@@ -1,3 +1,5 @@
+package game;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -14,6 +16,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import game.screens.*;
+import game.states.EnumGameState;
+import game.states.GameState;
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
@@ -56,10 +61,10 @@ public class MarioForever implements ApplicationListener {
 				game.render(0) ;
 				break;
 			case WON:
-				end.render(0) ;
+				end.render(1) ;
 				break;
 			case GAMEOVER:
-				end.render(1);
+				end.render(0);
 				break;
 		}
 	}

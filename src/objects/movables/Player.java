@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch ;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle ;
 
+import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
@@ -21,7 +22,6 @@ import singletons.* ;
 
 public class Player extends MovableObject implements InputProcessor {
 	private Rectangle bottom, left, right, top ;
-	private int action ;
 	private float velocityY ;
 	
 	private State state ;
@@ -31,17 +31,20 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	private boolean pressingJump ;
 	
-	public Player(float x, float y, Direction direction) {
-		super(direction) ;
+	private boolean isInvisible ;
+	private float invencibleStart, invencibleMaxTime ;
+	
+	public Player(int x, int y, Direction direction) {
+		super(x, y, PlayerSingleton.getInstance().getWidth(), PlayerSingleton.getInstance().getHeight(), direction) ;
 		
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
-		bottom = new Rectangle(x+(width/20), y, width-(width/10), height/10) ;
+		bottom = new Rectangle(x+(width/10), y, width-(width/5), height/10) ;
 		left = new Rectangle(x, y+bottom.height, width/2, height-(bottom.height*2)) ;
 		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
 		top = new Rectangle(x+(width/20), y+(height-bottom.height), width-(width/10), bottom.height) ;
 		
-		this.setPosition(x, y) ;
+		this.setPosition(hitBox.x, hitBox.y) ;
 		state = new State(direction) ;
 		this.setHeight(false) ;
 		velocityY = 0 ;
@@ -50,6 +53,9 @@ public class Player extends MovableObject implements InputProcessor {
 		
 		pressingJump = false ;
 		
+		isInvisible = false ;
+		invencibleMaxTime = 1.5f ;
+		
 		Gdx.input.setInputProcessor(this);
 	}
 	
@@ -57,8 +63,11 @@ public class Player extends MovableObject implements InputProcessor {
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
 		if(object.getClass() == Enemy.class) { // Verifica colisao caso seja inimigo
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox())) {
-				if (state.isBig()) setHeight(false) ;
-				else {
+				if (state.isBig() && !isInvisible) {
+					setHeight(false) ;
+					isInvisible = true ;
+					invencibleStart = DisplaySingleton.getInstance().getStateTime() ;
+				} else if (!isInvisible) {
 					remove() ;
 					return true ;
 				}
@@ -141,6 +150,46 @@ public class Player extends MovableObject implements InputProcessor {
 			if (left.overlaps(object.getHitBox())) {
 				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 			}
+		} else if (object.getClass() == Pipe.class) {
+			if (top.overlaps(object.getHitBox())) {
+				setPosition(null, object.getHitBox().y - hitBox.height) ;
+				velocityY = 0 ;
+				pressingJump = false ;
+			}
+			
+			if (bottom.overlaps(object.getHitBox())) {
+				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
+				state.setJumping(false) ;
+				velocityY = 0 ;
+			}
+			
+			if (right.overlaps(object.getHitBox())) {
+				setPosition(object.getHitBox().x - hitBox.width - 1, null) ;
+			}
+			
+			if (left.overlaps(object.getHitBox())) {
+				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
+			}
+			
+			if (top.overlaps(((Pipe) object).getHitBoxDestination())) {
+				setPosition(null, ((Pipe) object).getHitBoxDestination().y - hitBox.height) ;
+				velocityY = 0 ;
+				pressingJump = false ;
+			}
+			
+			if (bottom.overlaps(((Pipe) object).getHitBoxDestination())) {
+				setPosition(null, ((Pipe) object).getHitBoxDestination().y + ((Pipe) object).getHitBoxDestination().height) ;
+				state.setJumping(false) ;
+				velocityY = 0 ;
+			}
+			
+			if (right.overlaps(((Pipe) object).getHitBoxDestination())) {
+				setPosition(((Pipe) object).getHitBoxDestination().x - hitBox.width - 1, null) ;
+			}
+			
+			if (left.overlaps(((Pipe) object).getHitBoxDestination())) {
+				setPosition(((Pipe) object).getHitBoxDestination().x + ((Pipe) object).getHitBoxDestination().width + 1, null) ;
+			}
 		}
 		
 		if (super.verifyPosition(object, movableList)) return true ;
@@ -150,6 +199,7 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public void update() {
+		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) isInvisible = false ;
 		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 5 ? 5 : 10 * Gdx.graphics.getDeltaTime() ;
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
@@ -162,7 +212,7 @@ public class Player extends MovableObject implements InputProcessor {
 		x = hitBox.x  ;
 		y = hitBox.y ;
 		
-		bottom.x = x+(hitBox.width/20) ;
+		bottom.x = x+(hitBox.width/10) ;
 		bottom.y = y ;
 		
 		left.x = x ;
@@ -269,7 +319,7 @@ public class Player extends MovableObject implements InputProcessor {
 		hitBox.width = width ;
 		hitBox.height = height ;
 		
-		bottom.width = width-(width/10) ;
+		bottom.width = width-(width/5) ;
 		bottom.height = height/10 ;
 		
 		left.width = width/2 ;
@@ -309,12 +359,6 @@ public class Player extends MovableObject implements InputProcessor {
 	}
 
 	@Override
-	public int hitAction(int side) {
-		
-		return 0 ;
-	}
-
-	@Override
 	public boolean keyDown(int arg0) {
 		return false;
 	}
@@ -337,6 +381,7 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public void remove() {
+		SoundHandler.getInstance().playPlayerDie() ;
 	}
 
 	@Override

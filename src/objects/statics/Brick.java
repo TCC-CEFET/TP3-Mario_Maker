@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
@@ -57,15 +58,9 @@ public class Brick extends GameObject {
 	public Rectangle getHitBox() {
 		return hitBox ;
 	}
-
-	@Override
-	public int hitAction(int side) {
-		// TODO Auto-generated method stub
-		return 1 ;
-	}
 	
 	@Override
 	public void remove() {
-		
+		SoundHandler.getInstance().playBreakBlock() ;
 	}
 }

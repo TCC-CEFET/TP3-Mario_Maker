@@ -1,3 +1,5 @@
+package game.screens;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -7,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import game.states.EnumGameState;
+import game.states.GameState;
 import objects.GameObject;
 import objects.MovableObject;
 import singletons.DisplaySingleton;

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
+import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
@@ -18,7 +19,7 @@ import singletons.* ;
 
 public class Enemy extends MovableObject {
 	public Enemy(int x, int y, Direction direction) {
-		super(direction) ;
+		super(x, y, EnemySingleton.getInstance().getWidth(), EnemySingleton.getInstance().getHeight(), direction) ;
 		
 		int width=EnemySingleton.getInstance().getWidth(), height=EnemySingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
@@ -32,10 +33,6 @@ public class Enemy extends MovableObject {
 				return true ;
 			} else if (hitBox.overlaps(object.getHitBox())) {
 				direction = direction == Direction.LEFT ? Direction.RIGHT : Direction.LEFT ;
-			}
-		} else {
-			if (hitBox.overlaps(object.getHitBox())) {
-				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
 			}
 		}
 		
@@ -81,15 +78,7 @@ public class Enemy extends MovableObject {
 	}
 	
 	@Override
-	public int hitAction(int side) {
-		if(side == 1) {
-			return 2;
-		}
-		return 1 ;
-	}
-	
-	@Override
 	public void remove() {
-		
+		SoundHandler.getInstance().playKick() ;
 	}
 }

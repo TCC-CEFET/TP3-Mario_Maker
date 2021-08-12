@@ -1,3 +1,6 @@
+package game.screens;
+
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,6 +11,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import game.states.EnumGameState;
+import game.states.GameState;
+import handlers.*;
 import objects.GameObject;
 import objects.MovableObject;
 import objects.characteristics.Direction;
@@ -24,11 +30,12 @@ public class Game implements Screen {
 	private Player player ;
 	private ArrayList<GameObject> objectsList ;
 	private ArrayList<MovableObject> movableList ;
-	private MapManager mapManager ;
-	private SoundManager soundManager ;
+	private MapHandler mapHandler ;
 	
 	private int finalX ;
 	private int maximumTime ;
+	
+	private boolean themeSongIsPlaying ;
 	
 	public Game(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
 		create() ;
@@ -37,7 +44,7 @@ public class Game implements Screen {
 		this.camera = camera ;
 		this.gameState = gameState ;
 		
-		finalX = 800 ;
+		finalX = 1500 ;
 		maximumTime = 400 ;
 	}
 	
@@ -46,15 +53,20 @@ public class Game implements Screen {
 		movableList = new ArrayList<MovableObject>() ;
 		
 		player = new Player(33, 32, Direction.RIGHT);
-		mapManager = new MapManager();
-		mapManager.loadMap(objectsList, movableList);
+		mapHandler = new MapHandler();
+		mapHandler.loadMap(objectsList, movableList);
 		
-		soundManager = new SoundManager() ;
-		soundManager.playBackground() ;
+		
+		themeSongIsPlaying = false ;
 	}
 	
 	@Override
 	public void render(float arg0) {
+		if (!themeSongIsPlaying) {
+			SoundHandler.getInstance().playBackground() ;
+			themeSongIsPlaying = true ;
+		}
+		
 		DisplaySingleton.getInstance().increaseStateTime() ;
 		
 		Gdx.gl.glClearColor(150/255f, 118/255f, 214/255f, 1);
@@ -157,7 +169,7 @@ public class Game implements Screen {
 	
 	public void updateCamera(Integer y) {
 		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
-		if (player.getHitBox().x < (width/2) - player.getHitBox().width/2)
+		if ((player.getHitBox().x < (width/2) - player.getHitBox().width/2) && player.getHitBox().x >= -10)
 			camera.position.x = width/2 ;
 		else
 			camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
@@ -189,8 +201,8 @@ public class Game implements Screen {
 	
 	@Override
 	public void dispose() {
-		soundManager.dispose() ;
 		PlayerSingleton.dispose() ;
+		SoundHandler.dispose() ;
 	}
 
 	@Override

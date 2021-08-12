@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
@@ -57,12 +58,6 @@ public class LuckyBlock extends GameObject {
 	@Override
 	public Rectangle getHitBox() {
 		return hitBox ;
-	}
-
-	@Override
-	public int hitAction(int side) {
-		// TODO Auto-generated method stub
-		return 1 ;
 	}
 	
 	@Override

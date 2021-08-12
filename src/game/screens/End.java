@@ -1,3 +1,5 @@
+package game.screens;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -7,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import game.states.EnumGameState;
+import game.states.GameState;
+import handlers.SoundHandler;
 import objects.GameObject;
 import objects.MovableObject;
 import singletons.DisplaySingleton;
@@ -24,6 +29,9 @@ public class End implements Screen {
 	private Texture backgroundWin ;
 	private Texture backgroundGameOver ;
 	
+	private boolean gameOverSoundAlredyPlayed ;
+	private boolean stageClearSoundAlredyPlayed ;
+	
 	public End(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
 		playAgainButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playAgainButton.png")) ;
 		menuButtonTexture = new Texture(Gdx.files.internal("assets/sprites/mainMenuButton.png")) ;
@@ -36,10 +44,22 @@ public class End implements Screen {
 		this.batch = batch ;
 		this.camera = camera ;
 		this.gameState = gameState ;
+		
+		gameOverSoundAlredyPlayed = false ;
+		stageClearSoundAlredyPlayed = false ;
 	}
 
 	@Override
 	public void render(float arg0) {
+		if (!gameOverSoundAlredyPlayed && arg0 == 0) {
+			SoundHandler.getInstance().playGameOver() ;
+			gameOverSoundAlredyPlayed = true ;
+		}
+		if (!stageClearSoundAlredyPlayed && arg0 == 1) {
+			SoundHandler.getInstance().playStageClear() ;
+			stageClearSoundAlredyPlayed = true ;
+		}
+		
 		Gdx.gl.glClearColor(0f, 0.55f, 0.9f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
@@ -50,7 +70,7 @@ public class End implements Screen {
 		camera.position.y = 0 + DisplaySingleton.getInstance().getHeight()/2 ;
 		camera.update() ;
 		
-		if (arg0 == 0) {
+		if (arg0 == 1) {
 			batch.draw(backgroundWin, 0, 0);
 			batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
 			batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
@@ -63,11 +83,13 @@ public class End implements Screen {
 				Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
 				if (touch.overlaps(playAgainButton)) {
 					gameState.setState(EnumGameState.GAME) ;
+					stageClearSoundAlredyPlayed = false ;
 				} else if (touch.overlaps(menuButton)) {
 					gameState.setState(EnumGameState.MENU) ;
+					stageClearSoundAlredyPlayed = false ;
 				}
 			}
-		} else if (arg0 == 1) {
+		} else if (arg0 == 0) {
 			batch.draw(backgroundGameOver, 0, 0);
 			batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
 			batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
@@ -80,8 +102,10 @@ public class End implements Screen {
 				Rectangle touch = new Rectangle(touchPosition.x-16, touchPosition.y-16, 32, 32) ;
 				if (touch.overlaps(playAgainButton)) {
 					gameState.setState(EnumGameState.GAME) ;
+					gameOverSoundAlredyPlayed = false ;
 				} else if (touch.overlaps(menuButton)) {
 					gameState.setState(EnumGameState.MENU) ;
+					gameOverSoundAlredyPlayed = false ;
 				}
 			}
 		}

@@ -62,12 +62,6 @@ public class Ground extends GameObject {
 	}
 
 	@Override
-	public int hitAction(int side) {
-		// TODO Auto-generated method stub
-		return 1 ;
-	}
-
-	@Override
 	public void remove() {
 		
 	}

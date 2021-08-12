@@ -1,3 +1,5 @@
+package handlers;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,9 +18,9 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
-public class MapManager {
+public class MapHandler {
 	
-	public MapManager() {
+	public MapHandler() {
 		
 	}
 	
@@ -58,6 +60,8 @@ public class MapManager {
 					movableList.add(new Mushroom(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("LuckyBlock")) {
 					objectsList.add(new LuckyBlock(scan.nextInt(), scan.nextInt()));
+				} else if (type.equals("Pipe")) {
+					objectsList.add(new Pipe(scan.nextInt(), scan.nextInt(), scan.nextInt(), scan.nextInt())) ;
 				}
 			}
 			

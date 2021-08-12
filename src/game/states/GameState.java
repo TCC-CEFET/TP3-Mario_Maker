@@ -1,3 +1,4 @@
+package game.states;
 
 public class GameState {
 	private EnumGameState state ;
