@@ -43,7 +43,7 @@ public abstract class MovableObject extends GameObject {
 			}
 		}
 		
-		if (hitBox.y < 0-hitBox.getHeight()-10 || hitBox.x < 0-3) {
+		if (hitBox.y < 0-hitBox.getHeight()-10) {
 			return true ;
 		}
 		

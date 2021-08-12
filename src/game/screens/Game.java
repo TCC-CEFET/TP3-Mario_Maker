@@ -1,6 +1,5 @@
 package game.screens;
 
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -18,6 +17,7 @@ import objects.GameObject;
 import objects.MovableObject;
 import objects.characteristics.Direction;
 import objects.movables.Player;
+import objects.statics.Pipe;
 import singletons.DisplaySingleton;
 import singletons.PlayerSingleton;
 
@@ -75,12 +75,12 @@ public class Game implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		for (GameObject object: objectsList) {
-			if (verifyDistance(object.getHitBox().x)) {
+			if (verifyDistance(object)) {
 				object.draw(batch) ;
 			}
 		}
 		for (MovableObject movable: movableList) {
-			if (verifyDistance(movable.getHitBox().x)) {
+			if (verifyDistance(movable)) {
 				movable.draw(batch) ;
 			}
 		}
@@ -88,13 +88,21 @@ public class Game implements Screen {
 		drawTime() ;
 		batch.end();
 		
+		// Controls
+		player.control() ;
+		for (MovableObject movable: movableList) {
+			if (verifyDistance(movable)) {
+				movable.control() ;
+			}
+		}
+		
 		// Updates
 		player.update() ;
 		Iterator<GameObject> iterObjects = objectsList.iterator() ;
 		while (iterObjects.hasNext()) {
 			GameObject object = iterObjects.next() ;
 			
-			if (verifyDistance(object.getHitBox().x)) {
+			if (verifyDistance(object)) {
 				object.update() ;
 				boolean toRemove = object.verifyPosition(player, movableList) ;
 				if (player.verifyPosition(object, movableList)) {
@@ -108,7 +116,7 @@ public class Game implements Screen {
 		while (iterMovables.hasNext()) {
 			MovableObject movable = iterMovables.next() ;
 			
-			if (verifyDistance(movable.getHitBox().x)) {
+			if (verifyDistance(movable)) {
 				movable.update() ;
 				boolean toRemove = movable.verifyPosition(player, movableList) ;
 				if (player.verifyPosition(movable, movableList)) {
@@ -127,15 +135,8 @@ public class Game implements Screen {
 			}
 		}
 		updateCamera(null) ;
-			
-		// Controls
-		player.control() ;
-		for (MovableObject movable: movableList) {
-			if (verifyDistance(movable.getHitBox().x)) {
-				movable.control() ;
-			}
-		}
 		
+		// Verifica fins de jogo
 		if (camera.position.x > finalX) {
 			resetGame(EnumGameState.WON) ;
 		}
@@ -162,9 +163,15 @@ public class Game implements Screen {
 
 	}
 	
-	public boolean verifyDistance(float x) {
+	public boolean verifyDistance(GameObject object) {
+		float x = object.getHitBox().x ;
 		float renderProportion = 1.85f ;
-		return Math.abs(camera.position.x - x) < DisplaySingleton.getInstance().getWidth()/renderProportion ;
+		if (object.getClass() != Pipe.class) {
+			return Math.abs(camera.position.x - (x+object.getHitBox().width)) < DisplaySingleton.getInstance().getWidth()/renderProportion ;
+		} else {
+			float xD = ((Pipe) object).getHitBoxDestination().x ;
+			return Math.abs(camera.position.x - (x+object.getHitBox().width)) < DisplaySingleton.getInstance().getWidth()/renderProportion || Math.abs(camera.position.x - (xD+object.getHitBox().width)) < DisplaySingleton.getInstance().getWidth()/renderProportion ;
+		}
 	}
 	
 	public void updateCamera(Integer y) {

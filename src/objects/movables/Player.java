@@ -34,6 +34,8 @@ public class Player extends MovableObject implements InputProcessor {
 	private boolean isInvisible ;
 	private float invencibleStart, invencibleMaxTime ;
 	
+	private int tocaSomPulo ;
+	
 	public Player(int x, int y, Direction direction) {
 		super(x, y, PlayerSingleton.getInstance().getWidth(), PlayerSingleton.getInstance().getHeight(), direction) ;
 		
@@ -56,6 +58,8 @@ public class Player extends MovableObject implements InputProcessor {
 		isInvisible = false ;
 		invencibleMaxTime = 1.5f ;
 		
+		tocaSomPulo = 1 ;
+		
 		Gdx.input.setInputProcessor(this);
 	}
 	
@@ -77,17 +81,17 @@ public class Player extends MovableObject implements InputProcessor {
 				points += EnemySingleton.getInstance().getPoints() ;
 			}
 		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja tijolo
+			if (bottom.overlaps(object.getHitBox())) {
+				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
+				state.setJumping(false) ;
+				velocityY = 0 ;
+			}
+			
 			if (top.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y - hitBox.height) ;
 				velocityY = 0 ;
 				pressingJump = false ;
 				if (state.isBig()) points += BrickSingleton.getInstance().getPoints() ;
-			}
-			
-			if (bottom.overlaps(object.getHitBox())) {
-				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
-				state.setJumping(false) ;
-				velocityY = 0 ;
 			}
 			
 			if (right.overlaps(object.getHitBox())) {
@@ -130,17 +134,17 @@ public class Player extends MovableObject implements InputProcessor {
 				points += MushroomSingleton.getInstance().getPoints() ;
 			}
 		} else if (object.getClass() == LuckyBlock.class) {
+			if (bottom.overlaps(object.getHitBox())) {
+				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
+				state.setJumping(false) ;
+				velocityY = 0 ;
+			}
+			
 			if (top.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y - hitBox.height) ;
 				velocityY = 0 ;
 				pressingJump = false ;
 				points += LuckyBlockSingleton.getInstance().getPoints() ;
-			}
-			
-			if (bottom.overlaps(object.getHitBox())) {
-				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
-				state.setJumping(false) ;
-				velocityY = 0 ;
 			}
 			
 			if (right.overlaps(object.getHitBox())) {
@@ -151,16 +155,16 @@ public class Player extends MovableObject implements InputProcessor {
 				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 			}
 		} else if (object.getClass() == Pipe.class) {
-			if (top.overlaps(object.getHitBox())) {
-				setPosition(null, object.getHitBox().y - hitBox.height) ;
-				velocityY = 0 ;
-				pressingJump = false ;
-			}
-			
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
 				state.setJumping(false) ;
 				velocityY = 0 ;
+			}
+			
+			if (top.overlaps(object.getHitBox())) {
+				setPosition(null, object.getHitBox().y - hitBox.height) ;
+				velocityY = 0 ;
+				pressingJump = false ;
 			}
 			
 			if (right.overlaps(object.getHitBox())) {
@@ -171,16 +175,16 @@ public class Player extends MovableObject implements InputProcessor {
 				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 			}
 			
-			if (top.overlaps(((Pipe) object).getHitBoxDestination())) {
-				setPosition(null, ((Pipe) object).getHitBoxDestination().y - hitBox.height) ;
-				velocityY = 0 ;
-				pressingJump = false ;
-			}
-			
 			if (bottom.overlaps(((Pipe) object).getHitBoxDestination())) {
 				setPosition(null, ((Pipe) object).getHitBoxDestination().y + ((Pipe) object).getHitBoxDestination().height) ;
 				state.setJumping(false) ;
 				velocityY = 0 ;
+			}
+			
+			if (top.overlaps(((Pipe) object).getHitBoxDestination())) {
+				setPosition(null, ((Pipe) object).getHitBoxDestination().y - hitBox.height) ;
+				velocityY = 0 ;
+				pressingJump = false ;
 			}
 			
 			if (right.overlaps(((Pipe) object).getHitBoxDestination())) {
@@ -200,7 +204,7 @@ public class Player extends MovableObject implements InputProcessor {
 	@Override
 	public void update() {
 		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) isInvisible = false ;
-		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 5 ? 5 : 10 * Gdx.graphics.getDeltaTime() ;
+		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ;
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
 	}
@@ -252,6 +256,13 @@ public class Player extends MovableObject implements InputProcessor {
 				
 				pressingJump = true ;
 				state.setJumping(true) ;
+				
+				if (tocaSomPulo <= 1) {
+					SoundHandler.getInstance().playJump(state.isBig()) ;
+					tocaSomPulo++ ;
+				} else {
+					tocaSomPulo=1 ;
+				}
 			}
 		}
 	}
@@ -269,7 +280,7 @@ public class Player extends MovableObject implements InputProcessor {
 		font.setColor(1, 1, 1, 1) ;
 		font.setScale(1.7f) ;
 		float xPointDist=(displayWidth/2)-50, yPoint=displayHeight-40 ;
-		if (hitBox.x < (displayWidth/2) - hitBox.width/2) {
+		if ((hitBox.x < (displayWidth/2) - hitBox.width/2) && hitBox.x > 0) {
 			font.draw(batch, "POINTS", (displayWidth/2)-xPointDist, yPoint+30) ;
 			font.draw(batch, String.valueOf(points), (displayWidth/2)-xPointDist, yPoint) ;
 		} else {
@@ -278,8 +289,9 @@ public class Player extends MovableObject implements InputProcessor {
 		}
 		
 		// Quantidade de moedas
+		font.setColor(1, 1, 0, 1) ;
 		float xCoinDist=150, yCoin=DisplaySingleton.getInstance().getHeight()-30 ;
-		if (hitBox.x < (displayWidth/2) - hitBox.width/2)
+		if ((hitBox.x < (displayWidth/2) - hitBox.width/2) && hitBox.x > 0)
 			font.draw(batch, "COINS x " + String.valueOf(coins), (displayWidth/2)-xCoinDist, yCoin) ;
 		else
 			font.draw(batch, "COINS x " + String.valueOf(coins), (hitBox.x + hitBox.width/2) - xCoinDist, yCoin) ;

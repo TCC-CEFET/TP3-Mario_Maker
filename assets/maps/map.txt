@@ -9,9 +9,16 @@ Brick 296 256
 Wall Brick 125 200 300
 Coin 256 35
 Enemy 900 35 L
-Enemy 432 35 R
+// Enemy 432 35 R
 Enemy 400 35 R
 Stairs Brick 700 900 32 U
 Stairs Brick 900 1100 32 D
-Pipe 1150 32 1250 32
+Pipe -640 32 100 32
+Floor Ground -1000 -496 0
+Wall Brick -1000 0 320
+Wall Brick -500 0 320
+Coin -900 35
+Coin -800 35
+Coin -700 35
+Coin -600 35
 Enemy 1450 35 L

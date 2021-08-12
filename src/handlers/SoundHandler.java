@@ -25,6 +25,8 @@ public class SoundHandler {
 	private Sound kick;
 	private Sound powerup;
 	private Sound pipe;
+	private Sound jumpSmall;
+	private Sound jumpBig;
 	
 	private SoundHandler() {
 		ids = new ArrayList<Long>() ;
@@ -39,6 +41,8 @@ public class SoundHandler {
 		kick = Gdx.audio.newSound(Gdx.files.internal("assets/sounds/kick.wav")) ;
 		powerup = Gdx.audio.newSound(Gdx.files.internal("assets/sounds/powerup.wav")) ;
 		pipe = Gdx.audio.newSound(Gdx.files.internal("assets/sounds/pipe.wav")) ;
+		jumpSmall = Gdx.audio.newSound(Gdx.files.internal("assets/sounds/jumpSmall.wav")) ;
+		jumpBig = Gdx.audio.newSound(Gdx.files.internal("assets/sounds/jumpBig.wav")) ;
 	}
 	
 	public static synchronized SoundHandler getInstance() {
@@ -96,6 +100,14 @@ public class SoundHandler {
 	
 	public void playKick() {
 		kick.play() ;
+	}
+	
+	public void playJump(boolean isBig) {
+		if (isBig) {
+			jumpBig.play() ;
+		} else {
+			jumpSmall.play() ;
+		}
 	}
 	
 	public void playPowerup() {
