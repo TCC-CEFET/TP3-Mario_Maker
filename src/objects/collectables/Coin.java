@@ -34,27 +34,13 @@ public class Coin extends GameObject {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPosition(Float x, Float y) {
-		super.setPosition(x, y) ;
-		
-		x = hitBox.x  ;
-		y = hitBox.y ;
+		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
 		Texture texture = CoinSingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
-	}
-
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
 	}
 	
 	@Override

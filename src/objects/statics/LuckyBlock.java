@@ -42,22 +42,9 @@ public class LuckyBlock extends GameObject {
 	}
 
 	@Override
-	public void setPosition(Float x, Float y) {
-		super.setPosition(x, y) ;
-		
-		x = hitBox.x  ;
-		y = hitBox.y ;
-	}
-
-	@Override
 	public void draw(SpriteBatch batch) {
 		Texture texture = LuckyBlockSingleton.getInstance().getTexture(hitted) ;
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
-	}
-
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
 	}
 	
 	@Override

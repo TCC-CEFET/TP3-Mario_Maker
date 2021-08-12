@@ -51,15 +51,6 @@ public class Pipe extends GameObject {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPosition(Float x, Float y) {
-		super.setPosition(x, y) ;
-		
-		x = hitBox.x  ;
-		y = hitBox.y ;
 	}
 
 	@Override
@@ -67,11 +58,6 @@ public class Pipe extends GameObject {
 		Texture texture = PipeSingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 		batch.draw(texture, hitBoxDestination.x, hitBoxDestination.y, hitBoxDestination.width, hitBoxDestination.height) ;
-	}
-
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
 	}
 	
 	public Rectangle getHitBoxDestination() {

@@ -51,11 +51,6 @@ public class Ground extends GameObject {
 		Texture texture = GroundSingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 	}
-
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
-	}
 	
 	public Rectangle getTopHitBox() {
 		return top ;

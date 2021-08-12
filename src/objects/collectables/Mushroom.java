@@ -48,14 +48,6 @@ public class Mushroom extends MovableObject {
 	}
 	
 	@Override
-	public void setPosition(Float x, Float y) {
-		super.setPosition(x, y) ;
-		
-		x = hitBox.x  ;
-		y = hitBox.y ;
-	}
-	
-	@Override
 	public void updateHitBox() {
 		
 	}
