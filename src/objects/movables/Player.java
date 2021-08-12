@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx ;
 import com.badlogic.gdx.Input ;
 import com.badlogic.gdx.InputProcessor ;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture ;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch ;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle ;
 
+import game.screens.Game;
 import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
@@ -41,10 +45,10 @@ public class Player extends MovableObject implements InputProcessor {
 		
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		hitBox = new Rectangle(x, y, width, height) ;
-		bottom = new Rectangle(x+(width/10), y, width-(width/5), height/10) ;
+		bottom = new Rectangle(x+((width - PlayerSingleton.getInstance().getBottomWidth())/2), y, PlayerSingleton.getInstance().getBottomWidth(), height/10) ;
 		left = new Rectangle(x, y+bottom.height, width/2, height-(bottom.height*2)) ;
 		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
-		top = new Rectangle(x+(width/20), y+(height-bottom.height), width-(width/10), bottom.height) ;
+		top = new Rectangle(bottom.x, y+(height-bottom.height), bottom.width, bottom.height) ;
 		
 		this.setPosition(hitBox.x, hitBox.y) ;
 		state = new State(direction) ;
@@ -216,7 +220,7 @@ public class Player extends MovableObject implements InputProcessor {
 		x = hitBox.x  ;
 		y = hitBox.y ;
 		
-		bottom.x = x+(hitBox.width/10) ;
+		bottom.x = x+((hitBox.width - PlayerSingleton.getInstance().getBottomWidth())/2) ;
 		bottom.y = y ;
 		
 		left.x = x ;
@@ -225,7 +229,7 @@ public class Player extends MovableObject implements InputProcessor {
 		right.x = x + (hitBox.width/2) ;
 		right.y = y + bottom.height ;
 
-		top.x = x + (hitBox.width/20) ;
+		top.x = bottom.x ;
 		top.y = y + (hitBox.height-(hitBox.height/8)) ;
 	}
 	
@@ -326,22 +330,7 @@ public class Player extends MovableObject implements InputProcessor {
 		state.setBig(isBig) ;
 		PlayerSingleton.getInstance().setHeight(state.isBig()) ;
 		
-		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
-		
-		hitBox.width = width ;
-		hitBox.height = height ;
-		
-		bottom.width = width-(width/5) ;
-		bottom.height = height/10 ;
-		
-		left.width = width/2 ;
-		left.height = height-(bottom.height*2) ;
-		
-		right.width = width/2 ;
-		right.height = height-(bottom.height*2) ;
-		
-		top.width = width-(width/10) ;
-		top.height = bottom.height ;
+		updateHitBox() ;
 	}
 	
 	public void setCrouch(boolean isCrouched) {
@@ -352,12 +341,16 @@ public class Player extends MovableObject implements InputProcessor {
 		}
 		PlayerSingleton.getInstance().setCrouched(state.isCrouched(), state) ;
 		
+		updateHitBox() ;
+	}
+	
+	public void updateHitBox() {
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		
 		hitBox.width = width ;
 		hitBox.height = height ;
 		
-		bottom.width = width-(width/10) ;
+		bottom.width = PlayerSingleton.getInstance().getBottomWidth() ;
 		bottom.height = height/10 ;
 		
 		left.width = width/2 ;
@@ -366,7 +359,7 @@ public class Player extends MovableObject implements InputProcessor {
 		right.width = width/2 ;
 		right.height = height-(bottom.height*2) ;
 		
-		top.width = width-(width/10) ;
+		top.width = bottom.width ;
 		top.height = bottom.height ;
 	}
 

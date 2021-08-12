@@ -18,6 +18,7 @@ public class PlayerSingleton {
 	private final int smallWidth, smallHeight ;
 	private final int bigWidth, bigHeight ;
 	private final int crouchedHeight ;
+	private final float BottomWidth ;
 	private int width, height ;
 	private Animation smallRunningAnimation ;
 	private Animation bigRunningAnimation ;
@@ -32,6 +33,7 @@ public class PlayerSingleton {
 		bigWidth=32 ; bigHeight=60 ;
 		crouchedHeight=44 ;
 		width=smallWidth ; height=smallHeight ;
+		BottomWidth= width - (width/5) ;
 		
 		buildAnimation() ;
 	}
@@ -61,6 +63,10 @@ public class PlayerSingleton {
 
 	public int getBigHeight() {
 		return bigHeight;
+	}
+	
+	public float getBottomWidth() {
+		return BottomWidth ;
 	}
 
 	public TextureRegion getActualFrame(State state) {
