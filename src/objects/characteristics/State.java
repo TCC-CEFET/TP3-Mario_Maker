@@ -7,11 +7,13 @@ public class State {
 	private boolean isJumping ;
 	private boolean isBig ;
 	private boolean isCrouched ;
+	private boolean isIntangible ;
 	
 	public State(Direction direction) {
 		this.direction = direction ;
 		isJumping = false ;
 		isBig = false ;
+		isIntangible = false ;
 		setCrouched(false) ;
 	}
 
@@ -45,5 +47,13 @@ public class State {
 
 	public void setCrouched(boolean isCrouched) {
 		this.isCrouched = isCrouched;
+	}
+
+	public boolean isIntangible() {
+		return isIntangible;
+	}
+
+	public void setIntangible(boolean isInvisible) {
+		this.isIntangible = isInvisible;
 	}
 }

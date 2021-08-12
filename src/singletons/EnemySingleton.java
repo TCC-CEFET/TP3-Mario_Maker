@@ -17,13 +17,18 @@ import singletons.* ;
 
 public class EnemySingleton {
 	private static EnemySingleton instance;
-	private final int Width=32, Height=32;
-	private int points=100 ;
-	private int velocityX=50 ;
-	private int velocityY=100 ;
+	private final int Width, Height ;
+	private int points ;
+	private int velocityX ;
+	private int velocityY ;
 	private Animation animation ;
 	
 	private EnemySingleton() {
+		Width=32; Height=32;
+		points=100 ;
+		velocityX=50 ;
+		velocityY=100 ;
+		
 		buildAnimation() ;
 	}
 

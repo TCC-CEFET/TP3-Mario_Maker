@@ -17,8 +17,8 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
-public class Enemy extends MovableObject {
-	public Enemy(int x, int y, Direction direction) {
+public class Goomba extends MovableObject {
+	public Goomba(int x, int y, Direction direction) {
 		super(x, y, EnemySingleton.getInstance().getWidth(), EnemySingleton.getInstance().getHeight(), direction) ;
 		
 		int width=EnemySingleton.getInstance().getWidth(), height=EnemySingleton.getInstance().getHeight() ;
@@ -31,8 +31,15 @@ public class Enemy extends MovableObject {
 			if (hitBox.overlaps(((Player) object).getBottomHitBox()) && !hitBox.overlaps(((Player) object).getLeftHitBox()) && !hitBox.overlaps(((Player) object).getRightHitBox())) {
 				remove() ;
 				return true ;
-			} else if (hitBox.overlaps(object.getHitBox())) {
+			} else if (hitBox.overlaps(object.getHitBox()) && !((Player) object).getState().isIntangible()) {
 				direction = direction == Direction.LEFT ? Direction.RIGHT : Direction.LEFT ;
+			}
+		} else if (object.getClass() == Koopa.class) {
+			if (((Koopa) object).isHidden() && ((Koopa) object) .getDirection() != Direction.STOP) {
+				if (hitBox.overlaps(object.getHitBox())) {
+					remove() ;
+					return true ;
+				}
 			}
 		}
 		
@@ -57,6 +64,11 @@ public class Enemy extends MovableObject {
 	}
 	
 	@Override
+	public void updateHitBox() {
+		
+	}
+	
+	@Override
 	public void control() {
 		int velocityX = EnemySingleton.getInstance().getVelocityX() ;
 		if (direction == Direction.LEFT) {
@@ -70,11 +82,6 @@ public class Enemy extends MovableObject {
 	public void draw(SpriteBatch batch) {
 		TextureRegion frame = EnemySingleton.getInstance().getActualFrame(direction);
 		batch.draw(frame, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
-	}
-	
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
 	}
 	
 	@Override

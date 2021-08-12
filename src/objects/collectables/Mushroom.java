@@ -56,6 +56,11 @@ public class Mushroom extends MovableObject {
 	}
 	
 	@Override
+	public void updateHitBox() {
+		
+	}
+	
+	@Override
 	public void control() {
 		int velocityX = MushroomSingleton.getInstance().getVelocityX() ;
 		if (direction == Direction.LEFT) {
@@ -69,11 +74,6 @@ public class Mushroom extends MovableObject {
 	public void draw(SpriteBatch batch) {
 		Texture texture = MushroomSingleton.getInstance().getTexture();
 		batch.draw(texture, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
-	}
-	
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
 	}
 	
 	@Override

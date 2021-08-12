@@ -31,6 +31,12 @@ public abstract class GameObject {
 		hitBox.y = y ;
 	}
 	public abstract void draw(SpriteBatch batch) ;
-	public abstract Rectangle getHitBox() ;
+	public Rectangle getHitBox() {
+		return hitBox ;
+	}
 	public abstract void remove() ;
+	
+	public Class<?> getSuperClass() {
+		return GameObject.class ;
+	}
 }

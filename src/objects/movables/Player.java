@@ -35,8 +35,11 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	private boolean pressingJump ;
 	
-	private boolean isInvisible ;
-	private float invencibleStart, invencibleMaxTime ;
+	private float invencibleStart ;
+	private final float invencibleMaxTime ;
+	private float startInvisibleTime, startVisibleTime ;
+	private final float blinkTime ;
+	private boolean isVisible ;
 	
 	private int tocaSomPulo ;
 	
@@ -58,9 +61,10 @@ public class Player extends MovableObject implements InputProcessor {
 		coins = 0 ;
 		
 		pressingJump = false ;
-		
-		isInvisible = false ;
-		invencibleMaxTime = 1.5f ;
+		invencibleMaxTime = 2f ;
+		blinkTime = 0.2f ;
+		startInvisibleTime=0 ; startVisibleTime=0 ;
+		isVisible = true ;
 		
 		tocaSomPulo = 1 ;
 		
@@ -69,13 +73,13 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Enemy.class) { // Verifica colisao caso seja inimigo
+		if(object.getClass() == Goomba.class && !state.isIntangible()) { // Verifica colisao caso seja inimigo
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox())) {
-				if (state.isBig() && !isInvisible) {
+				if (state.isBig()) {
 					setHeight(false) ;
-					isInvisible = true ;
+					state.setIntangible(true) ;
 					invencibleStart = DisplaySingleton.getInstance().getStateTime() ;
-				} else if (!isInvisible) {
+				} else if (!state.isIntangible()) {
 					remove() ;
 					return true ;
 				}
@@ -83,6 +87,21 @@ public class Player extends MovableObject implements InputProcessor {
 				velocityY = 3 ;
 				state.setJumping(true) ;
 				points += EnemySingleton.getInstance().getPoints() ;
+			}
+		} else if (object.getClass() == Koopa.class && !state.isIntangible()) {
+			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox()) && ((Koopa) object).getDirection() != Direction.STOP) {
+				if (state.isBig()) {
+					setHeight(false) ;
+					state.setIntangible(true) ;
+					invencibleStart = DisplaySingleton.getInstance().getStateTime() ;
+				} else if (!state.isIntangible()) {
+					remove() ;
+					return true ;
+				}
+			} else if (bottom.overlaps(object.getHitBox())) {
+				velocityY = 3 ;
+				state.setJumping(true) ;
+				if (((Koopa) object).getDirection() == Direction.STOP) points += EnemySingleton.getInstance().getPoints() ;
 			}
 		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja tijolo
 			if (bottom.overlaps(object.getHitBox())) {
@@ -207,7 +226,7 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public void update() {
-		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) isInvisible = false ;
+		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) state.setIntangible(false) ;
 		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ;
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
@@ -274,9 +293,25 @@ public class Player extends MovableObject implements InputProcessor {
 	@Override
 	public void draw(SpriteBatch batch) {
 		// Mario
-		TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(state) ;
-		int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
-		batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
+		if (state.isIntangible()) { // Verifica a tangibilidade para piscar
+			if (isVisible && DisplaySingleton.getInstance().getStateTime() > startVisibleTime+blinkTime) {
+				isVisible = false ;
+				startInvisibleTime = DisplaySingleton.getInstance().getStateTime() ;
+			} else if (!isVisible && DisplaySingleton.getInstance().getStateTime() > startInvisibleTime+blinkTime) {
+				isVisible = true ;
+				startVisibleTime = DisplaySingleton.getInstance().getStateTime() ;
+			}
+			
+			if (isVisible) {
+				TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(state) ;
+				int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
+				batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
+			}
+		} else {
+			TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(state) ;
+			int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
+			batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
+		}
 		
 		// Escreve pontuacao
 		int displayWidth=DisplaySingleton.getInstance().getWidth(), displayHeight=DisplaySingleton.getInstance().getHeight() ;
@@ -301,11 +336,6 @@ public class Player extends MovableObject implements InputProcessor {
 			font.draw(batch, "COINS x " + String.valueOf(coins), (hitBox.x + hitBox.width/2) - xCoinDist, yCoin) ;
 	}
 
-	@Override
-	public Rectangle getHitBox() {
-		return hitBox ;
-	}
-	
 	public Rectangle getTopHitBox() {
 		return top ;
 	}
@@ -344,6 +374,7 @@ public class Player extends MovableObject implements InputProcessor {
 		updateHitBox() ;
 	}
 	
+	@Override
 	public void updateHitBox() {
 		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
 		

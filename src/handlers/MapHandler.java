@@ -50,8 +50,10 @@ public class MapHandler {
 					stairsGenerator(subType, objectsList, x0, x1, y, d) ;
 				} else if (type.equals("Brick")) {
 				 	objectsList.add(new Brick(scan.nextInt(), scan.nextInt()));
-				} else if (type.equals("Enemy")) {
-					movableList.add(new Enemy(scan.nextInt(), scan.nextInt(), Direction.fromChar(scan.next().charAt(0))));
+				} else if (type.equals("Goomba")) {
+					movableList.add(new Goomba(scan.nextInt(), scan.nextInt(), Direction.fromChar(scan.next().charAt(0))));
+				} else if (type.equals("Koopa")) {
+					movableList.add(new Koopa(scan.nextInt(), scan.nextInt(), Direction.fromChar(scan.next().charAt(0))));
 				} else if (type.equals("Ground")) {
 					objectsList.add(new Ground(scan.nextInt(), scan.nextInt()));
 				} else if (type.equals("Coin")) {

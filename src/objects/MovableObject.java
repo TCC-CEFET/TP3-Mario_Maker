@@ -26,7 +26,7 @@ public abstract class MovableObject extends GameObject {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if (object.getClass() != Player.class && this.getClass() != Player.class) {
+		if (object.getSuperClass() == GameObject.class && this.getClass() != Player.class) {
 			if (middle.overlaps(object.getHitBox())) {
 				direction = direction == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT ;
 			}
@@ -56,5 +56,16 @@ public abstract class MovableObject extends GameObject {
 		
 		middle.x = hitBox.x-extraMiddleWidthSize/2 ;
 		middle.y = hitBox.y+lackMiddleHeightSize/2 ;
+	}
+	
+	public abstract void updateHitBox() ;
+	
+	@Override
+	public Class<?> getSuperClass() {
+		return MovableObject.class ;
+	}
+	
+	public Direction getDirection()  {
+		return direction ;
 	}
 }

@@ -74,6 +74,7 @@ public class Game implements Screen {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		player.draw(batch);
 		for (GameObject object: objectsList) {
 			if (verifyDistance(object)) {
 				object.draw(batch) ;
@@ -84,7 +85,6 @@ public class Game implements Screen {
 				movable.draw(batch) ;
 			}
 		}
-		player.draw(batch);
 		drawTime() ;
 		batch.end();
 		
@@ -127,6 +127,14 @@ public class Game implements Screen {
 					if (movable.verifyPosition(object, movableList)) {
 						toRemove = true ;
 						break ;
+					}
+				}
+				for (MovableObject movable2: movableList) {
+					if (movable != movable2) {
+						if (movable.verifyPosition(movable2, movableList)) {
+							toRemove = true ;
+							break ;
+						}
 					}
 				}
 				if (toRemove) {
