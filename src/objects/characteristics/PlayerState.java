@@ -2,12 +2,13 @@ package objects.characteristics;
 
 import java.util.Random;
 
+// Classe que guarda os estado possíveis do player
 public class PlayerState {
-	private Direction direction ;
-	private boolean isJumping ;
-	private boolean isBig ;
-	private boolean isCrouched ;
-	private boolean isIntangible ;
+	private Direction direction ; // Direcao
+	private boolean isJumping ; // Pulando
+	private boolean isBig ; // Grande
+	private boolean isCrouched ; // Agachado
+	private boolean isIntangible ; // Intangivel
 	
 	public PlayerState(Direction direction) {
 		this.direction = direction ;
