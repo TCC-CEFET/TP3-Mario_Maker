@@ -15,11 +15,15 @@ import singletons.* ;
 
 public class PlayerSingleton {
 	private static PlayerSingleton instance;
+	
+	// Caracteristicas do player
 	private final int smallWidth, smallHeight ;
 	private final int bigWidth, bigHeight ;
 	private final int crouchedHeight ;
 	private final float BottomWidth ;
 	private int width, height ;
+	
+	// Animacoes montadas
 	private Animation smallRunningAnimation ;
 	private Animation bigRunningAnimation ;
 	private Animation smallStopAnimation ;
@@ -68,7 +72,8 @@ public class PlayerSingleton {
 	public float getBottomWidth() {
 		return BottomWidth ;
 	}
-
+	
+	// Verifica os e retorna o frame ideal
 	public TextureRegion getCurrentFrame(PlayerState playerState) {
 		TextureRegion frame = null ;
 		
@@ -77,7 +82,7 @@ public class PlayerSingleton {
 		} else if (playerState.isJumping()) {
 			if (playerState.isBig()) {
 				if (playerState.getDirection() == Direction.LEFT) {
-					if (!bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
+					if (!bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) { // Verifica o flip para o lado
 						bigJumpingAnimation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 					}
 				} else {
