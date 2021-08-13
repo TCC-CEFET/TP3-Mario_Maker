@@ -1,14 +1,6 @@
 package singletons;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-
-import objects.* ;
-import objects.characteristics.* ;
-import objects.collectables.* ;
-import objects.movables.* ;
-import objects.statics.* ;
-import singletons.* ;
 
 public class DisplaySingleton {
 	private static DisplaySingleton instance;

@@ -5,22 +5,15 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx ;
 import com.badlogic.gdx.Input ;
 import com.badlogic.gdx.InputProcessor ;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture ;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch ;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle ;
 
-import game.screens.Game;
 import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
-import objects.movables.* ;
 import objects.movables.enemies.* ;
 import objects.statics.* ;
 import singletons.* ;
@@ -267,16 +260,18 @@ public class Player extends MovableObject implements InputProcessor {
 	public void control() {
 		playerState.setDirection(Direction.STOP) ;
 		
+		int velocityX = 150 ;
+		
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			setCrouch(true) ;
 		} else {
 			if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 				playerState.setDirection(Direction.LEFT) ;
-				hitBox.x -= 100 * Gdx.graphics.getDeltaTime();
+				hitBox.x -= velocityX * Gdx.graphics.getDeltaTime();
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 				playerState.setDirection(Direction.RIGHT) ;
-				hitBox.x += 100 * Gdx.graphics.getDeltaTime() ;
+				hitBox.x += velocityX * Gdx.graphics.getDeltaTime() ;
 			}
 			if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
 				if (pressingJump) {

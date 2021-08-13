@@ -1,14 +1,10 @@
 package handlers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-
-import game.states.EnumGameState;
-import objects.GameObject;
 
 // Calsse Singleton para gerenciar os sons
 public class SoundHandler {

@@ -5,13 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-import objects.* ;
-import objects.characteristics.* ;
-import objects.collectables.* ;
-import objects.movables.* ;
-import objects.statics.* ;
-import singletons.* ;
-
 // Classe para os objetos do jogo
 public abstract class GameObject {
 	protected Rectangle hitBox ; // hitBox do objeto

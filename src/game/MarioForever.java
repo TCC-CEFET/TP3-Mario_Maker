@@ -1,29 +1,12 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.logging.FileHandler;
-
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 
 import game.screens.*;
 import game.states.EnumGameState;
 import game.states.GameState;
-import objects.* ;
-import objects.characteristics.* ;
-import objects.collectables.* ;
-import objects.movables.* ;
-import objects.statics.* ;
 import singletons.* ;
 
 // Classe que controla os estados do jogo e coloca a tela

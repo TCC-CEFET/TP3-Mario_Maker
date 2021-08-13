@@ -2,17 +2,11 @@ package objects.statics ;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import objects.* ;
-import objects.characteristics.* ;
-import objects.collectables.* ;
-import objects.movables.* ;
-import objects.statics.* ;
 import singletons.* ;
 
 // Classe do chao que funciona como plataforma

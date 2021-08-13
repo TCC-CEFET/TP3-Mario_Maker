@@ -1,3 +1,5 @@
+Wall Brick 0 32 480
+
 Floor Ground 0 3600 0
 LuckyBlock 800 128
 Brick 928 128
@@ -12,6 +14,24 @@ Coin 992 384
 Goomba 1024 32 L
 
 Pipe 1184 32 1184 32
+
+Wall Brick 1504 32 128
+Wall Brick 1536 32 128
+
+Coin 1504 128
+Coin 1536 128
+
+Wall Brick 1760 32 160
+Wall Brick 1792 32 160
+
+Coin 1760 160
+Coin 1792 160
+
+Wall Brick 2112 32 160
+Wall Brick 2144 32 160
+
+Coin 2112 160
+Coin 2144 160
 
 Goomba 2300 32 L
 
@@ -64,7 +84,7 @@ Coin 5616 384
 Coin 5648 384
 Brick 5680 224
 
-Floor Brick 5616 5680
+Floor Brick 5616 5680 128
 
 Stairs Brick 5744 5872 32 U
 Stairs Brick 5936 6064 32 D

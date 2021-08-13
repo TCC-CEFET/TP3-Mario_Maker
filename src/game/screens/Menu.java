@@ -11,8 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 
 import game.states.EnumGameState;
 import game.states.GameState;
-import objects.GameObject;
-import objects.MovableObject;
 import singletons.DisplaySingleton;
 
 // Tela de de menu do jogo

@@ -5,15 +5,9 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import objects.* ;
 import objects.characteristics.* ;
-import objects.collectables.* ;
-import objects.movables.* ;
-import objects.statics.* ;
-import singletons.* ;
 
 public class KoopaSingleton {
 	private static KoopaSingleton instance ;

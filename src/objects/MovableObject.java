@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Rectangle;
 
-import objects.* ;
 import objects.characteristics.* ;
-import objects.collectables.* ;
 import objects.movables.* ;
 import objects.statics.* ;
-import singletons.* ;
 
 // Classe para os objetos moveis serem
 public abstract class MovableObject extends GameObject {

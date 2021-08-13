@@ -3,23 +3,19 @@ package objects.collectables;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 
 import handlers.SoundHandler;
 import objects.* ;
 import objects.characteristics.* ;
-import objects.collectables.* ;
 import objects.movables.* ;
-import objects.statics.* ;
 import singletons.* ;
 
 // Classe do mushroom
 public class Mushroom extends MovableObject {
 	public Mushroom(int x, int y) {
-		super(x, y, PlayerSingleton.getInstance().getWidth(), PlayerSingleton.getInstance().getHeight(), Direction.RIGHT) ;
+		super(x, y, MushroomSingleton.getInstance().getWidth(), MushroomSingleton.getInstance().getHeight(), Direction.RIGHT) ;
 		
 		SoundHandler.getInstance().playPowerupAppears() ;
 	}

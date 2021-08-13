@@ -6,15 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.StringTokenizer;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 
 import objects.* ;
 import objects.characteristics.* ;
 import objects.collectables.* ;
-import objects.movables.* ;
 import objects.movables.enemies.* ;
 import objects.statics.* ;
 import singletons.* ;

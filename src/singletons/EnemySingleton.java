@@ -1,14 +1,5 @@
 package singletons;
 
-import java.util.Random;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import objects.characteristics.Direction;
-
 public class EnemySingleton {
 	private static EnemySingleton instance;
 	private int points=100 ;

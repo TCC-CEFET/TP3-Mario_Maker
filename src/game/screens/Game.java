@@ -35,8 +35,7 @@ public class Game implements Screen {
 	private MapHandler mapHandler ;
 	
 	// Variaveis de marcacao de fim de jogo
-	private int finalX ;
-	private final int maximumTime ;
+	private final int FinalX, maximumTime ;
 	
 	// Variavel de marcacao
 	private boolean themeSongIsPlaying ;
@@ -48,7 +47,7 @@ public class Game implements Screen {
 		this.camera = camera ;
 		this.gameState = gameState ;
 		
-		finalX = 1500 ;
+		FinalX = 7840 ;
 		maximumTime = 400 ;
 	}
 	
@@ -57,7 +56,7 @@ public class Game implements Screen {
 		objectsList = new ArrayList<GameObject>() ;
 		movableList = new ArrayList<MovableObject>() ;
 		
-		player = new Player(33, 32, Direction.RIGHT);
+		player = new Player(300, 32, Direction.RIGHT);
 		mapHandler = new MapHandler();
 		mapHandler.loadMap(objectsList, movableList);
 		
@@ -155,7 +154,7 @@ public class Game implements Screen {
 		updateCamera(null) ; // Atualiza a camera
 		
 		// Verifica fins de jogo
-		if (camera.position.x > finalX) { // Verifica posicao
+		if (camera.position.x > FinalX) { // Verifica posicao
 			resetGame(EnumGameState.WON) ;
 		}
 		

@@ -1,7 +1,5 @@
 package objects.characteristics;
 
-import java.util.Random;
-
 // Classe que guarda os estado possíveis do player
 public class PlayerState {
 	private Direction direction ; // Direcao

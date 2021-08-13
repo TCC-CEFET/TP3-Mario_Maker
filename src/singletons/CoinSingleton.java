@@ -3,13 +3,6 @@ package singletons;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import objects.* ;
-import objects.characteristics.* ;
-import objects.collectables.* ;
-import objects.movables.* ;
-import objects.statics.* ;
-import singletons.* ;
-
 public class CoinSingleton {
 	private static CoinSingleton instance;
 	private final int Width=24, Height=24;

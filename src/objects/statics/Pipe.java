@@ -12,7 +12,6 @@ import handlers.SoundHandler;
 import objects.GameObject;
 import objects.MovableObject;
 import objects.movables.Player;
-import singletons.BrickSingleton;
 import singletons.DisplaySingleton;
 import singletons.PipeSingleton;
 
