@@ -16,6 +16,7 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe do mushroom
 public class Mushroom extends MovableObject {
 	public Mushroom(int x, int y) {
 		super(x, y, PlayerSingleton.getInstance().getWidth(), PlayerSingleton.getInstance().getHeight(), Direction.RIGHT) ;
@@ -25,7 +26,7 @@ public class Mushroom extends MovableObject {
 
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Player.class) {
+		if(object.getClass() == Player.class) { // Verifica colisao caso seja um player
 			if(hitBox.overlaps(object.getHitBox())) {
 				remove() ;
 				return true ;
@@ -39,6 +40,7 @@ public class Mushroom extends MovableObject {
 
 	@Override
 	public void update() {
+		// Atualiza o Y
 		int velocityY = MushroomSingleton.getInstance().getVelocityY() ;
 		hitBox.y -= velocityY * Gdx.graphics.getDeltaTime() > 3 ? 3 : velocityY * Gdx.graphics.getDeltaTime()  ;
 		this.setPosition(hitBox.x, hitBox.y) ;
