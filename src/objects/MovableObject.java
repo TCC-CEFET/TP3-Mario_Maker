@@ -11,9 +11,12 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe para os objetos moveis serem
 public abstract class MovableObject extends GameObject {
-	protected Direction direction ;
-	protected Rectangle middle ;
+	protected Direction direction ; // Direcao
+	protected Rectangle middle ; // hitBox do meio
+	
+	// Informacoes para hitBox do meio
 	protected int extraMiddleWidthSize=6 ;
 	protected int lackMiddleHeightSize=32 ;
 	
@@ -28,14 +31,14 @@ public abstract class MovableObject extends GameObject {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if (object.getSuperClass() == GameObject.class && this.getClass() != Player.class) {
+		if (object.getSuperClass() == GameObject.class && this.getClass() != Player.class) { // Verifica colisao caso seja apenas um GameObject e não sea da classe player
 			if (middle.overlaps(object.getHitBox())) {
 				direction = direction == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT ;
 			}
 			if (hitBox.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
 			}
-			if (object.getClass() == Pipe.class) {
+			if (object.getClass() == Pipe.class) { // Verifica colisao caso seja um pipe
 				if (middle.overlaps(((Pipe) object).getHitBoxDestination())) {
 					direction = direction == Direction.RIGHT ? Direction.LEFT : Direction.RIGHT ;
 				}
@@ -45,6 +48,7 @@ public abstract class MovableObject extends GameObject {
 			}
 		}
 		
+		// Verifica se não caiu da tela
 		if (hitBox.y < 0-hitBox.getHeight()-10) {
 			return true ;
 		}
@@ -62,6 +66,7 @@ public abstract class MovableObject extends GameObject {
 	
 	public abstract void updateHitBox() ;
 	
+	// Atualiza a superclasse para ser movel
 	@Override
 	public Class<?> getSuperClass() {
 		return MovableObject.class ;
