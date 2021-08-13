@@ -16,6 +16,7 @@ import singletons.EnemySingleton;
 import singletons.GoombaSingleton;
 import singletons.KoopaSingleton;
 
+// Classe abstrata para os inimigos serem
 public abstract class Enemy extends MovableObject {
 	public Enemy(int x, int y, int width, int height, Direction direction) {
 		super(x, y, width, width, direction) ;
@@ -23,7 +24,7 @@ public abstract class Enemy extends MovableObject {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if (object.getClass() == Koopa.class) {
+		if (object.getClass() == Koopa.class) { // VErifica se eh um casco de koopa
 			if (((Koopa) object).isHidden() && ((Koopa) object).getDirection() != Direction.STOP) {
 				if (hitBox.overlaps(object.getHitBox())) {
 					remove() ;
@@ -39,6 +40,7 @@ public abstract class Enemy extends MovableObject {
 	
 	@Override
 	public void update() {
+		// Atualiza o y do inimigo
 		int velocityY = EnemySingleton.getInstance().getVelocityY() ;
 		hitBox.y -= velocityY * Gdx.graphics.getDeltaTime() > 3 ? 3 : velocityY * Gdx.graphics.getDeltaTime()  ;
 		this.setPosition(hitBox.x, hitBox.y) ;
