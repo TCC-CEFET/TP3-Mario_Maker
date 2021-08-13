@@ -19,9 +19,11 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe para o koopa
 public class Koopa extends Enemy {
-	private boolean isHidden ;
-	private Direction lastDirection ;
+	private boolean isHidden ; // Controla o estado de estar escondido no casco
+	
+	private Direction lastDirection ; // Marcacao para intercalar direcao
 	
 	public Koopa(int x, int y, Direction direction) {
 		super(x, y, KoopaSingleton.getInstance().getWidth(false), KoopaSingleton.getInstance().getHeight(false), direction) ;
@@ -33,7 +35,7 @@ public class Koopa extends Enemy {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if (object.getClass() == Player.class) {
+		if (object.getClass() == Player.class) { // Verifica colisao caso seja player
 			if (hitBox.overlaps(((Player) object).getBottomHitBox()) && !hitBox.overlaps(((Player) object).getLeftHitBox()) && !hitBox.overlaps(((Player) object).getRightHitBox())) {
 				remove() ;
 			} else if (hitBox.overlaps(object.getHitBox()) && !((Player) object).getPlayerState().isIntangible()) {
@@ -70,8 +72,11 @@ public class Koopa extends Enemy {
 	
 	@Override
 	public void remove() {
+		// Passa a ficar escondido
 		isHidden = true ;
 		updateHitBox() ;
+		
+		// Intercala as direcoes
 		direction = direction == Direction.STOP ? (lastDirection == Direction.LEFT ? Direction.RIGHT : Direction.LEFT) : Direction.STOP ;
 		if (direction != Direction.STOP) lastDirection = direction ;
 		
