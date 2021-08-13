@@ -15,12 +15,14 @@ import objects.GameObject;
 import objects.MovableObject;
 import singletons.DisplaySingleton;
 
+// Tela de de menu do jogo
 public class Menu implements Screen {
 	private GameState gameState ;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
+	// Botoes
 	private Texture playButtonTexture ;
 	private Texture exitButtonTexture ;
 	private Texture background ;
