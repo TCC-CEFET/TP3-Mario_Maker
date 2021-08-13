@@ -16,12 +16,14 @@ import objects.GameObject;
 import objects.MovableObject;
 import singletons.DisplaySingleton;
 
+// Tela de fim de jogo
 public class End implements Screen {
 	private GameState gameState ;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
+	// Botoes
 	private Texture playAgainButtonTexture ;
 	private Texture menuButtonTexture ;
 	private Rectangle playAgainButton ;
@@ -29,6 +31,7 @@ public class End implements Screen {
 	private Texture backgroundWin ;
 	private Texture backgroundGameOver ;
 	
+	// Variaveis de marcacao
 	private boolean gameOverSoundAlredyPlayed ;
 	private boolean stageClearSoundAlredyPlayed ;
 	
@@ -51,6 +54,7 @@ public class End implements Screen {
 
 	@Override
 	public void render(float arg0) {
+		// Verifica se ganhou ou perdeu para tocar musica
 		if (!gameOverSoundAlredyPlayed && arg0 == 0) {
 			SoundHandler.getInstance().playGameOver() ;
 			gameOverSoundAlredyPlayed = true ;
@@ -63,6 +67,7 @@ public class End implements Screen {
 		Gdx.gl.glClearColor(0f, 0.55f, 0.9f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		// Mantem a camera no inicio da tela
 		camera.position.x = 0 + DisplaySingleton.getInstance().getWidth()/2 ;
 		camera.position.y = 0 + DisplaySingleton.getInstance().getHeight()/2 ;
 		camera.update() ;
@@ -70,17 +75,20 @@ public class End implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
+		// Verifica ganhou ou perdeu para mensagem em tela
 		if (arg0 == 1) {
 			batch.draw(backgroundWin, 0, 0);
 		} else {
 			batch.draw(backgroundGameOver, 0, 0);
 		}
 		
+		// Desenha os botoes
 		batch.draw(playAgainButtonTexture, playAgainButton.x, playAgainButton.y, playAgainButton.width, playAgainButton.height) ;
 		batch.draw(menuButtonTexture, menuButton.x, menuButton.y, menuButton.width, menuButton.height) ;
 		
 		batch.end();
-			
+		
+		// Verifica se foram clicados
 		if (Gdx.input.isTouched()) {
 			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
 			camera.unproject(touchPosition) ;
