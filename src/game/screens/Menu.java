@@ -28,7 +28,7 @@ public class Menu implements Screen {
 	private Rectangle exitButton ;
 	
 	public Menu(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
-		playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonInactive.png")) ;
+		playButtonTexture = new Texture(Gdx.files.internal("assets/sprites/playButtonInactive.png")) ; 
 		exitButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonInactive.png")) ;
 		background = new Texture(Gdx.files.internal("assets/sprites/mainMenuScreen.png")) ;
 		
@@ -48,11 +48,11 @@ public class Menu implements Screen {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		
-		camera.position.x = 0 + DisplaySingleton.getInstance().getWidth()/2 ;
+		camera.position.x = 0 + DisplaySingleton.getInstance().getWidth()/2 ; // seta  a posição x e y da camera
 		camera.position.y = 0 + DisplaySingleton.getInstance().getHeight()/2 ;
 		camera.update() ;
-		
-		batch.draw(playButtonTexture, playButton.x, playButton.y, playButton.width, playButton.height) ;
+	
+		batch.draw(playButtonTexture, playButton.x, playButton.y, playButton.width, playButton.height) ; // desenha os dois botoes play e exit
 		batch.draw(exitButtonTexture, exitButton.x, exitButton.y, exitButton.width, exitButton.height) ;
 		
 		batch.end();
@@ -60,7 +60,7 @@ public class Menu implements Screen {
 		if (Gdx.input.isTouched()) {
 			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0) ;
 			camera.unproject(touchPosition) ;
-			Rectangle touch = new Rectangle(touchPosition.x-0.5f, touchPosition.y-0.5f, 1, 1) ;
+			Rectangle touch = new Rectangle(touchPosition.x-0.5f, touchPosition.y-0.5f, 1, 1) ; // cria o retangulo do toque do mouse 
 			Rectangle cursor = new Rectangle(Gdx.input.getX()-0.5f, Gdx.input.getY()-0.5f, 1, 1) ;
 			
 			if (cursor.overlaps(playButton)) {
@@ -74,10 +74,10 @@ public class Menu implements Screen {
 					exitButtonTexture = new Texture(Gdx.files.internal("assets/sprites/exitButtonInactive.png")) ;
 				}
 			}
-			
+			//verifica se o play foi tocado e muda o estado  do jogo
 			if (touch.overlaps(playButton)) {
 				gameState.setState(EnumGameState.GAME) ;
-			} else if (touch.overlaps(exitButton)) {
+			} else if (touch.overlaps(exitButton)) {//fecha o jogo
 				Gdx.app.exit() ;
 			}
 		}
