@@ -1,5 +1,6 @@
 package objects.characteristics;
 
+// Estados de direcao
 public enum Direction {
 	LEFT, RIGHT, STOP ;
 	
