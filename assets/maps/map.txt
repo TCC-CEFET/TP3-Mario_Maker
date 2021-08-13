@@ -1,22 +1,119 @@
-// Muro e parte la
-Wall Ground -32 0 640
-Floor Ground 0 350 0
-Brick 400 32
-Floor Ground 400 1500 0
-Floor Brick 200 360 128
-Brick 232 256
-LuckyBlock 264 256
-Brick 296 256
-Wall Brick 125 200 300
-Coin 256 35
-Goomba 900 35 L
-// Goomba 432 35 R
-Goomba 432 35 R
-Koopa 465 35 R
-Stairs Brick 700 900 32 U
-Stairs Brick 900 1100 32 D
-Pipe -640 32 100 32
-Floor Ground -1000 -496 0
-Wall Brick -1000 0 320
+Floor Ground 0 3600 0
+LuckyBlock 800 128
+Brick 928 128
+LuckyBlock 960 128
+Brick 992 128
+LuckyBlock 1024 128
+Brick 1056 128
+LuckyBlock 992 256
 
-Koopa 800 35 L
+Coin 992 384
+
+Goomba 1024 32 L
+
+Pipe 1184 32 1184 32
+
+Goomba 2300 32 L
+
+Goomba 2600 32 L
+Goomba 2650 32 L
+
+Floor Ground 3664 4144 0
+
+Brick 3888 128
+LuckyBlock 3920 128
+Brick 3952 128
+Coin 3920 384
+
+Floor Ground 3984 4464 224
+
+Goomba 4300 256 L
+Goomba 4250 256 L
+
+Floor Ground 4240 6352 0
+
+Floor Brick 4304 4400 224
+LuckyBlock 4400 224
+
+Brick 4400 128
+
+Goomba 4432 32 L
+Goomba 4448 32 L
+
+Floor Brick 4624 4688 128
+
+Coin 4848 128
+Coin 4994 128
+Coin 4994 224
+Coin 5040 128
+
+Koopa 4848 32 L
+
+Goomba 5072 32 L
+Goomba 5088 32 L
+
+Brick 5264 128
+
+Floor Brick 5360 5456 224
+
+Goomba 5424 32 L
+Goomba 5440 32 L
+
+Brick 5584 224
+Coin 5616 384
+Coin 5648 384
+Brick 5680 224
+
+Floor Brick 5616 5680
+
+Stairs Brick 5744 5872 32 U
+Stairs Brick 5936 6064 32 D
+Stairs Brick 6192 6320 32 U
+Wall Brick 6320 32 156
+
+Floor Ground 6416 8208 0
+
+Stairs Brick 6416 6544 32
+
+Pipe 6672 32 6672 32
+
+Floor Brick 6832 6896 128
+LuckyBlock 6896 128
+Brick 6928 128
+
+Goomba 7056 32 L
+Goomba 7072 32 L
+
+Pipe 7184 32 7536 32
+
+Stairs Brick 7248 7504 32 U
+Wall Brick 7504 32 288
+
+Coin 7792 32
+Coin 7792 64
+Coin 7792 96
+Coin 7792 128
+Coin 7792 160
+Coin 7792 192
+Coin 7792 224
+Coin 7792 256
+Coin 7792 288
+Coin 7792 320
+Coin 7792 352
+Coin 7792 384
+Coin 7792 416
+Coin 7792 448
+
+Wall Brick 7824 32 480
+Wall Brick 7856 32 480
+Wall Brick 7888 32 480
+Wall Brick 7920 32 480
+Wall Brick 7952 32 480
+Wall Brick 7984 32 480
+Wall Brick 8016 32 480
+Wall Brick 8048 32 480
+Wall Brick 8080 32 480
+Wall Brick 8112 32 480
+Wall Brick 8144 32 480
+Wall Brick 8176 32 480
+Wall Brick 8208 32 480
