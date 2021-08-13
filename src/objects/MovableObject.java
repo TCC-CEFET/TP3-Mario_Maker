@@ -27,6 +27,7 @@ public abstract class MovableObject extends GameObject {
 		middle = new Rectangle(x-extraMiddleWidthSize/2, y+lackMiddleHeightSize/2, width+extraMiddleWidthSize, height-lackMiddleHeightSize) ;
 	}
 	
+	// Funcao controla para mover o objeto
 	public abstract void control() ;
 	
 	@Override
@@ -64,6 +65,7 @@ public abstract class MovableObject extends GameObject {
 		middle.y = hitBox.y+lackMiddleHeightSize/2 ;
 	}
 	
+	// Funcao para atualizar as hitBoxes para os tamanhos
 	public abstract void updateHitBox() ;
 	
 	// Atualiza a superclasse para ser movel
