@@ -19,26 +19,25 @@ import objects.movables.enemies.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe que gerencia o arquivo de texto do mapa
 public class MapHandler {
-	
-	public MapHandler() {
-		
-	}
-	
+	// Funcao para carregar os objetos a partir do arquivo de texto
 	public void loadMap(ArrayList<GameObject> objectsList, ArrayList<MovableObject> movableList) {
 		try {
+			// Trabalha com os arquivos
 			File map = new File("assets\\maps\\map.txt") ;
 			InputStream in = new FileInputStream(map);
 			Scanner scan = new Scanner(in) ;
 			
+			// Faz a leituro atew acabar
 			while (scan.hasNext()) {
-				String type = scan.next() ;
+				String type = scan.next() ; // Le a primeira palavra chave
 				
 				if (type.equals("//")) {
 					String comment = scan.nextLine() ;
 				} else if (type.equals("Floor")) {
-					String subType = scan.next() ;
-					int x0=scan.nextInt(), x1=scan.nextInt(), y=scan.nextInt() ;
+					String subType = scan.next() ; // Le a segunda
+					int x0=scan.nextInt(), x1=scan.nextInt(), y=scan.nextInt() ; // Le os dados
 					floorGenerator(subType, objectsList, x0, x1, y) ;
 				} else if (type.equals("Wall")) {
 					String subType = scan.next() ;
@@ -74,6 +73,7 @@ public class MapHandler {
 		}
 	}
 	
+	// Gerador de chao
 	private void floorGenerator(String subType, ArrayList<GameObject> objectsList, int x0, int x1, int y) {
 		if (subType.equals("Ground")) {
 			for(int i=0; i < (x1-x0)/(GroundSingleton.getInstance().getWidth()); i++) {
@@ -86,6 +86,7 @@ public class MapHandler {
 		}
 	}
 	
+	// Gerador de parede
 	private void wallGenerator(String subType, ArrayList<GameObject> objectsList, int x, int y0, int y1) {
 		if (subType.equals("Ground")) {
 			for(int i=0; i < (y1-y0)/(GroundSingleton.getInstance().getHeightFull()); i++) {
@@ -98,6 +99,7 @@ public class MapHandler {
 		}
 	}
 	
+	// Gerador de escada
 	private void stairsGenerator(String subType, ArrayList<GameObject> objectsList, int x0, int x1, int y, char d) {
 		if (subType.equals("Ground")) {
 			for(int i=0; i < (x1-x0)/(GroundSingleton.getInstance().getWidth()); i++) {
