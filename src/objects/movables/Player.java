@@ -83,7 +83,7 @@ public class Player extends MovableObject implements InputProcessor {
 					return true ;
 				}
 			} else if (bottom.overlaps(object.getHitBox())) {
-				velocityY = 3 ;
+				velocityY = 4 ;
 				playerState.setJumping(true) ;
 				points += GoombaSingleton.getInstance().getPoints() ;
 			}
@@ -302,12 +302,12 @@ public class Player extends MovableObject implements InputProcessor {
 		// Mario
 		if (playerState.isIntangible()) { // Verifica a tangibilidade para piscar
 			if (isVisible) {
-				TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(playerState) ;
+				TextureRegion frame = PlayerSingleton.getInstance().getCurrentFrame(playerState) ;
 				int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
 				batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
 			}
 		} else {
-			TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(playerState) ;
+			TextureRegion frame = PlayerSingleton.getInstance().getCurrentFrame(playerState) ;
 			int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;
 			batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
 		}

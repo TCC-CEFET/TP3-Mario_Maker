@@ -47,7 +47,7 @@ public class GoombaSingleton {
 		return Height;
 	}
 
-	public TextureRegion getActualFrame(Direction direction) {
+	public TextureRegion getCurrentFrame(Direction direction) {
 		TextureRegion frame = null ;
 		
 		frame = animation.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;

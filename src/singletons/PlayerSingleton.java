@@ -69,7 +69,7 @@ public class PlayerSingleton {
 		return BottomWidth ;
 	}
 
-	public TextureRegion getActualFrame(PlayerState playerState) {
+	public TextureRegion getCurrentFrame(PlayerState playerState) {
 		TextureRegion frame = null ;
 		
 		if (playerState.isCrouched()) {

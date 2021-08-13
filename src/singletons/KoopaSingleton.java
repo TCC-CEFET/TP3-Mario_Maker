@@ -66,20 +66,20 @@ public class KoopaSingleton {
 		return RunHeight ;
 	}
 
-	public TextureRegion getActualFrame(Direction direction, Boolean isHidden) {
+	public TextureRegion getCurrentFrame(Direction direction, Boolean isHidden) {
 		TextureRegion frame = null ;
 		if(isHidden) {
 			if (direction == Direction.LEFT) {
 				if (animationShell.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 					animationShell.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 				}
-			} else {
+			} else if (direction == Direction.RIGHT) {
 				if (!animationShell.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
 					animationShell.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).flip(true, false);
 				}
 			}
 			
-			frame = animationShell.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true) ;
+			frame = animationShell.getKeyFrame(direction == Direction.STOP ? 0 : DisplaySingleton.getInstance().getStateTime(), true) ;
 		} else {
 			if (direction == Direction.LEFT) {
 				if (animationRunning.getKeyFrame(DisplaySingleton.getInstance().getStateTime(), true).isFlipX()) {
@@ -141,7 +141,7 @@ public class KoopaSingleton {
 		for (int i=firstShell; i < firstShell+shellColumns; i++) {
 			frames[i-firstShell] = frames2DArray[line][i];
 		}
-	
+		
 		animationShell = new Animation(0.05f, frames) ;
 	}
 }

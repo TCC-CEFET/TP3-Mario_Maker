@@ -59,7 +59,7 @@ public class Koopa extends Enemy {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		TextureRegion frame = KoopaSingleton.getInstance().getActualFrame(direction, isHidden);
+		TextureRegion frame = KoopaSingleton.getInstance().getCurrentFrame(direction, isHidden);
 		int width=KoopaSingleton.getInstance().getRunWidth(), height=KoopaSingleton.getInstance().getRunHeight() ;
 		batch.draw(frame, hitBox.x, hitBox.y, width, height) ;
 	}

@@ -40,7 +40,7 @@ public class Goomba extends Enemy {
 	
 	@Override
 	public void draw(SpriteBatch batch) {
-		TextureRegion frame = GoombaSingleton.getInstance().getActualFrame(direction);
+		TextureRegion frame = GoombaSingleton.getInstance().getCurrentFrame(direction);
 		batch.draw(frame, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 	}
 }
