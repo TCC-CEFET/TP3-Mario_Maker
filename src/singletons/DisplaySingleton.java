@@ -12,8 +12,8 @@ import singletons.* ;
 
 public class DisplaySingleton {
 	private static DisplaySingleton instance;
-	private final int Width=800, Height=480 ;
-	private float stateTime ;
+	private final int Width=800, Height=480 ; // Proporcao da tela
+	private float stateTime ; // State time do jogo
 	
 	private DisplaySingleton() {
 		stateTime = 0 ;
