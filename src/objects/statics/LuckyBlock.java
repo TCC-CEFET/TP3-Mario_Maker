@@ -14,8 +14,9 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe do luckyblock (bloco ?)
 public class LuckyBlock extends GameObject {
-	private boolean hitted ;
+	private boolean hitted ; // Marca se ele ja foi acertado
 	
 	public LuckyBlock(int x, int y) {
 		super(x, y, BrickSingleton.getInstance().getWidth(), BrickSingleton.getInstance().getHeight()) ;
@@ -25,7 +26,7 @@ public class LuckyBlock extends GameObject {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Player.class) {
+		if(object.getClass() == Player.class) { // Verifica colisao caso seja um player
 			if(hitBox.overlaps(((Player) object).getTopHitBox()) && !hitted && ((Player) object).getPlayerState().isJumping()) {
 				movableList.add(new Mushroom((int) hitBox.x, (int) (hitBox.y+hitBox.height))) ;
 				remove() ;
