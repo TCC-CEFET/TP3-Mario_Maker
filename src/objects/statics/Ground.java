@@ -15,8 +15,9 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe do chao que funciona como plataforma
 public class Ground extends GameObject {
-	private Rectangle top ;
+	private Rectangle top ; // Retangulo do topo
 	
 	public Ground(int x, int y) {
 		super(x, y, GroundSingleton.getInstance().getWidth(), GroundSingleton.getInstance().getHeightFull()) ;
