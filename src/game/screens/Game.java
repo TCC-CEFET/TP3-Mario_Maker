@@ -21,20 +21,24 @@ import objects.statics.Pipe;
 import singletons.DisplaySingleton;
 import singletons.PlayerSingleton;
 
+// Classe da tela do jogo principal
 public class Game implements Screen {
 	private GameState gameState ;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
+	// Objetos do jogo
 	private Player player ;
-	private ArrayList<GameObject> objectsList ;
-	private ArrayList<MovableObject> movableList ;
+	private ArrayList<GameObject> objectsList ; // Objetos estaticos
+	private ArrayList<MovableObject> movableList ; // Objetos moveis
 	private MapHandler mapHandler ;
 	
+	// Variaveis de marcacao de fim de jogo
 	private int finalX ;
 	private final int maximumTime ;
 	
+	// Variavel de marcacao
 	private boolean themeSongIsPlaying ;
 	
 	public Game(SpriteBatch batch, OrthographicCamera camera, GameState gameState) {
@@ -48,6 +52,7 @@ public class Game implements Screen {
 		maximumTime = 400 ;
 	}
 	
+	// Inicia os objetos
 	public void create() {
 		objectsList = new ArrayList<GameObject>() ;
 		movableList = new ArrayList<MovableObject>() ;
@@ -61,16 +66,17 @@ public class Game implements Screen {
 	
 	@Override
 	public void render(float arg0) {
-		if (!themeSongIsPlaying) {
+		if (!themeSongIsPlaying) { // Se a musica de fundo nao estiver tocando comeca a tocar
 			SoundHandler.getInstance().playBackground() ;
 			themeSongIsPlaying = true ;
 		}
 		
-		DisplaySingleton.getInstance().increaseStateTime() ;
+		DisplaySingleton.getInstance().increaseStateTime() ; // Atualiza o state time
 		
 		Gdx.gl.glClearColor(150/255f, 118/255f, 214/255f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		// Desenha os objetos
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		player.draw(batch);
@@ -87,7 +93,7 @@ public class Game implements Screen {
 		drawTime() ;
 		batch.end();
 		
-		// Controls
+		// Controla os objetos
 		player.control() ;
 		for (MovableObject movable: movableList) {
 			if (verifyDistance(movable)) {
@@ -95,41 +101,45 @@ public class Game implements Screen {
 			}
 		}
 		
-		// Updates
+		// Atualiza os objetos
 		player.update() ;
+		
+		// Atualiza os objetos estaticos
 		Iterator<GameObject> iterObjects = objectsList.iterator() ;
 		while (iterObjects.hasNext()) {
 			GameObject object = iterObjects.next() ;
 			
-			if (verifyDistance(object)) {
+			if (verifyDistance(object)) { // Verifica a distancia
 				object.update() ;
-				boolean toRemove = object.verifyPosition(player, movableList) ;
-				if (player.verifyPosition(object, movableList)) {
+				boolean toRemove = object.verifyPosition(player, movableList) ; // Verifica o objeto com player
+				if (player.verifyPosition(object, movableList)) { // Verifica o player com objeto
 					resetGame(EnumGameState.GAMEOVER) ;
 					return ;
 				}
 				if (toRemove) iterObjects.remove() ;
 			}
 		}
+		
+		// Atualiza os objetos moveis
 		Iterator<MovableObject> iterMovables = movableList.iterator() ;
 		while (iterMovables.hasNext()) {
 			MovableObject movable = iterMovables.next() ;
 			
-			if (verifyDistance(movable)) {
+			if (verifyDistance(movable)) { // Verifica a distancia
 				movable.update() ;
-				boolean toRemove = movable.verifyPosition(player, movableList) ;
-				if (player.verifyPosition(movable, movableList)) {
+				boolean toRemove = movable.verifyPosition(player, movableList) ; // Verifica o movel com player
+				if (player.verifyPosition(movable, movableList)) { // Verifica o player com o movel
 					resetGame(EnumGameState.GAMEOVER) ;
 					return ;
 				}
-				for (GameObject object: objectsList) {
+				for (GameObject object: objectsList) { // Verifica o movel com todos os obejtos
 					if (movable.verifyPosition(object, movableList)) {
 						toRemove = true ;
 						break ;
 					}
 				}
-				for (MovableObject movable2: movableList) {
-					if (movable != movable2) {
+				for (MovableObject movable2: movableList) { // Verifica o movel com todos os moveis
+					if (movable != movable2) { // Verifica se os moveis nao sao o mesmo movel
 						if (movable.verifyPosition(movable2, movableList)) {
 							toRemove = true ;
 							break ;
@@ -141,21 +151,23 @@ public class Game implements Screen {
 				}
 			}
 		}
-		updateCamera(null) ;
+		
+		updateCamera(null) ; // Atualiza a camera
 		
 		// Verifica fins de jogo
-		if (camera.position.x > finalX) {
+		if (camera.position.x > finalX) { // Verifica posicao
 			resetGame(EnumGameState.WON) ;
 		}
 		
-		if (DisplaySingleton.getInstance().getStateTime() > maximumTime) {
+		if (DisplaySingleton.getInstance().getStateTime() > maximumTime) { // Verifica tempo
 			resetGame(EnumGameState.GAMEOVER) ;
 		}
 	}
 	
+	// Verifica a distancia do objeto para saber se esta perto da tela
 	public boolean verifyDistance(GameObject object) {
 		float x = object.getHitBox().x ;
-		float renderProportion = 1.85f ;
+		float renderProportion = 1.85f ; // Proporcão da distancia em consideracao o tamanho da tela
 		if (object.getClass() != Pipe.class) {
 			return Math.abs(camera.position.x - (x+object.getHitBox().width)) < DisplaySingleton.getInstance().getWidth()/renderProportion ;
 		} else {
@@ -164,20 +176,24 @@ public class Game implements Screen {
 		}
 	}
 	
+	// Atualiza a camera
 	public void updateCamera(Integer y) {
 		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
+		// Verifica se esta no inicio ou no meio para camera comecar a seguir
 		if ((player.getHitBox().x < (width/2) - player.getHitBox().width/2) && player.getHitBox().x >= -10)
 			camera.position.x = width/2 ;
 		else
 			camera.position.x = player.getHitBox().x + player.getHitBox().width/2 ;
 		
+		// Se foi passado y atualiza
 		if (y != null) {
 			camera.position.y = y ;
 		}
 		
-		camera.update() ;
+		camera.update() ; // Atualiza a camera
 	}
 	
+	// Desenha em tela o tempo de jogo
 	public void drawTime() {
 		int displayWidth=DisplaySingleton.getInstance().getWidth(), displayHeight=DisplaySingleton.getInstance().getHeight() ;
 		int time = (int) (maximumTime - DisplaySingleton.getInstance().getStateTime()) ;
@@ -189,6 +205,7 @@ public class Game implements Screen {
 		font.draw(batch, String.valueOf(time), xTime, yTime) ;
 	}
 	
+	// Reseta o jogo e cria um novo
 	public void resetGame(EnumGameState gameState) {
 		this.dispose() ;
 		this.create() ;
@@ -196,6 +213,7 @@ public class Game implements Screen {
 		this.gameState.setState(gameState) ;
 	}
 	
+	// Libera os itens
 	@Override
 	public void dispose() {
 		PlayerSingleton.dispose() ;
