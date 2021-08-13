@@ -37,8 +37,9 @@ public class MarioForever implements ApplicationListener {
 	private End end ;
 	
 	@Override
+	//inicializa as telas do jogo
 	public void create() {
-		gameState = new GameState() ;
+		gameState = new GameState() ; 
 		gameState.setState(EnumGameState.MENU) ;
 		
 		int width=DisplaySingleton.getInstance().getWidth(), height=DisplaySingleton.getInstance().getHeight() ;
@@ -52,6 +53,7 @@ public class MarioForever implements ApplicationListener {
 	}
 
 	@Override
+	//renderiza cada tela de acordo com o estado do jogo
 	public void render() {
 		switch (gameState.getState()) {
 			case MENU:
@@ -70,6 +72,7 @@ public class MarioForever implements ApplicationListener {
 	}
 
 	@Override
+	//libera as variaveis de tela do jogo
 	public void dispose() {
 		menu.dispose() ;
 		game.dispose() ;
