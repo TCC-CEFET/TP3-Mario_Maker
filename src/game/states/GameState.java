@@ -1,7 +1,8 @@
 package game.states;
 
+// Classe para manusear o enum do estado do jogo
 public class GameState {
-	private EnumGameState state ;
+	private EnumGameState state ; // Estado do jogo
 
 	public EnumGameState getState() {
 		return state;
