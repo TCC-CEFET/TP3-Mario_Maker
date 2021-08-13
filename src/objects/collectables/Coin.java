@@ -14,6 +14,7 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe da moeda
 public class Coin extends GameObject {
 	public Coin(int x, int y) {
 		super(x, y, CoinSingleton.getInstance().getWidth(), CoinSingleton.getInstance().getHeight()) ;
@@ -21,7 +22,7 @@ public class Coin extends GameObject {
 
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Player.class) {
+		if(object.getClass() == Player.class) { // Verifica colisao caso seja player
 			if(hitBox.overlaps(object.getHitBox())) {
 				remove() ;
 				return true ;
