@@ -10,11 +10,13 @@ import com.badlogic.gdx.audio.Sound;
 import game.states.EnumGameState;
 import objects.GameObject;
 
+// Calsse Singleton para gerenciar os sons
 public class SoundHandler {
 	private static SoundHandler instance ;
 	
-	private ArrayList<Long> ids ;
+	private ArrayList<Long> ids ; // Array de ids tocando
 	
+	// Objetos de sounds
 	private Sound background ;
 	private Sound die ;
 	private Sound gameOver ;
@@ -53,11 +55,11 @@ public class SoundHandler {
 	}
 	
 	public void playBackground() {
-		for (Long id: ids) {
+		for (Long id: ids) { // Para os outros
 			background.stop(id) ;
 		}
 		
-		ids.add(background.loop()) ;
+		ids.add(background.loop()) ; // Toca e adiciona o id
 	}
 	
 	public void playPlayerDie() {
@@ -118,6 +120,7 @@ public class SoundHandler {
 		pipe.play() ;
 	}
 	
+	// Para todos os sons
 	public static synchronized void dispose() {
 		for (Long id: SoundHandler.getInstance().ids) {
 			SoundHandler.getInstance().background.stop(id) ;
