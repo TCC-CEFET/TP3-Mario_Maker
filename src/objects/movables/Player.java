@@ -25,15 +25,17 @@ import objects.movables.enemies.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe do jogador
 public class Player extends MovableObject implements InputProcessor {
-	private Rectangle bottom, left, right, top ;
-	private float velocityY ;
+	private Rectangle bottom, left, right, top ; // HitBoxes
+	private float velocityY ; // Velocidade do eixo y
 	
-	private PlayerState playerState ;
+	private PlayerState playerState ; // Estado
 	
 	private int points ;
 	private int coins ;
 	
+	// Variaveis de marcacao
 	private boolean pressingJump ;
 	
 	private float invencibleStart ;
@@ -72,7 +74,7 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Goomba.class && !playerState.isIntangible()) { // Verifica colisao caso seja inimigo
+		if(object.getClass() == Goomba.class && !playerState.isIntangible()) { // Verifica colisao caso seja goomba
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox())) {
 				if (playerState.isBig()) {
 					setHeight(false) ;
@@ -87,7 +89,7 @@ public class Player extends MovableObject implements InputProcessor {
 				playerState.setJumping(true) ;
 				points += GoombaSingleton.getInstance().getPoints() ;
 			}
-		} else if (object.getClass() == Koopa.class && !playerState.isIntangible()) {
+		} else if (object.getClass() == Koopa.class && !playerState.isIntangible()) { // Verifica colisao caso seja koopa
 			if (hitBox.overlaps(object.getHitBox()) && !bottom.overlaps(object.getHitBox()) && ((Koopa) object).getDirection() != Direction.STOP) {
 				if (playerState.isBig()) {
 					setHeight(false) ;
@@ -102,7 +104,7 @@ public class Player extends MovableObject implements InputProcessor {
 				playerState.setJumping(true) ;
 				if (((Koopa) object).getDirection() == Direction.STOP) points += GoombaSingleton.getInstance().getPoints() ;
 			}
-		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja tijolo
+		} else if (object.getClass() == Brick.class) { // Verifica colisao caso seja brick
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
 				playerState.setJumping(false) ;
@@ -123,7 +125,7 @@ public class Player extends MovableObject implements InputProcessor {
 			if (left.overlaps(object.getHitBox())) {
 				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 			}
-		} else if (object.getClass() == Ground.class) { // Verifica colisao caso seja chao
+		} else if (object.getClass() == Ground.class) { // Verifica colisao caso seja ground
 			if (right.overlaps(object.getHitBox()) && left.overlaps(object.getHitBox())) {
 				if (bottom.overlaps(((Ground)object).getTopHitBox())) {
 					setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
@@ -150,12 +152,12 @@ public class Player extends MovableObject implements InputProcessor {
 				points += CoinSingleton.getInstance().getPoints() ;
 				coins++ ;
 			}
-		} else if (object.getClass() == Mushroom.class) {
+		} else if (object.getClass() == Mushroom.class) { // Verifica colisao caso seja cogumelo
 			if (hitBox.overlaps(object.getHitBox())) {
 				setHeight(true) ;
 				points += MushroomSingleton.getInstance().getPoints() ;
 			}
-		} else if (object.getClass() == LuckyBlock.class) {
+		} else if (object.getClass() == LuckyBlock.class) { // Verifica colisao caso seja luckyblock
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
 				playerState.setJumping(false) ;
@@ -176,7 +178,7 @@ public class Player extends MovableObject implements InputProcessor {
 			if (left.overlaps(object.getHitBox())) {
 				setPosition(object.getHitBox().x + object.getHitBox().width + 1, null) ;
 			}
-		} else if (object.getClass() == Pipe.class) {
+		} else if (object.getClass() == Pipe.class) { // Verifica colisao caso seja pipe
 			if (bottom.overlaps(object.getHitBox())) {
 				setPosition(null, object.getHitBox().y + object.getHitBox().height) ;
 				playerState.setJumping(false) ;
@@ -225,6 +227,7 @@ public class Player extends MovableObject implements InputProcessor {
 	
 	@Override
 	public void update() {
+		// Atualiza variaveis de marcacao
 		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) playerState.setIntangible(false) ;
 		if (isVisible && DisplaySingleton.getInstance().getStateTime() > startVisibleTime+blinkTime) {
 			isVisible = false ;
@@ -234,6 +237,7 @@ public class Player extends MovableObject implements InputProcessor {
 			startVisibleTime = DisplaySingleton.getInstance().getStateTime() ;
 		}
 		
+		// Atualiza a posicao y
 		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ;
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
