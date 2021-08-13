@@ -16,9 +16,11 @@ import singletons.BrickSingleton;
 import singletons.DisplaySingleton;
 import singletons.PipeSingleton;
 
+// Classe para os dois canos conectados
 public class Pipe extends GameObject {
-	private Rectangle hitBoxDestination ;
+	private Rectangle hitBoxDestination ; // hitBox do segundo cano
 	
+	// Variaveis de marcacao de tempo
 	private float lastUsedTime ;
 	private final float TimeBetweenUses ;
 	
@@ -34,8 +36,9 @@ public class Pipe extends GameObject {
 	
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
-		if(object.getClass() == Player.class) {
-			if (DisplaySingleton.getInstance().getStateTime() > lastUsedTime + TimeBetweenUses) {
+		if(object.getClass() == Player.class) { // Verifica colisao caso seja um player
+			if (DisplaySingleton.getInstance().getStateTime() > lastUsedTime + TimeBetweenUses) { // Verifica se ja pode usar
+				// Faz o teleporte caso esteja em cima do cano e clicado para baixo
 				if(hitBox.overlaps(((Player) object).getBottomHitBox()) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 					object.setPosition(hitBoxDestination.x + hitBoxDestination.width/2 - object.getHitBox().width/2, hitBoxDestination.y + hitBoxDestination.height);
 					lastUsedTime = DisplaySingleton.getInstance().getStateTime() ;
