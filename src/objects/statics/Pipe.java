@@ -18,6 +18,7 @@ import singletons.PipeSingleton;
 
 public class Pipe extends GameObject {
 	private Rectangle hitBoxDestination ;
+	
 	private float lastUsedTime ;
 	private final float TimeBetweenUses ;
 	
@@ -26,6 +27,7 @@ public class Pipe extends GameObject {
 		
 		int width=PipeSingleton.getInstance().getWidth(), height=PipeSingleton.getInstance().getHeight() ;
 		hitBoxDestination = new Rectangle(x1, y1, width, height) ;
+		
 		lastUsedTime = 0 ;
 		TimeBetweenUses = 2 ;
 	}

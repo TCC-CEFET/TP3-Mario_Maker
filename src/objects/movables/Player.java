@@ -47,12 +47,10 @@ public class Player extends MovableObject implements InputProcessor {
 	public Player(int x, int y, Direction direction) {
 		super(x, y, PlayerSingleton.getInstance().getWidth(), PlayerSingleton.getInstance().getHeight(), direction) ;
 		
-		int width=PlayerSingleton.getInstance().getWidth(), height=PlayerSingleton.getInstance().getHeight() ;
-		hitBox = new Rectangle(x, y, width, height) ;
-		bottom = new Rectangle(x+((width - PlayerSingleton.getInstance().getBottomWidth())/2), y, PlayerSingleton.getInstance().getBottomWidth(), height/10) ;
-		left = new Rectangle(x, y+bottom.height, width/2, height-(bottom.height*2)) ;
-		right = new Rectangle(x+width/2, y+bottom.height, width/2, height-(bottom.height*2)) ;
-		top = new Rectangle(bottom.x, y+(height-bottom.height), bottom.width, bottom.height) ;
+		bottom = new Rectangle() ;
+		left = new Rectangle() ;
+		right = new Rectangle() ;
+		top = new Rectangle() ;
 		
 		this.setPosition(hitBox.x, hitBox.y) ;
 		playerState = new PlayerState(direction) ;
@@ -228,6 +226,14 @@ public class Player extends MovableObject implements InputProcessor {
 	@Override
 	public void update() {
 		if (DisplaySingleton.getInstance().getStateTime() > invencibleStart+invencibleMaxTime) playerState.setIntangible(false) ;
+		if (isVisible && DisplaySingleton.getInstance().getStateTime() > startVisibleTime+blinkTime) {
+			isVisible = false ;
+			startInvisibleTime = DisplaySingleton.getInstance().getStateTime() ;
+		} else if (!isVisible && DisplaySingleton.getInstance().getStateTime() > startInvisibleTime+blinkTime) {
+			isVisible = true ;
+			startVisibleTime = DisplaySingleton.getInstance().getStateTime() ;
+		}
+		
 		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ;
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
@@ -295,14 +301,6 @@ public class Player extends MovableObject implements InputProcessor {
 	public void draw(SpriteBatch batch) {
 		// Mario
 		if (playerState.isIntangible()) { // Verifica a tangibilidade para piscar
-			if (isVisible && DisplaySingleton.getInstance().getStateTime() > startVisibleTime+blinkTime) {
-				isVisible = false ;
-				startInvisibleTime = DisplaySingleton.getInstance().getStateTime() ;
-			} else if (!isVisible && DisplaySingleton.getInstance().getStateTime() > startInvisibleTime+blinkTime) {
-				isVisible = true ;
-				startVisibleTime = DisplaySingleton.getInstance().getStateTime() ;
-			}
-			
 			if (isVisible) {
 				TextureRegion frame = PlayerSingleton.getInstance().getActualFrame(playerState) ;
 				int width=PlayerSingleton.getInstance().getBigWidth(), height=PlayerSingleton.getInstance().getBigHeight() ;

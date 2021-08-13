@@ -24,7 +24,7 @@ public abstract class Enemy extends MovableObject {
 	@Override
 	public boolean verifyPosition(GameObject object, ArrayList<MovableObject> movableList) {
 		if (object.getClass() == Koopa.class) {
-			if (((Koopa) object).isHidden() && ((Koopa) object) .getDirection() != Direction.STOP) {
+			if (((Koopa) object).isHidden() && ((Koopa) object).getDirection() != Direction.STOP) {
 				if (hitBox.overlaps(object.getHitBox())) {
 					remove() ;
 					return true ;
@@ -45,14 +45,6 @@ public abstract class Enemy extends MovableObject {
 	}
 	
 	@Override
-	public void setPosition(Float x, Float y) {
-		super.setPosition(x, y) ;
-		
-		x = hitBox.x  ;
-		y = hitBox.y ;
-	}
-	
-	@Override
 	public void updateHitBox() {
 		int width, height ;
 		if (this.getClass() == Koopa.class) {
@@ -62,7 +54,7 @@ public abstract class Enemy extends MovableObject {
 			width=GoombaSingleton.getInstance().getWidth() ;
 			height=GoombaSingleton.getInstance().getHeight() ;
 		}
-			
+		
 		hitBox.width = width ;
 		hitBox.height = height ;
 		

@@ -33,7 +33,6 @@ public class Ground extends GameObject {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -59,6 +58,5 @@ public class Ground extends GameObject {
 
 	@Override
 	public void remove() {
-		
 	}
 }

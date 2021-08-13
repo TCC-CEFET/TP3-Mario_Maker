@@ -43,9 +43,4 @@ public class Goomba extends Enemy {
 		TextureRegion frame = GoombaSingleton.getInstance().getActualFrame(direction);
 		batch.draw(frame, hitBox.x, hitBox.y, hitBox.width, hitBox.height) ;
 	}
-	
-	@Override
-	public void remove() {
-		super.remove() ;
-	}
 }
