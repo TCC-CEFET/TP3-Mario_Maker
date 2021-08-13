@@ -238,7 +238,7 @@ public class Player extends MovableObject implements InputProcessor {
 		}
 		
 		// Atualiza a posicao y
-		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ;
+		velocityY -= 10 * Gdx.graphics.getDeltaTime() > 0.5 ? 0.5 : 10 * Gdx.graphics.getDeltaTime() ; // Poe um maximo na queda entre frames caso comece a cair fps
 		hitBox.y += velocityY ;
 		this.setPosition(hitBox.x, hitBox.y) ;
 	}
