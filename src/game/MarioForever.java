@@ -26,18 +26,21 @@ import objects.movables.* ;
 import objects.statics.* ;
 import singletons.* ;
 
+// Classe que controla os estados do jogo e coloca a tela
 public class MarioForever implements ApplicationListener {
-	private GameState gameState ;
+	private GameState gameState ; // Estado do jogo
 	
+	// Camera e batch
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
+	// Telas
 	private Menu menu ;
 	private Game game ;
 	private End end ;
 	
-	@Override
 	//inicializa as telas do jogo
+	@Override
 	public void create() {
 		gameState = new GameState() ; 
 		gameState.setState(EnumGameState.MENU) ;
@@ -52,8 +55,8 @@ public class MarioForever implements ApplicationListener {
 		end = new End(batch, camera, gameState) ;
 	}
 
-	@Override
 	//renderiza cada tela de acordo com o estado do jogo
+	@Override
 	public void render() {
 		switch (gameState.getState()) {
 			case MENU:
@@ -71,8 +74,8 @@ public class MarioForever implements ApplicationListener {
 		}
 	}
 
-	@Override
 	//libera as variaveis de tela do jogo
+	@Override
 	public void dispose() {
 		menu.dispose() ;
 		game.dispose() ;
